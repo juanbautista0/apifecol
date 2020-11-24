@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Api Fecol PHP Framework | To continue programming
+ * ApiFecol PHP Framework | To continue programming
  *
  * @package  Public
  * @author   Juan Bautista <soyjuanbautista@gmail.com>
@@ -65,8 +65,8 @@ spl_autoload_register(function ($className) {
 | Application start
 |--------------------------------------------------------------------------
 | 
-| (EN) Genesis starts on a single line
-| (ES) Genesis se inicia en una sola linea
+| (EN) Apifecol starts on a single line
+| (ES) Apifecol se inicia en una sola linea
 */
 
 $start = new Core;

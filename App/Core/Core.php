@@ -1,5 +1,4 @@
 <?php
-print_r($_GET);
 
 /**
  * Core Class
@@ -118,7 +117,7 @@ class Core
             $url = rtrim($url, '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);
-            $url = array_values($url ?? []);
+            $url = array_values($url);
             unset($url[0]);
             $url = array_values($url);
             if (empty($url)) {
