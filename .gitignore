@@ -1,0 +1,9 @@
+App/View/cache/
+App/Logs
+.ionide/
+vendor
+.env
+.htaccess
+*.htaccess
+**.htaccess
+*/.htaccess

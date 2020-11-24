@@ -1,0 +1,17 @@
+{
+    "name": "vendor/apifecol",
+    "description": "API Facturación Electronica Validación Previa DIAN",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juan Bautista",
+            "email": "soyjuanbautista0@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.3",
+        "vlucas/phpdotenv": "^5.2@dev"
+    }
+}
