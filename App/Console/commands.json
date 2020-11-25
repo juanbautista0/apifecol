@@ -1,0 +1,10 @@
+{
+  "make": {
+    "controller": "apifecol make controller __name__: (EN) Create a new controller class. | (ES) Crear una nueva clase de controlador.",
+    "model": "apifecol make model __name__: (EN) Create a new Base model class. | (ES) Crear una nueva clase del Modelo Base.",
+    "module": "apifecol make module __name__: (EN) Create a new Plugin. | (ES) Crear un nuevo complemento."
+  },
+  "deployment": {
+    "htaccess": "apifecol make htaccess __name__: (EN) Crear archivos htaccess. | (ES) Crear archivos htaccess."
+  }
+}

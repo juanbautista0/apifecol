@@ -1,6 +1,6 @@
 {
     "name": "vendor/apifecol",
-    "description": "API Facturación Electronica Validación Previa DIAN",
+    "description": "API Facturación electrónica validación previa DIAN",
     "type": "project",
     "license": "MIT",
     "authors": [

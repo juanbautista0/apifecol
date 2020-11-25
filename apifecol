@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+/*
+|-------------------------------------------------------------------
+| Run The CLI Application
+|-------------------------------------------------------------------
+|
+| Run the console application using valid commands, this spaces 
+| and its execution is only for developers.
+|
+*/
+
+
+//Validate if isset Genesis Console Library
+
+use App\Core\Cli;
+
+if (file_exists('App/Core/Cli.php')) :
+    if (count($argv) > 1) :
+        require_once 'App/Core/Cli.php';
+        $genesis = new Cli($argv);
+    endif;
+else :
+    exit("\u265E: The genesis package does not exist\n");
+endif;
