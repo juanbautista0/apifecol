@@ -125,6 +125,7 @@ class Core
                 $url[0] = $_ENV['APP_CONTROLLER'];
             }
         }
+        unset($_GET['url']);
         return array_values($url);
     }
 
