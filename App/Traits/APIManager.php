@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Traits;
 
 trait APIManager
 {
@@ -9,13 +10,12 @@ trait APIManager
     public $_content_type = "application/json; charset=utf-8";
     public $_request = array();
     public $requireds;
-    
+
     public $headers = [
         'Access-Control-Allow-Origin: *',
         'Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method',
         'Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE',
         'Allow: GET, POST, OPTIONS, PUT, DELETE'
-
     ];
     private $_method = "";
     private $_code = 200;
@@ -29,7 +29,6 @@ trait APIManager
 
     public function __construct()
     {
-        
     }
 
     /**
@@ -90,7 +89,7 @@ trait APIManager
      */
     private function SetHeaders(): void
     {
-        foreach($this->headers as $key){
+        foreach ($this->headers as $key) {
             header($key);
         }
     }

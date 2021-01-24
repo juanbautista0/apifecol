@@ -57,6 +57,8 @@ class Core
         //$this->errorTry();
         //$this->hostUri();
         $url = $this->getUrl();
+        unset($_GET['url']);
+
         //(EN) Search in Controllers if the called controller exists.
         //(ES) Buscar en Controladores si el controlador llamado existe.
         if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($url[0]) . '.php')) {
@@ -125,7 +127,6 @@ class Core
                 $url[0] = $_ENV['APP_CONTROLLER'];
             }
         }
-        unset($_GET['url']);
         return array_values($url);
     }
 
