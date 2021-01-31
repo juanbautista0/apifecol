@@ -73,3 +73,12 @@ endif;
 if (isset($_ENV['APP_TIME_ZONE'])) :
     date_default_timezone_set($_ENV['APP_TIME_ZONE']);
 endif;
+
+/*
+|-------------------------------------------------------------------
+| (EN) Set time zone default
+| (ES) Establecer la zona horaria por defecto
+|-------------------------------------------------------------------
+|
+*/
+require_once dirname(dirname(__FILE__)).'/Core/Helpers.php';

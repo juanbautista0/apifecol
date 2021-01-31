@@ -13,6 +13,8 @@
     "require": {
         "php": ">=7.3",
         "vlucas/phpdotenv": "^5.2@dev",
-        "firebase/php-jwt": "dev-master"
+        "firebase/php-jwt": "dev-master",
+        "illuminate/database": "^7.9",
+        "doctrine/dbal":"^2.10"
     }
 }

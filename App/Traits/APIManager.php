@@ -29,6 +29,7 @@ trait APIManager
 
     public function __construct()
     {
+
     }
 
     /**
