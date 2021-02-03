@@ -2,6 +2,7 @@
 
 use App\Traits\APIManager;
 
+
 class Api extends Controller
 {
     use APIManager;

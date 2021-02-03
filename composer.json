@@ -13,6 +13,7 @@
     "require": {
         "php": ">=7.3",
         "vlucas/phpdotenv": "^5.2@dev",
-        "firebase/php-jwt": "dev-master"
+        "firebase/php-jwt": "dev-master",
+        "psr/http-message": "^1.0@dev"
     }
 }
