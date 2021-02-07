@@ -36,6 +36,12 @@ class Login extends Controller implements Http
      protected $profile;
 
      /**
+      * @var object $biller
+      * @access protected
+      */
+      protected $biller;
+
+     /**
       * @var string $http_method
       * (EN) Http method for default
       * (ES) Método Http por defecto
@@ -78,8 +84,25 @@ class Login extends Controller implements Http
           //http code 202
           if (!empty($this->CustomRequest()) && $this->HttpMethodValidate() && isset($this->CustomRequest()['tenancy']) && $this->DatabaseValidate($this->CustomRequest()['tenancy'])) {
                $this->RequiredsValidate();
-               test
-               $this->profile =  App\Models\Profile::where('email', $this->CustomRequest()['email']);
+               $this->profile =  App\Models\Profile::where('email', $this->CustomRequest()['email']);//Perfil
+               $this->biller  =  App\Models\Biller::where('identification_number', $this->CustomRequest()['NIT']);//facturador
+               /**
+                * Nota: Henry por favor plantear todas las posibles validaciones de estado, paquete, documentos usados, etc..
+                * Acá solo voy hacer una validación breve para mostrar la funcionalida de autenticación, si es exitosa retornará un token
+                * que podrá ser usado durante en todas las llamadas a la API y sus métodos (End points).
+                */
+
+                /**
+                 * Se está valiando qué: Exista el perfil, el facturador, el password, el estado del perfil (Faltan)
+                 */
+               if($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1){
+                    _json(['code' => 202, 'message' => 'Accepted']);
+
+               }else{
+                    _json(['code' => 403, 'message' => 'Access permission denied']);
+
+               }
+
           } else {
                _json(['code' => 403, 'message' => 'Access permission denied']);
           }
@@ -117,10 +140,12 @@ class Login extends Controller implements Http
                          'code' => 400,
                          'data' => [
                               'message' => 'Empty field',
-                              'empty_field' => $key
+                              'empty_field' => $key,
                          ]
                     ], 400);
                     die;
+               }else{
+                    continue;
                }
           }
      }
