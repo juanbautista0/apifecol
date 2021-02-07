@@ -17,8 +17,8 @@ trait APIManager
         'Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE',
         'Allow: GET, POST, OPTIONS, PUT, DELETE'
     ];
-    private $_method = "";
-    private $_code = 200;
+    public $_method = "";
+    public $_code = 200;
     public  $apiModel;
     public  $result;
     public  $api_info;
@@ -29,6 +29,7 @@ trait APIManager
 
     public function __construct()
     {
+        $this->SetHeaders();
     }
 
     /**
@@ -48,24 +49,35 @@ trait APIManager
                 break;
                 //Datos enviado por POST
             case 'POST':
+                $_POST = $this->GetDataJson();
                 return $_POST;
                 break;
                 //Datos enviado por PUT
             case 'PUT':
-                parse_str(file_get_contents("php://input"), $_PUT);
+                $_PUT =  $this->GetDataJson();
                 return $_PUT;
                 break;
                 //Datos enviado por UPDATE
             case 'UPDATE':
-                parse_str(file_get_contents("php://input"), $_UPDATE);
+                $_UPDATE = $this->GetDataJson();
                 return $_UPDATE;
                 break;
                 //Datos enviado por DELETE
             case 'DELETE':
-                parse_str(file_get_contents("php://input"), $_DELETE);
+               $_DELETE = $this->GetDataJson();
                 return $_DELETE;
                 break;
         }
+    }
+
+    /**
+     * GetDataJson
+     * @access public
+     * @return array
+     */
+    public function GetDataJson(): array
+    {
+        return json_decode(file_get_contents('php://input'), true) ?? [];
     }
 
     /**
@@ -92,6 +104,10 @@ trait APIManager
         foreach ($this->headers as $key) {
             header($key);
         }
+    }
+
+    public function get_status_message(): void
+    {
     }
 
     /**

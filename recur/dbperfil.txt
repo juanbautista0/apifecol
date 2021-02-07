@@ -1,0 +1,92 @@
+ 
+
+CREATE TABLE `profiles` (
+`id` int(12) NOT NULL AUTO_INCREMENT,
+`company` varchar(255) NOT NULL,
+`description` varchar(255) NOT NULL,
+`phone` varchar(255),
+`regimen` int(1) NOT NULL,
+`address` varchar(255),
+`city_id` int(12),
+`country_id` int(12),
+`id_fiscal` int(12), 
+`package_code` int(12),
+`email` varchar(255),
+`language_id` int(12),
+`name` varchar(255),
+`brand_logo` varchar(255),
+`signature` varchar(255),
+`main_color` varchar(255),
+`system_responsible` varchar(255),
+`status` int(1) DEFAULT '1',
+`codpostal` varchar(10) DEFAULT '',
+`moneda` varchar(6) DEFAULT '',
+`logo` varchar(256) DEFAULT '',  
+`doc` varchar(20) DEFAULT '0', 
+`Adm` varchar(255) DEFAULT NULL,   
+`resolucion` varchar(15) DEFAULT '',
+`status` int(1) DEFAULT '1',
+updated_at datetime ,
+created_at datetime  ,  
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+CREATE TABLE `billers` (
+
+`id` int(12),
+`profile_id` int(12),
+`name` varchar(120),
+`identification_number` int(12),
+`dv` int(12),
+`language_id` int(12),
+`tax_id` int(12),
+`type_environment_id` int(12),
+`type_document_identification_id` int(12),
+`country_id` int(12),
+`type_currency_id` int(12),
+`type_organization_id` int(12),
+`type_regime_id` int(12),
+`type_liability_id` int(12),
+`municipality_id` int(12), 
+`deparment_id` int(12),
+`bank_account_id` int(12),
+`bank_account_name` varchar(255),
+`bank_account_number` varchar(255),
+`merchant_registration`  varchar(255),
+`software_id` varchar(512),
+`pin` varchar(10),
+`test_id` varchar(512),
+`printing_format` tinyint(2),
+`send_method` int(12),
+`address` varchar(512),
+`phone` varchar(25),
+`email` varchar(255),
+`image` varchar(255),
+`certificate` text,
+`certificate_password` varchar(255),
+`certificate_validity` datetime,
+`host_email` varchar(55),
+`host_username` varchar(255),
+`host_password` varchar(255),
+`host_port` int(2),
+`integrations` varchar(255),
+`status` int(1) DEFAULT '1',
+`created_at` datetime ,
+`updated_at` datetime ,
+
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+API(1)=>
+REQUEST_MANAGER()=>
+SESSION(1)=>
+METHODS=>["1()","2()","3()", ""]
+ExECUTE()=>

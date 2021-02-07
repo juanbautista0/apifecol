@@ -7,7 +7,12 @@
  * @author   Juan Bautista <soyjuanbautista@gmail.com>
  */
 
-
+set_error_handler(function ($errno, $errstr, $errfile, $errline, $errcontext) {
+    if (0 === error_reporting()) {
+        return false;
+    }
+    throw new Exception($errstr, 0, $errno, $errfile, $errline);
+});
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader Composer
