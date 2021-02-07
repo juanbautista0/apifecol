@@ -64,10 +64,33 @@ trait APIManager
                 break;
                 //Datos enviado por DELETE
             case 'DELETE':
-               $_DELETE = $this->GetDataJson();
+                $_DELETE = $this->GetDataJson();
                 return $_DELETE;
                 break;
         }
+    }
+
+
+    /**
+     * ApiInfo()
+     * (EN) Show API info
+     * (ES) Muestra información de la API
+     * @access public
+     * @return void
+     */
+    public function ApiInfo(): void
+    {
+        _json([
+            'code' => 200,
+            'data' => [
+                'API' => config()->APP_NAME,
+                'description' => 'API facturación electrónica validación previa DIAN',
+                'documentation' => 'apifecol.co',
+                'response_time' => APIFECOL_START,
+
+            ]
+
+        ]);
     }
 
     /**

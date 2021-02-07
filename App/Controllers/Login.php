@@ -68,6 +68,7 @@ class Login extends Controller implements Http
      public function __construct()
      {
           $this->SetHeaders();
+          $this->ApiInfo();
      }
 
      /**
