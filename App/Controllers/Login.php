@@ -96,6 +96,8 @@ class Login extends Controller implements Http
                  * Se está valiando qué: Exista el perfil, el facturador, el password, el estado del perfil (Faltan)
                  */
                if($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1){
+                    
+                    //Pendiente definir el token e implementar el objeto Session::class
                     _json(['code' => 202, 'message' => 'Accepted']);
 
                }else{
