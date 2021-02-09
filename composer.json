@@ -16,7 +16,6 @@
         "firebase/php-jwt": "dev-master",
         "psr/http-message": "^1.0@dev",
         "illuminate/database": "^7.9",
-        "doctrine/dbal":"^2.10",
-        "laminas/laminas-http": "2.15.x-dev"
+        "doctrine/dbal":"^2.10"
     }
 }
