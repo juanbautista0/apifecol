@@ -1,0 +1,55 @@
+server {
+	#/etc/nginx/sites-available/default
+	#(EN) Port where your application will run. 
+	#(ES) Puerto donde va correr tu aplicación.
+	listen <port></port>;
+	listen [::]:<port></port>;
+	
+	#(EN) Domain name for your server
+	#(ES) Nombre de dominio para tu servidor. 
+	#server_name example.com;
+
+	#(EN) Absolute path of the apifecol project (Linux).
+	#(ES) Ruta absoluta del proyecto génesis  (Linux).
+	#root /var/www/html/apifecol/;
+	#index index.php;
+
+    #(EN) Absolute path of the apifecol project (Windows).
+	#(ES) Ruta absoluta del proyecto génesis  (Windows).
+	root /var/www/html/apifecol;
+	index index.php;
+
+	#(EN) Rewrite settings
+	#(ES) Configuración de reescritura.
+	location / {
+		#try_files $uri $uri/ =404;
+		rewrite ^/$ /Public/ break;
+  		rewrite ^(.*)$ /Public/$1 break;
+		try_files  $uri/ /Public/index.php?$args;
+	}
+	location /Public/ {
+	  if (!-e $request_filename){
+	    rewrite ^/Public/(.+)$ /Public/index.php?url=$args break;
+	  }
+	}
+	
+	#(EN) Php settings (Linux)
+	#(ES) Configuración Php en (Linux)
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	
+		# With php-fpm (or other unix sockets):
+		fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+		# With php-cgi (or other tcp sockets):
+		#fastcgi_pass 127.0.0.1:9000;
+	}
+
+    #(EN) Php settings (Windows)
+	#(ES) Configuración Php en (Windows)
+	#location ~ \.php$ {
+	#	    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    #    include        fastcgi_params;
+	#}
+}

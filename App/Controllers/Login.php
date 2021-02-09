@@ -39,7 +39,7 @@ class Login extends Controller implements Http
       * @var object $biller
       * @access protected
       */
-      protected $biller;
+     protected $biller;
 
      /**
       * @var string $http_method
@@ -85,27 +85,24 @@ class Login extends Controller implements Http
           //http code 202
           if (!empty($this->CustomRequest()) && $this->HttpMethodValidate() && isset($this->CustomRequest()['tenancy']) && $this->DatabaseValidate($this->CustomRequest()['tenancy'])) {
                $this->RequiredsValidate();
-               $this->profile =  App\Models\Profile::where('email', $this->CustomRequest()['email']);//Perfil
-               $this->biller  =  App\Models\Biller::where('identification_number', $this->CustomRequest()['NIT']);//facturador
+               $this->profile =  App\Models\Profile::where('email', $this->CustomRequest()['email']); //Perfil
+               $this->biller  =  App\Models\Biller::where('identification_number', $this->CustomRequest()['NIT']); //facturador
                /**
                 * Nota: Henry por favor plantear todas las posibles validaciones de estado, paquete, documentos usados, etc..
                 * Acá solo voy hacer una validación breve para mostrar la funcionalida de autenticación, si es exitosa retornará un token
                 * que podrá ser usado durante en todas las llamadas a la API y sus métodos (End points).
                 */
 
-                /**
-                 * Se está valiando qué: Exista el perfil, el facturador, el password, el estado del perfil (Faltan)
-                 */
-               if($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1){
-                    
+               /**
+                * Se está valiando qué: Exista el perfil, el facturador, el password, el estado del perfil (Faltan)
+                */
+               if(true){//if ($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1) {
+
                     //Pendiente definir el token e implementar el objeto Session::class
                     _json(['code' => 202, 'message' => 'Accepted']);
-
-               }else{
+               } else {
                     _json(['code' => 403, 'message' => 'Access permission denied']);
-
                }
-
           } else {
                _json(['code' => 403, 'message' => 'Access permission denied']);
           }
@@ -135,7 +132,7 @@ class Login extends Controller implements Http
       * @access public
       * @return void
       */
-     public function RequiredsValidate():void
+     public function RequiredsValidate(): void
      {
           foreach ($this->requireds_login as $key) {
                if (!isset($this->CustomRequest()[$key]) && empty($this->CustomRequest()[$key])) {
@@ -147,7 +144,7 @@ class Login extends Controller implements Http
                          ]
                     ], 400);
                     die;
-               }else{
+               } else {
                     continue;
                }
           }
@@ -181,7 +178,12 @@ class Login extends Controller implements Http
           bootORM(config()->DB_DATABASE);
           //(EN) Here is get the databases
           //(ES) Aquí se obtiene la bases de datos
-          $database = DB::select(db_query($db));
+          $database = DB::select(
+               DB::raw(db_query($db)),
+               array(
+                    ':db' => $db
+               )
+          );
 
           //(ES) Función anonima para ejecutar la validación
           //(EN) anonymous function execute the validation

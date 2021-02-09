@@ -87,9 +87,9 @@ if (!function_exists('db_query')) {
      * (EN) Get the OS string name
      * (ES) traer el nombre del SO
      */
-    function db_query($db)
+    function db_query($db = '')
     {
-        return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='{$db}'";
+        return strval('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME=:db');
     }
 }
 
