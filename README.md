@@ -1,2 +1,2 @@
 # apifecol
-API facturación electrónica validación previa DIAN
+API facturación electrónica
