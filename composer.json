@@ -2,7 +2,7 @@
     "name": "vendor/apifecol",
     "description": "API Facturación electrónica validación previa DIAN",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Juan Bautista",
