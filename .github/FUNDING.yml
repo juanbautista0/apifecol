@@ -1,5 +1,6 @@
 # These are supported funding model platforms
 
-github: # [myGTEP]
-patreon: # myGTEP
-custom: # ['https://mygtep.com', 'mygtep.com']
+github: [myGTEP]
+patreon: myGTEP
+tidelift:
+custom: ["https://www.mygtep.com", mygtep.com]
