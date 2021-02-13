@@ -8,7 +8,6 @@
  * @author  Juan Bautista <soyjuanbautista0@gmail.com>
  * 
  */
-define('APIFECOL_START', microtime(true));
 
 /*
 |-------------------------------------------------------------------

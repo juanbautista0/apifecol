@@ -6,13 +6,9 @@
  * @package  Public
  * @author   Juan Bautista <soyjuanbautista@gmail.com>
  */
+define('APIFECOL_START', microtime(true));
 
-set_error_handler(function ($errno, $errstr, $errfile, $errline, $errcontext) {
-    if (0 === error_reporting()) {
-        return false;
-    }
-    throw new Exception($errstr, 0, $errno, $errfile, $errline);
-});
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader Composer
@@ -51,13 +47,13 @@ require '../App/Config/Config.php';
 spl_autoload_register(function ($className) {
 
     //Instantiated by the new statement 
-    if (file_exists('../App/Core/' . str_replace('\\', '/', $className) .  '.php')) :
+    if (file_exists('../App/Core/' . str_replace('\\', '/', $className) .  '.php')): 
         require_once '../App/Core/' . str_replace('\\', '/', $className) .  '.php';
-    else :
+    else: 
         $class = explode('\\', $className);
-        if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php')) :
+        if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php')): 
             //Instance by namespace
-            if ($className != 'int') :
+            if ($className != 'int'): 
                 require_once  dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php';
             endif;
         endif;
