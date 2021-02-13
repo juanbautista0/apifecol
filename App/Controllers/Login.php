@@ -9,8 +9,8 @@
 
 
 use Illuminate\Database\Capsule\Manager as DB;
-use \App\Core\Token;
 use \App\Traits\APIManager;
+use \App\Core\Session;
 
 class Login extends Controller implements Http
 {
@@ -62,13 +62,19 @@ class Login extends Controller implements Http
           'NIT'
      ];
 
+     /**
+      * @var object $session
+      * @access public
+      */
+     public $session;
+
 
 
 
      public function __construct()
      {
           $this->SetHeaders();
-          $this->ApiInfo();
+          $this->session = new Session;
      }
 
      /**
@@ -85,8 +91,8 @@ class Login extends Controller implements Http
           //http code 202
           if (!empty($this->CustomRequest()) && $this->HttpMethodValidate() && isset($this->CustomRequest()['tenancy']) && $this->DatabaseValidate($this->CustomRequest()['tenancy'])) {
                $this->RequiredsValidate();
-               $this->profile =  App\Models\Profile::where('email', $this->CustomRequest()['email']); //Perfil
-               $this->biller  =  App\Models\Biller::where('identification_number', $this->CustomRequest()['NIT']); //facturador
+               $this->profile = App\Models\Profile::where('email', $this->CustomRequest()['email']);               //Perfil
+               $this->biller  = App\Models\Biller::where('identification_number', $this->CustomRequest()['NIT']);  //facturador
                /**
                 * Nota: Henry por favor plantear todas las posibles validaciones de estado, paquete, documentos usados, etc..
                 * Acá solo voy hacer una validación breve para mostrar la funcionalida de autenticación, si es exitosa retornará un token
@@ -96,10 +102,22 @@ class Login extends Controller implements Http
                /**
                 * Se está valiando qué: Exista el perfil, el facturador, el password, el estado del perfil (Faltan)
                 */
-               if(true){//if ($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1) {
+               if (true) { //if ($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1) {
 
                     //Pendiente definir el token e implementar el objeto Session::class
-                    _json(['code' => 202, 'message' => 'Accepted']);
+                    _json([
+                         'code' => 202,
+                         'data' => [
+                              'message' => 'Accepted',
+                              //Token data
+                              'token'   => Session::SessionStart([
+                                   'tenancy'     => $this->CustomRequest()['tenancy'], //Instance or Database
+                                   'profile'     => $this->profile->first()->id, //Prodfile ID
+                                   'biller'      => $this->biller->first()->id, //Biller ID
+                                   'NIT'         => strval($this->biller->first()->identification_number), // NIT or VAT
+                                   'remember_me' => (isset($this->CustomRequest()['remember_me'])) ? true : false //Remember me
+                              ]),                         ]
+                    ]);
                } else {
                     _json(['code' => 403, 'message' => 'Access permission denied']);
                }
@@ -139,7 +157,7 @@ class Login extends Controller implements Http
                     _json([
                          'code' => 400,
                          'data' => [
-                              'message' => 'Empty field',
+                              'message'     => 'Empty field',
                               'empty_field' => $key,
                          ]
                     ], 400);
@@ -157,12 +175,7 @@ class Login extends Controller implements Http
       */
      public function index()
      {
-
-
-          /*  _json([$this->DatabaseValidate('apifecol'), $this->db_tenancy, [
-               $this->CustomRequest(),
-               $this->GetRequestMethod(),
-          ]], 200);*/
+          $this->ApiInfo();
      }
 
      /**

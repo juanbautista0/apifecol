@@ -55,8 +55,10 @@ class Core
         $this->currentController = $_ENV['APP_CONTROLLER'];
         $this->currentMethod = $_ENV['APP_INDEX'];
         \App\Core\ErrorHandler::Init();
+
         try {
-            //$this->hostUri();
+            //$this->errorTry();
+
             $url = $this->getUrl();
             unset($_GET['url']);
 

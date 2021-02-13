@@ -16,6 +16,7 @@ class ErrorHandler
 			$callback = function ($data) {
 				header('Content-type: application/json', 500);
 				echo json_encode($data);
+				die;
 			};
 		}
 
