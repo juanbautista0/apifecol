@@ -1,5 +1,6 @@
 App/View/cache/
 App/Logs
+Swagger/node_modules
 .ionide/
 vendor
 .env

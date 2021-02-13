@@ -88,6 +88,7 @@ class Login extends Controller implements Http
 
      public function Login(): void
      {
+          _json(['code'=>202, 'data'=>$this->CustomRequest()]);
           //http code 202
           if (!empty($this->CustomRequest()) && $this->HttpMethodValidate() && isset($this->CustomRequest()['tenancy']) && $this->DatabaseValidate($this->CustomRequest()['tenancy'])) {
                $this->RequiredsValidate();

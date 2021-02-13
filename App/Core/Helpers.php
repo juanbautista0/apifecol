@@ -19,7 +19,7 @@ if (!function_exists('_json')) {
             http_response_code($code);
         }
         if($exe_time && isset($data['data'])){
-            $data['data']['execution_time'] = (microtime(true) - APIFECOL_START);
+            //$data['data']['execution_time'] = (microtime(true) - APIFECOL_START);
         }
         
         header('Content-Type: application/json;charset=utf-8');
