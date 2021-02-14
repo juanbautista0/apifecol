@@ -12,10 +12,17 @@ trait APIManager
     public $requireds;
 
     public $headers = [
-        'Access-Control-Allow-Origin: *',
-        'Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method',
-        'Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE',
-        'Allow: GET, POST, OPTIONS, PUT, DELETE'
+        "Access-Control-Allow-Origin: *",
+        "Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method",
+        "Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE",
+        "Allow: GET, POST, OPTIONS, PUT, DELETE",
+
+        //"Access-Control-Allow-Origin: *",
+        //"Access-Control-Allow-Headers: Content-Type, origin"
+        //"Content-Type: application/json; charset=UTF-8",
+        //"Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, origin, Accept, Access-Control-Request-Method",
+        //"Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE",
+        //"Allow: GET, POST, OPTIONS, PUT, DELETE"
     ];
     public $_method = "";
     public $_code = 200;
@@ -127,6 +134,10 @@ trait APIManager
         foreach ($this->headers as $key) {
             header($key);
         }
+        if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
+            _json(['code'=>200, $_SERVER]);
+            //die();
+        }
     }
 
     public function get_status_message(): void
@@ -142,7 +153,15 @@ trait APIManager
      */
     private function SetMainHeaders(): void
     {
-        header("HTTP/1.1 " . $this->_code . " " . $this->get_status_message());
-        header("Content-Type:" . $this->_content_type);
+        //header("HTTP/1.1 " . $this->_code . " " . $this->get_status_message());
+        /*header("Content-Type:" . $this->_content_type);
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method == "OPTIONS") {
+            die();
+        }*/
     }
 }

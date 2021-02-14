@@ -88,7 +88,6 @@ class Login extends Controller implements Http
 
      public function Login(): void
      {
-          _json(['code'=>202, 'data'=>$this->CustomRequest()]);
           //http code 202
           if (!empty($this->CustomRequest()) && $this->HttpMethodValidate() && isset($this->CustomRequest()['tenancy']) && $this->DatabaseValidate($this->CustomRequest()['tenancy'])) {
                $this->RequiredsValidate();
@@ -103,8 +102,7 @@ class Login extends Controller implements Http
                /**
                 * Se está valiando qué: Exista el perfil, el facturador, el password, el estado del perfil (Faltan)
                 */
-               if (true) { //if ($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1) {
-
+               if ($this->profile->first() != NULL && $this->biller->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1) {
                     //Pendiente definir el token e implementar el objeto Session::class
                     _json([
                          'code' => 202,
@@ -117,7 +115,8 @@ class Login extends Controller implements Http
                                    'biller'      => $this->biller->first()->id, //Biller ID
                                    'NIT'         => strval($this->biller->first()->identification_number), // NIT or VAT
                                    'remember_me' => (isset($this->CustomRequest()['remember_me'])) ? true : false //Remember me
-                              ]),                         ]
+                              ]),
+                         ]
                     ]);
                } else {
                     _json(['code' => 403, 'message' => 'Access permission denied']);

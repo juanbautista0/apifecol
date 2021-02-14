@@ -2,7 +2,7 @@ openapi: "3.0.0"
 info:
   version: "0.0.1"
   title: "Apifecol"
-  description: "API facturación electrónica"
+  description: "Documentación API Facturación Electrónica DIAN UBL2.1"
   contact: 
     email: "soyjuanbautista0@gmail.com"
   license:
@@ -29,6 +29,7 @@ paths:
     get:
       tags:
         - "Status"
+      summary: "(ES): Obtener estado de API. (EN): Get API status."
       responses:
         401:
           description: "Unauthorized"
@@ -38,35 +39,30 @@ paths:
      post:
       tags:
       - "Login"
-      summary: "Log in and get a token."
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          type: object
-          properties:
-            tenancy:
-              type: string
-            email:
+      summary: "(ES): Obtener token de sesión. (EN): Get session token."
+      requestBody:
+        content:
+          application/json:
+            schema:
+             type: object
+             properties:
+              tenancy:
                 type: string
-            password:
-                type: string
-            NIT:
-                type: string
+              email:
+                  type: string
+              password:
+                  type: string
+              NIT:
+                  type: string
             example:   # Sample object
-              tenancy: "Plenus"
-              email: "soyjuanbautista0@gmail.com"
-      
+              tenancy: "apifecol"
+              email: "juan.bautista@plenusservices.com"
+              password: "your_password"
+              NIT: "901004305"
       responses:
-        "202":
-          description: "Accepted"
-          schema:
-        "403":
-          description: "Access permission denied"
+              202:
+                description: "Accepted"
+              403:
+                description: "Access permission denied"
+              500:
+                description: "Server error"

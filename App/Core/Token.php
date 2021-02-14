@@ -41,10 +41,15 @@ class Token
      */
     public static function SignIn(array $data = [], int $exp): string
     {
+        //Nombre de sesión
         session_name(self::$session_name);
+        //Tiempo
         $time = time();
+        //Tiempo formateado
         $time = $time + self::$token_time;
+        //Tiempo de expiración 
         $exp = $exp ?? $time;
+        //Estructura de un token (JWT)
         $token = array(
             'exp' => $exp,
             'aud' => self::Aud(),
