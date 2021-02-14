@@ -4,7 +4,3 @@ Swagger/node_modules
 .ionide/
 vendor
 .env
-.htaccess
-*.htaccess
-**.htaccess
-*/.htaccess
