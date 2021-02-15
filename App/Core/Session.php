@@ -64,12 +64,12 @@ class Session
      * @param string $token
      * Token pa decodificar
      */
-    public static function SessionGetData(string $tokenString = "")
+    public static function SessionGetData(string $tokenString)
     {
         self::$token = new Token;
-        if (isset($_COOKIE['token'])) {
-            $token = ($tokenString == "") ? $_COOKIE['token'] : $tokenString;
-            return self::$token->GetData($token);
+        if (!empty($tokenString)) {
+
+            return self::$token->GetData($tokenString);
         }
     }
     /**
@@ -79,15 +79,19 @@ class Session
      */
     public static function sessionValidator(string $token, array $exceptions = [])
     {
+
         self::$token = new Token;
         if (self::$token->Check($token)) {
             //setea una cookie en caso de que se elimine token que permita cerrar sesión de manera segura
-            self::AddDBContext();
+            self::AddDBContext($token);
         } else {
             if (!empty($exceptions)) {
                 //Permite
             } else {
-                self::sessionDestroy();
+                //self::sessionDestroy();
+                _json(['code' => 401, 'data' => [
+                    'message' => 'Unauthorized'
+                ]]);
             }
         }
     }
@@ -120,10 +124,16 @@ class Session
     }
     /**
      * @access public
-     * (ES) Método que inicia el eloquent cuando se valida la session
+     * (ES) Método que inicia ORM cuando ya se ha validado la session
      */
-    public static function AddDBContext()
+    public static function AddDBContext(string $token)
     {
-        //bootORM(self::SessionGetData($_COOKIE['token'])['database']);
+        if (isset(self::SessionGetData($token)['tenancy']) && !empty(self::SessionGetData($token)['tenancy'])) {
+            bootORM(self::SessionGetData($token)['tenancy']);
+        } else {
+            _json(['code' => 400, 'data' => [
+                'message' => 'Bad Request'
+            ]]);
+        }
     }
 }

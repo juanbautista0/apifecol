@@ -3,7 +3,7 @@ info:
   version: "0.0.1"
   title: "Apifecol"
   description: "Documentación API Facturación Electrónica DIAN UBL2.1"
-  contact: 
+  contact:
     email: "soyjuanbautista0@gmail.com"
   license:
     name: "GNU General Public License v3.0"
@@ -13,17 +13,14 @@ servers:
     description: "Identity Server test API"
 components:
   securitySchemes:
-    # See https://demo.identityserver.io/ for configuration details.
-    identity_server_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: "https://demo.identityserver.io/connect/authorize"
-          scopes:
-            api: "api"
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 security:
-  - identity_server_auth:
-      - api
+  - bearerAuth: []
+
 paths:
   /info:
     get:
@@ -36,33 +33,68 @@ paths:
         200:
           description: "OK"
   /login/login:
-     post:
+    post:
       tags:
-      - "Login"
+        - "Login"
       summary: "(ES): Obtener token de sesión. (EN): Get session token."
       requestBody:
         content:
           application/json:
             schema:
-             type: object
-             properties:
-              tenancy:
-                type: string
-              email:
+              type: object
+              properties:
+                tenancy:
                   type: string
-              password:
+                email:
                   type: string
-              NIT:
+                password:
                   type: string
-            example:   # Sample object
+                NIT:
+                  type: string
+            example: # Sample object
               tenancy: "apifecol"
               email: "juan.bautista@plenusservices.com"
               password: "your_password"
               NIT: "901004305"
       responses:
-              202:
-                description: "Accepted"
-              403:
-                description: "Access permission denied"
-              500:
-                description: "Server error"
+        202:
+          description: "Accepted"
+        403:
+          description: "Access permission denied"
+        500:
+          description: "Server error"
+  /listings:
+    get:
+      tags:
+        - "Listados"
+      summary: "(ES): Listas de valores definidos por la DIAN. (EN): Lists of values defined by DIAN."
+      responses:
+        200:
+          description: "Ok"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Server error"
+  /listings/countries/{id}:
+    get:
+      tags:
+        - ""
+      summary: "(ES): Listado de paisese. (EN): Country Listings."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID de páis"
+        required: false
+        type: "integer"
+        format: "int"
+      responses:
+        200:
+          description: "Ok"
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found "
+        500:
+          description: "Server error"

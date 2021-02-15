@@ -13,7 +13,7 @@ trait APIManager
 
     public $headers = [
         "Access-Control-Allow-Origin: *",
-        "Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method",
+        "Access-Control-Allow-Headers: *",
         "Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE",
         "Allow: GET, POST, OPTIONS, PUT, DELETE",
 
@@ -135,9 +135,36 @@ trait APIManager
             header($key);
         }
         if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
-            _json(['code'=>200, $_SERVER]);
+            _json(['code' => 200, $_SERVER]);
             //die();
         }
+    }
+
+    public function GetAuthorizationHeader(): string
+    {
+        $headers = '';
+        if (isset($_SERVER['Authorization'])) {
+            $headers = trim($_SERVER["Authorization"]);
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+            $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers();
+            // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+            $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        }
+
+        if (!empty($headers)) {
+            if (substr($headers, 7) != '') {
+                return  trim(preg_replace("/\s+/", "", substr($headers, 7)));
+            }
+            /*if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                return $matches[1];
+            }*/
+        }
+        return '';
     }
 
     public function get_status_message(): void

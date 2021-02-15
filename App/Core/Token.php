@@ -26,8 +26,6 @@ class Token
     {
         self::$private_key = config()->APP_SECRET_KEY;
         self::$public_key = config()->APP_PUBLIC_KEY;
-        self::$private_key = ($this->issetCertificate('.pem') == true) ? file_get_contents(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $this->certificate . '.pem') : self::$secret_key;
-        self::$public_key = ($this->issetCertificate('.pub') ==true) ? file_get_contents(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $this->certificate . '.pub') : self::$public_key;
     }
 
     /**
