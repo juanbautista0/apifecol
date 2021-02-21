@@ -82,7 +82,6 @@ class Listings extends Controller implements Http
                throw new Exception("Error Processing Request", 1);
           };
           try {
-               bootORM('apifecol');
                if ($resource != '') {
                     $this->result = DB::table("{$this->prefix}_{$resource}")->get();
                     if ($id != '{id}') {

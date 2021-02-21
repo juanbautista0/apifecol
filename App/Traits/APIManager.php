@@ -83,7 +83,7 @@ trait APIManager
         _json([
             'code' => 200,
             'data' => [
-                'API' => config()->APP_NAME,
+                'API' => config()->APP_NAME." 🇨🇴",
                 'description' => 'API facturación electrónica validación previa DIAN',
                 'documentation' => 'apifecol.co',
                 'response_time' => APIFECOL_START,
