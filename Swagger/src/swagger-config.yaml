@@ -63,30 +63,24 @@ paths:
           description: "Access permission denied"
         500:
           description: "Server error"
-  /listings:
+  /listings/rows/{source}/{id}:
     get:
       tags:
-        - "Listados"
-      summary: "(ES): Listas de valores definidos por la DIAN. (EN): Lists of values defined by DIAN."
-      responses:
-        200:
-          description: "Ok"
-        401:
-          description: "Unauthorized"
-        500:
-          description: "Server error"
-  /listings/countries/{id}:
-    get:
-      tags:
-        - ""
-      summary: "(ES): Listado de paisese. (EN): Country Listings."
+        - "Listings"
+      summary: "(ES): Listado de recursos. (EN): Resources listings."
       produces:
       - "application/json"
       parameters:
+      - name: "source"
+        in: "path"
+        description: "Nombre de tabla/recurso"
+        required: true
+        type: "string"
       - name: "id"
         in: "path"
-        description: "ID de páis"
+        description: "ID de recurso"
         required: false
+        default: 0
         type: "integer"
         format: "int"
       responses:

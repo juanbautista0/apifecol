@@ -9,7 +9,7 @@
 
 use \App\Traits\APIManager;
 use \App\Core\Session;
-use App\Models\ListingsDIAN\Department;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Listings extends Controller implements Http
 {
@@ -35,6 +35,11 @@ class Listings extends Controller implements Http
       */
      public $result;
 
+     /**
+      * @var string $prefix
+      */
+     public $prefix;
+
      public function __construct()
      {
           $this->SetHeaders();
@@ -46,6 +51,7 @@ class Listings extends Controller implements Http
           //(EN) Get data token
           //(ES) Obtener datos del token
           $this->payload = Session::SessionGetData($this->GetAuthorizationHeader());
+          $this->prefix = config()->DB_PREFIX;
      }
 
      /**
@@ -62,66 +68,37 @@ class Listings extends Controller implements Http
      }
 
      /**
-      * Countries
+      * Rows
       * @access public
-      * (EN) Country Listings
-      * (ES) Listado de paises
+      * (EN) Records rows
+      * (ES) Listado de registros
+      * @param string $resource
       * @param int $id
-      * (EN) Country ID.
-      * (ES) ID de País
-      * 
-      * @author Juan Bautista <soyjuanbautista0@gmail.com>
       * @return void
       */
-     public function Countries($id = 0): void
+     public function Rows($resource = '', $id = '{id}'): void
      {
-          if ($id != 0) :
-               $this->result =  App\Models\ListingsDIAN\Country::where('id', $id);
-               if ($this->result->first() != NULL) :
-                    _json([
-                         'code' => 200,
-                         'data' => $this->result->first()->toArray()
-                    ]);
-               else :
-                    _json([
-                         'code' => 404,
-                         'data' => [
-                              'message' => 'Not Found'
-                         ]
-                    ]);
-               endif;
-          else :
+          $callback = function () {
+               throw new Exception("Error Processing Request", 1);
+          };
+          try {
+               bootORM('apifecol');
+               if ($resource != '') {
+                    $this->result = DB::table("{$this->prefix}_{$resource}")->get();
+                    if ($id != '{id}') {
+                         $id = intval($id);
+                         $this->result = ($this->result->where('id', $id)->first() != NULL) ? $this->result->where('id', $id)->first() : $callback();
+                    }
+                    _json(['code' => 200, 'data' => $this->result]);
+               }
+          } catch (\Throwable $th) {
+               //print_debug($th->getMessage());
                _json([
-                    'code' => 200,
-                    'data' => App\Models\ListingsDIAN\Country::all()->toArray()
+                    'code' => 404,
+                    'data' => [
+                         'message' => "Not Found id: {$id} table {$resource}"
+                    ]
                ]);
-          endif;
-     }
-
-     /**
-      * Departments
-      * @access public
-      * (EN) Departments Listings (Provinces)
-      * (ES) Listado de departamentos (Provincias)
-      * @param int $id
-      * (EN) Department ID.
-      * (ES) ID de departamento
-      * 
-      * @author Juan Bautista <soyjuanbautista0@gmail.com>
-      * @return void
-      */
-     public function Departments(int $id = 0): void
-     {
-          if ($id != 0) :
-               _json([
-                    'code' => 200,
-                    'data' => App\Models\ListingsDIAN\Department::where('id', $id)->first()->toArray()
-               ]);
-          else :
-               _json([
-                    'code' => 200,
-                    'data' => App\Models\ListingsDIAN\Department::all()->toArray()
-               ]);
-          endif;
-     }
+          }
+     }         
 }

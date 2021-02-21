@@ -16,13 +16,6 @@ trait APIManager
         "Access-Control-Allow-Headers: *",
         "Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE",
         "Allow: GET, POST, OPTIONS, PUT, DELETE",
-
-        //"Access-Control-Allow-Origin: *",
-        //"Access-Control-Allow-Headers: Content-Type, origin"
-        //"Content-Type: application/json; charset=UTF-8",
-        //"Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, origin, Accept, Access-Control-Request-Method",
-        //"Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE",
-        //"Allow: GET, POST, OPTIONS, PUT, DELETE"
     ];
     public $_method = "";
     public $_code = 200;
