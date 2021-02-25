@@ -1,5 +1,6 @@
 App/View/cache/
 App/Logs
+myapifecol/node_modules
 Swagger/node_modules
 .ionide/
 vendor

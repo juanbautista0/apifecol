@@ -2,6 +2,7 @@
 
 /**
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
+ * @author Henry Pandales <henrypandale@gmail.com>
  * @author Apifecol
  *
  * @package Controllers
@@ -76,13 +77,13 @@ class Listings extends Controller implements Http
       * @param int $id
       * @return void
       */
-     public function Rows($resource = '', $id = '{id}'): void
+     public function Rows(string $resource = '{source}', string $id = '{id}'): void
      {
           $callback = function () {
                throw new Exception("Error Processing Request", 1);
           };
           try {
-               if ($resource != '') {
+               if ($resource != '{source}') {
                     $this->result = DB::table("{$this->prefix}_{$resource}")->get();
                     if ($id != '{id}') {
                          $id = intval($id);

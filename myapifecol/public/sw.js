@@ -1,0 +1,1 @@
+console.warn("Service worker is SW");
