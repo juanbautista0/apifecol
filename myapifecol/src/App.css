@@ -1,24 +1,26 @@
-
-
-h1,h2,h3,h4{
+h1,
+h2,
+h3,
+h4 {
   color: #1c2541 !important;
 }
-p,span,small{
-  color:#5e6472!important;
+p,
+span,
+small {
+  color: #5e6472 !important;
 }
-label{
-  color: #283637!important;
-
+label {
+  color: #283637 !important;
 }
 input[type="checkbox"] + label:before {
   background-color: #6cd6a5 !important;
 }
-.form-check input:checked{
+.form-check input:checked {
   background-color: #6cd6a5 !important;
 }
-input:focus{
+input:focus {
   border-color: #6cd6a5 !important;
-  background-color:#f3f3f3 !important;
+  background-color: #f3f3f3 !important;
   font-weight: 700 !important;
 }
 .App {
@@ -96,6 +98,13 @@ input:focus{
 }
 .App-btn-primary:hover {
   background-color: #55ae84 !important;
+}
+.noty_type__success{
+  background-color: #6cd6a5 !important;
+  border-color: #6cd6a5 !important;
+  color: #1c2541!important;
+  font-weight: 700 !important;
+
 }
 
 @-webkit-keyframes rotating /* Safari and Chrome */ {

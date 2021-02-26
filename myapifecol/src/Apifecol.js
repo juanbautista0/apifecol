@@ -105,4 +105,20 @@ module.exports = class Apifecol {
         break;
     }
   }
+
+  /**
+   *
+   * @param {string} str
+   * String json a validar
+   * @return {boolean} bool
+   */
+  IsJson(str) {
+    try {
+      JSON.parse(str);
+    } catch (error) {
+      console.log(str);
+      return false;
+    }
+    return true;
+  }
 }

@@ -98,12 +98,26 @@ class Session
     /**
      * Método exclusivo de Login Controller
      */
-    public static function islogged()
+    public static function islogged(string $token, array $exceptions = [])
     {
         self::$token = new Token;
-        /*if (isset($_COOKIE['token']) && self::$token->Check($_COOKIE['token'])) {
-            redirect("/Home");
-        }*/
+        if (self::$token->Check($token)) {
+            _json([
+                'code' => 202,
+                'data' => [
+                     'message' => 'Accepted',
+                ]
+            ]);
+        } else {
+            if (!empty($exceptions)) {
+                //Permite
+            } else {
+                //self::sessionDestroy();
+                _json(['code' => 401, 'data' => [
+                    'message' => 'Unauthorized'
+                ]]);
+            }
+        }
     }
     /**
      * sessionDestroy()

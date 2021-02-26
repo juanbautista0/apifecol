@@ -85,7 +85,6 @@ class Login extends Controller implements Http
       * @access public
       * @return void
       */
-
      public function Login(): void
      {
           //http code 202
@@ -126,6 +125,59 @@ class Login extends Controller implements Http
           }
      }
 
+     /**
+      * LoginMyApifecol
+      * (EN) Authentication for API management client application.
+      * (ES) Autenticación para la aplicación cliente de administración de API.
+      * @access public
+      * @return void
+      */
+
+     public function LoginMyApifecol(): void
+     {
+
+          if (!empty($this->CustomRequest()) && $this->HttpMethodValidate() && isset($this->CustomRequest()['tenancy']) && $this->DatabaseValidate($this->CustomRequest()['tenancy'])) {
+               $this->profile = App\Models\Profile::where('email', $this->CustomRequest()['email']);               //Perfil
+               if ($this->profile->first() != NULL && password_verify($this->CustomRequest()['password'], $this->profile->first()->password) && $this->profile->first()->status == 1) {
+                    //Pendiente definir el token e implementar el objeto Session::class
+                    _json([
+                         'code' => 202,
+                         'data' => [
+                              'message' => 'Accepted',
+                              //Token data
+                              'token'   => Session::SessionStart([
+                                   'tenancy'     => $this->CustomRequest()['tenancy'], //Instance or Database
+                                   'profile'     => $this->profile->first()->id, //Prodfile ID
+                                   'remember_me' => (isset($this->CustomRequest()['remember_me'])) ? true : false //Remember me
+                              ]),
+                         ]
+                    ]);
+               } else {
+                    _json(['code' => 403, 'message' => 'Access permission denied']);
+               }
+          } else {
+               _json(['code' => 403, 'message' => 'Access permission denied']);
+          }
+     }
+
+     /**
+      * IsLogged
+      *(EN) Method to validate client session status.
+      *(ES) Método para validar el estado de la sesión de cliente.
+      * @access public
+      * @return void
+      */
+     public  function IsLogged():void
+     {
+          if($this->HttpMethodValidate()):
+          //(EN) validate authentication
+          //(ES) Validar autenticación
+          Session::islogged($this->GetAuthorizationHeader());
+          endif;
+     }
+
+
+
      protected function HttpMethodValidate(): bool
      {
           $process = function ($flat) {
@@ -147,17 +199,24 @@ class Login extends Controller implements Http
 
      /**
       * RequiredsValidate()
+      * @param array $exceptions
       * @access public
       * @return void
+      * 
       */
-     public function RequiredsValidate(): void
+     public function RequiredsValidate(array $exceptions = []): void
      {
+          //Aplicar excepciones al arreglo, es decir se suprimin los indices indicados
+          foreach ($exceptions as $i => $var) {
+               unset($this->requireds_login[$var]);
+          }
+
           foreach ($this->requireds_login as $key) {
                if (!isset($this->CustomRequest()[$key]) && empty($this->CustomRequest()[$key])) {
                     _json([
                          'code' => 400,
                          'data' => [
-                              'message'     => 'Empty field',
+                              'message'     => "Empty field {$key}",
                               'empty_field' => $key,
                          ]
                     ], 400);
