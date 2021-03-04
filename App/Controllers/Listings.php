@@ -45,8 +45,8 @@ class Listings extends Controller implements Http
      {
           $this->SetHeaders();
 
-          //(EN) validate authentication
-          //(ES) Validar autenticación
+          //(EN) validate authentication (Set private controller)
+          //(ES) Validar autenticación (Definir si el controlador es privado)
           Session::sessionValidator($this->GetAuthorizationHeader());
 
           //(EN) Get data token
