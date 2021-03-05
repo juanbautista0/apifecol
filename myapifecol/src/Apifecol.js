@@ -1,9 +1,5 @@
-
 module.exports = class Apifecol {
-
-  constructor(){
-
-  };
+  constructor() {}
 
   /**
    * @access public
@@ -43,7 +39,7 @@ module.exports = class Apifecol {
           throw new Error(`No ${element}`);
         }
       });
-      if(object.hasOwnProperty("BeforeSend")){
+      if (object.hasOwnProperty("BeforeSend")) {
         object.BeforeSend();
       }
       var xhr = new XMLHttpRequest();
@@ -55,17 +51,17 @@ module.exports = class Apifecol {
         object.url,
         object.hasOwnProperty("async") ? object.async : true
       );
-     
+
       //Set headers autorization
-        if(object.hasOwnProperty('token')){
-            if(object.token !== ''){
-                xhr.setRequestHeader('Authorization', 'Bearer ' + object.token);
-            }
+      if (object.hasOwnProperty("token")) {
+        if (object.token !== "") {
+          xhr.setRequestHeader("Authorization", "Bearer " + object.token);
         }
+      }
 
       xhr.onload = function (e) {
         if (xhr.readyState === 4) {
-            object.success(xhr.responseText);
+          object.success(xhr.responseText);
         }
       };
       xhr.onerror = function (e) {
@@ -121,4 +117,78 @@ module.exports = class Apifecol {
     }
     return true;
   }
-}
+  /**
+   * GetServerApiUri
+   */
+
+  GetServerApiUri() {
+    if (localStorage.getItem("server_api") == null) {
+      localStorage.setItem("server_api", "");
+    }
+    return localStorage.getItem("server_api");
+  }
+
+  /**
+   * Table
+   * Render listings grid js
+   * @param {Object} config
+   * @param {String} render
+   */
+  Table(config = {}, render = "", grid) {
+    if (render != "" && config != {}) {
+      var t = new grid(config).render(document.getElementById(render));
+      //this.Styles();
+      //this.StylingGridJs();
+      var selector_id = this.makeid(8, true);
+      //this.Selector(selector_id, render, config, t);
+      setTimeout(function () {
+        //feather.replace();
+        //G.Icons("gtep-icons");
+      }, 500);
+      return t;
+    }
+  }
+
+  Data(filters = {}, object = {}) {
+    var form = new FormData();
+    for (var k in filters) {
+      if (filters[k] != "" && filters[k] != null) {
+        form.append(k, filters[k]);
+      }
+    }
+    if (Object.keys(object).length > 0) {
+      object.server.body = form;
+      return object;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   *
+   * @param {Number} length
+   * @param {String} text
+   */
+  makeid(length, text = false) {
+    var result = "";
+    if (text) {
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    } else {
+      var characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    }
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    if (document.getElementById(result) != null) {
+      this.makeid(length);
+    } else {
+      return result;
+    }
+  }
+
+  MainComponent() {
+    return document.getElementById("component");
+  }
+};

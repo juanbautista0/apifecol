@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, createElement } from "react";
+import ReactDom from "react-dom";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
@@ -9,6 +10,10 @@ import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "noty/lib/noty.css";
 import "noty/lib/themes/light.css";
+
+import Billers from "./Billers";
+import Resolutions from "./Resolutions";
+
 
 const helpers = require("../Apifecol");
 
@@ -38,6 +43,20 @@ class Dashboard extends Component {
     checked: false,
     theme: false,
   };
+  componentDidMount() {
+    //Set Main container
+  }
+  Logaut() {
+    localStorage.removeItem("token");
+    window.location.reload();
+  }
+  Billers() {
+    ReactDom.render(<Billers />, apifecol.MainComponent());
+  }
+
+  Resolutions() {
+    ReactDom.render(<Resolutions />, apifecol.MainComponent());
+  }
 
   render() {
     return (
@@ -55,19 +74,15 @@ class Dashboard extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
+              <Nav.Link href="" onClick={this.Billers}>
+                Billers
+              </Nav.Link>
+              <Nav.Link href="" onClick={this.Resolutions}>
+                Resolutions
+              </Nav.Link>
+              <NavDropdown title="Exit" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={this.Logaut} href="">
+                  Logaut
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
@@ -77,14 +92,13 @@ class Dashboard extends Component {
           <Container fluid>
             <div>
               <h1>Dashboard</h1>
-              <div className="row">
-                 <div className="col-sm-3"><span className="text-white">Facturadores</span></div>
-                 <div className="col-sm-3"><span className="text-white">Documentos</span></div>
-                 <div className="col-sm-3"><span className="text-white">Resoluciones</span></div>
-              </div>
+              <div className="row"></div>
             </div>
           </Container>
         </Jumbotron>
+        <Container fluid>
+          <div id="component"></div>
+        </Container>
       </div>
     );
   }

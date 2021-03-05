@@ -112,6 +112,11 @@ input:focus {
   position: relative!important;
   overflow: hidden!important;
   background-color: #121f3d!important;
+  background-image: url(./banner.png);
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 15%;
+
 }
 .heroBanner h1{
   color: #6cd6a5 !important;
