@@ -11,9 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "noty/lib/noty.css";
 import "noty/lib/themes/light.css";
 
-import Billers from "./Billers";
+import Billers from "./Billers/Billers";
 import Resolutions from "./Resolutions";
-
 
 const helpers = require("../Apifecol");
 
@@ -29,6 +28,8 @@ class Dashboard extends Component {
       user: {},
       themes: {},
       themeSelected: "",
+      reload: false
+
     };
     this.user = {
       id: null,
@@ -46,9 +47,15 @@ class Dashboard extends Component {
   componentDidMount() {
     //Set Main container
   }
+
   Logaut() {
     localStorage.removeItem("token");
     window.location.reload();
+  }
+  Home(){
+    apifecol.SetTitle("Dashboard");
+    ReactDom.render("", apifecol.MainComponent());
+
   }
   Billers() {
     ReactDom.render(<Billers />, apifecol.MainComponent());
@@ -62,7 +69,7 @@ class Dashboard extends Component {
     return (
       <div>
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="" onClick={this.Home}>
             <img
               src={logo}
               width="40"
@@ -91,7 +98,7 @@ class Dashboard extends Component {
         <Jumbotron fluid className="heroBanner">
           <Container fluid>
             <div>
-              <h1>Dashboard</h1>
+              <h1 id="ComponentTitle">Dashboard</h1>
               <div className="row"></div>
             </div>
           </Container>

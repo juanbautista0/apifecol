@@ -26,7 +26,6 @@ const isLogin = () => {
       success: (data) => {
         if (validate(data)) {
           var result = JSON.parse(data);
-          console.log(result);
           switch (result.code) {
             case 202:
               success = true;

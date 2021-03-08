@@ -191,4 +191,100 @@ module.exports = class Apifecol {
   MainComponent() {
     return document.getElementById("component");
   }
+  
+  /**
+   * E
+   * @param {String}
+   */
+  E(e){
+    if(typeof document.getElementById(e) !== 'undefined')
+    return document.getElementById(e);
+  }
+  /**
+   * SetTitle
+   */
+  SetTitle(title){
+    document.getElementsByTagName("title")[0].innerHTML = title;
+   if( document.getElementById("ComponentTitle") != null){
+    document.getElementById("ComponentTitle").innerHTML = title;
+   }
+  }
+
+  GridLanguage() {
+    return {
+      search: {
+        placeholder: "Escriba la palabra clave...🔍",
+      },
+      sort: {
+        sortAsc: "Ordenar columna ascendente",
+        sortDesc: "Ordenar columna descendente",
+      },
+      pagination: {
+        previous: "Anterior",
+        next: "Siguiente",
+        navigate: (page, pages) => `Página ${page} de ${pages}`,
+        page: (page) => `Página ${page}`,
+        showing: "Mostrando",
+        of: "de",
+        to: "a",
+        results: "resultados",
+      },
+      loading: "Cargando...",
+      noRecordsFound: "No se han encontrado registros que coincidan",
+      error: "Un error ocurrió mientras buscaba los datos",
+    };
+  }
+
+  /**
+   * LoadIcon
+   */
+   LoadIcon(){
+    window.feather.replace();
+    return '';
+   }
+
+  /**
+   * GridjsStyles
+   * GridJs Custom styles
+   */
+  GridjsStyles(){
+    this.Styles();
+    this.StylingGridJs();
+  }
+
+  Styles() {
+    var input = document.getElementsByClassName("gridjs-search-input")[0];
+    input.classList.add("form-control");
+    input.classList.add("form-control-sm");
+    input.classList.remove("gridjs-search-input");
+    input.classList.remove("gridjs-input");
+  }
+  StylingGridJs() {
+    var element = document.getElementsByClassName("gridjs-table");
+    var sorts = document.getElementsByClassName("gridjs-sort");
+    var orderer = document.getElementsByClassName("gridjs-th-sort");
+
+    //Action Callback icons
+    if (orderer.length > 0) {
+      for (let i = 0; i < orderer.length; i++) {
+        orderer[i].setAttribute("onclick", `G.IconsRenderRefres(event,this);`);
+      }
+    }
+
+    //Btn styles
+    if (sorts.length > 0) {
+      for (let i = 0; i < sorts.length; i++) {
+        sorts[i].style.border = "none";
+        sorts[i].classList.add("btn");
+        sorts[i].classList.add("btn-sm");
+      }
+    }
+    //Table style
+    if (element.length > 0) {
+      for (let index = 0; index < element.length; index++) {
+        element[index].style.fontSize = "13px;";
+        element[index].classList.remove("gridjs-table");
+      }
+    }
+  }
 };
