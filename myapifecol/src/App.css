@@ -359,6 +359,17 @@ input:focus {
 .App-btn-primary:hover {
   background-color: #55ae84 !important;
 }
+.App-btn-secondary {
+  background-color: #ffffff !important;
+  border-color: #1c2541!important;
+  color: #1c2541!important;
+  font-weight: 700 !important;
+
+}
+.App-btn-secondary:hover {
+  background-color: #f5f5f6 !important;
+}
+
 .noty_type__success{
   background-color: #6cd6a5 !important;
   border-color: #6cd6a5 !important;
