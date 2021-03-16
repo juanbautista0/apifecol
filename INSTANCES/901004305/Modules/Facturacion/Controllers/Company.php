@@ -41,6 +41,7 @@ class Company extends Controller implements Http
      */
     public function config(string | int $nit = '{nit}'): void
     {
+        //Http method validate
         $this->process = match ($this->GetRequestMethod()) {
             'GET'    => $this->_GET($nit),
             'PUT'    => $this->_PUT($nit),
