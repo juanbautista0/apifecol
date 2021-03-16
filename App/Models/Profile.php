@@ -12,6 +12,7 @@ class Profile extends CustomModel
      */
     protected $table = 'api_profiles';
     protected $primaryKey = 'id';
+    protected $hidden = array('password');
 
     public function Biller()
     {

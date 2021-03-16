@@ -9,7 +9,7 @@ info:
     name: "GNU General Public License v3.0"
     url: "https://github.com/juanbautista0/apifecol/blob/main/LICENSE"
 servers:
-  - url: "http://localhost/apifecol"
+  - url: "http://localhost:8025"
     description: "Identity Server test API"
 components:
   securitySchemes:

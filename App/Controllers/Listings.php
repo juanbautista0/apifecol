@@ -2,7 +2,6 @@
 
 /**
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
- * @author Henry Pandales <henrypandale@gmail.com>
  * @author Apifecol
  *
  * @package Controllers
@@ -55,12 +54,7 @@ class Listings extends Controller implements Http
           $this->prefix = config()->DB_PREFIX;
      }
 
-     /**
-      * Index
-      * Main method
-      * @access public
-      * @return void
-      */
+     #[Route("/listings", methods: ["GET"])]
      public function index(): void
      {
           $this->list = get_class_methods(__CLASS__);
@@ -68,16 +62,8 @@ class Listings extends Controller implements Http
           _json(['code' => 200, 'data' => get_called_class()]);
      }
 
-     /**
-      * Rows
-      * @access public
-      * (EN) Records rows
-      * (ES) Listado de registros
-      * @param string $resource
-      * @param int $id
-      * @return void
-      */
-     public function Rows(string $resource = '{source}', string $id = '{id}'): void
+     #[Route("/listings/rows/{source}/{id}", methods: ["GET"])]
+     public function Rows(string $resource = '{source}', string | int $id = '{id}'): void
      {
           $callback = function () {
                throw new Exception("Error Processing Request", 1);
@@ -100,5 +86,5 @@ class Listings extends Controller implements Http
                     ]
                ]);
           }
-     }         
+     }
 }

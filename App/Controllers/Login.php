@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @author Henry Pandales <henrypandale@gmail.com>
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  *
  * @package Controllers
