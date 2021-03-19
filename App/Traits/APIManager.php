@@ -83,7 +83,7 @@ trait APIManager
         _json([
             'code' => 200,
             'data' => [
-                'API' => config()->APP_NAME." 🇨🇴",
+                'API' => config()->APP_NAME . " 🇨🇴",
                 'description' => 'API facturación electrónica validación previa DIAN',
                 'documentation' => 'apifecol.co',
                 'response_time' => APIFECOL_START,
@@ -93,6 +93,7 @@ trait APIManager
         ]);
     }
 
+
     /**
      * GetDataJson
      * @access public
@@ -101,6 +102,19 @@ trait APIManager
     public function GetDataJson(): array
     {
         return json_decode(file_get_contents('php://input'), true) ?? [];
+    }
+
+    /**
+     * ResponseTemplate
+     * @access public
+     * @return array
+     */
+    public  function ResponseTemplate()
+    {
+        return [
+            'code' => 200,
+            'data' => []
+        ];
     }
 
     /**

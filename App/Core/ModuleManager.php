@@ -36,7 +36,7 @@ class ModuleManager
 
     public function __construct(string $instance)
     {
-        $this->instance = new Instances($instance);
+        $this->instance = ($instance == '')?$instance: new Instances($instance) ;
         $this->plugins_path = $this->GetPluginPath();
         $this->list_plugins = $this->GetExistingPlugins();
     }
@@ -45,7 +45,11 @@ class ModuleManager
 
     private function GetPluginPath(): string
     {
-        return $this->instance->path . self::RUTA_PLUGINS . DIRECTORY_SEPARATOR;
+        if($this->instance !=''):
+            return $this->instance->path . self::RUTA_PLUGINS . DIRECTORY_SEPARATOR;
+        else:
+            return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR. self::RUTA_PLUGINS . DIRECTORY_SEPARATOR;
+        endif;
     }
 
     private function GetExistingPlugins(): array

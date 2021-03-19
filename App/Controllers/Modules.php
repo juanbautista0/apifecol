@@ -104,7 +104,7 @@ class Modules extends Controller
      public function Enrichment(array $profile, string $nit, string $db, int $profile_id)
      {
           $this->info   = $profile;
-          $this->info['instance']  = $nit;
+          $this->info['instance']  = (config()->APP_MULTITENANCY !== 'false')?$nit:'';
           $this->info['database']   = $db;
           $this->info['profile_id'] = $profile_id;
      }
@@ -127,7 +127,8 @@ class Modules extends Controller
           //Param
           $this->param = (isset($uri[4]) && !empty($uri[4])) ? $uri[4] : null;
 
-          $this->manager = new ModuleManager($this->info['instance']);
+          $this->manager = new ModuleManager((!empty($this->info['instance']))?$this->info['instance']:'');
+
 
           // (EN) Check that the module and its package exist
           // (ES) Comrpobar que el módulo y su paquete existe
@@ -141,16 +142,11 @@ class Modules extends Controller
 
                // (EN) Require the module with its representation in controller
                //((ES) Requerir el módulo con su representación en controlador)
-
                require_once $this->manager->plugins_path . $this->module . DIRECTORY_SEPARATOR . "Controllers" . DIRECTORY_SEPARATOR . $this->controller . ".php";
                $this->controller              = new $this->controller($this->info);
                $this->controller->profile     = $this->info;
                $this->controller->path_module = $this->manager->plugins_path . $this->module . DIRECTORY_SEPARATOR;
                $this->controller->module      = $this->module;
-
-
-
-
 
                // (EN) clean up and url to just use the parameters
                // (ES) limpiar y url para solo usar los párametros
