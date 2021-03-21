@@ -75,16 +75,17 @@ class LogsManager
      * @param array $data
      * @return void
      */
-    public function writeLog($datos = []): void
+    public function writeLog(array $datos = []): void
     {
 
-        @chmod($this->log_path, 0777);
+        (file_exists($this->log_path))?chmod($this->log_path, 777):true;
 
 
         # Crear carpeta si no existe
         if (!file_exists($this->log_path . $this->log_file)) {
             if (!file_exists($this->log_path)) {
                 mkdir($this->log_path, 777, true);
+                chmod($this->log_path, 777);
             }
 
             $file       = $this->log_path . $this->log_file;
@@ -103,7 +104,6 @@ class LogsManager
                 );
 
             array_push($jsonVECTOR['data'], $logData);
-
             $file = $this->log_path . $this->log_file;
             $fp   = fopen($file, 'a+');
             fwrite($fp, json_encode($jsonVECTOR, JSON_UNESCAPED_UNICODE));
@@ -121,7 +121,6 @@ class LogsManager
             );
 
             array_push($decode_logs['data'], $dataLog);
-
             $file = $this->log_path . $this->log_file;
             $fp   = fopen($file, 'w+');
             fwrite($fp, json_encode($decode_logs, JSON_UNESCAPED_UNICODE));

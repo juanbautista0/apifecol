@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Company controller
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  * @author Apifecol
  * @license GNU General Public License v3.0 <https://www.gnu.org/licenses/gpl-3.0.html>
@@ -94,15 +95,21 @@ class Company extends Controller implements Http
      */
     public function _GET(string | int $nit = '{nit}'): void
     {
-       
+
         //Get biller 
-        $this->result = $this->model::with($this->relations)->where('identification_number', $nit)->first();
+        $this->result = $this->model::with([])->where('identification_number', $nit)->first();
 
         //Set Dv
-        ($this->result != NULL) ? $this->result->dv = $this->GetDv($this->result->identification_number) : false;
+        ($this->result != NULL) ? $this->result->dv = $this->GetDv((int) $this->result->identification_number) : false;
 
-        //validation and response
-        ($this->result != NULL) ? _json($this->result->toArray(), 200) : _json([], 404);
+        //Validation and response
+        ($this->result != NULL) ? _json([
+            'code' => 200,
+            'data' => $this->result->toArray()
+        ], 200) : _json([
+            'code' => 404,
+            'data' => 'Not found'
+        ], 404);
     }
     /**
      * _PUT
@@ -162,6 +169,25 @@ class Company extends Controller implements Http
      */
     public function _POST(string | int $nit = '{nit}'): void
     {
+        //Nit Validation
+        if ($nit != '{nit}') {
+            ($this->model::where('identification_number', $nit)->first() != NULL) ? _json([
+                'code' => 409,
+                'data' => ['message' =>  "NIT {$nit} already exists"]
+            ]) : true;
+            //Model enrichment
+            foreach ($this->CustomRequest() as $key => $value) {
+                $this->model->{$key} = $value;
+            }
+            //Save biller
+            ($this->model->save()) ? _json([
+                'code' => 201,
+                'data' => ['message' => 'Created']
+            ]) : _json([
+                'code' => 400,
+                'data' => 'Bad Request'
+            ], 400);
+        }
     }
     /**
      * _DELETE
@@ -173,10 +199,33 @@ class Company extends Controller implements Http
      */
     public function _DELETE(string | int $nit = '{nit}'): void
     {
-        $this->ApiLogs([
-            'type'    => 'TEST',
-            'message' => $nit,
-            'user'    => $this->profile['email']
-        ]);
+        //Get Biller
+        $this->result = $this->model::where('identification_number', $nit)->first();
+        //Biller validate and delete process
+        if ($this->result != NULL) {
+
+            //Remove/delete action
+            ($this->result->delete()) ? _json([
+                'code' => 200,
+                'data' => [
+                    'message' => 'OK',
+                    'logs'    =>  $this->ApiLogs([
+                        'type'    => 'DB-QUERY',
+                        'message' => "Biller $nit deleted",
+                        'user'    => $this->profile['email']
+                    ])
+                ]
+            ], 200) :
+                _json([
+                    'code' => 400,
+                    'data' => 'Bad Request'
+                ], 400);
+        } else {
+            //Not found Biller
+            _json([
+                'code' => 404,
+                'data' => 'Not found'
+            ], 404);
+        }
     }
 }

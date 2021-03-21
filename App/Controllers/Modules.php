@@ -77,7 +77,7 @@ class Modules extends Controller
                     //(EN) Get data token
                     //(ES) Obtener datos del token
                     $this->payload = Session::SessionGetData($this->GetAuthorizationHeader());
-                    $this->Enrichment($this->model::where('id', $this->payload['profile'])->first()->toArray(), (isset($this->payload['NIT']) && !empty($this->payload['NIT'])) ? $this->payload['NIT'] : $this->CustomRequest()['NIT'], $this->payload['tenancy'], $this->payload['profile']);
+                    $this->Enrichment($this->model::where('id', $this->payload['profile'])->first()->toArray(), (isset($this->payload['NIT']) && !empty($this->payload['NIT'])) ? $this->payload['NIT'] : '', $this->payload['tenancy'], $this->payload['profile']);
                     $this->ModuleLoader($this->getUrl());
 
                endif;
@@ -118,7 +118,7 @@ class Modules extends Controller
      public function ModuleLoader(array $uri)
      {
           //Module
-          $this->module = (isset($uri[1]) && !empty($uri[1])) ? $uri[1] : null;
+          $this->module = (isset($uri[1]) && !empty($uri[1])) ? ucwords($uri[1]) : null;
           //Controller
           $this->controller = (isset($uri[2]) && !empty($uri[2])) ? ucwords($uri[2]) : null;
           //Method

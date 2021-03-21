@@ -1,10 +1,14 @@
 <?php
 
 /**
+ * Listings Controller
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  * @author Apifecol
- *
- * @package Controllers
+ * @license GNU General Public License v3.0 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * @package Facturacion
+ * @subpackage Controllers
+ * 
+ * Hecho con amor en Colombia 🇨🇴.
  */
 
 use \App\Traits\APIManager;
@@ -63,22 +67,23 @@ class Listings extends Controller implements Http
      }
 
      #[Route("/listings/rows/{source}/{id}", methods: ["GET"])]
-     public function Rows(string $resource = '{source}', string | int $id = '{id}'): void
+     public function Rows(string $resource = '{source}', string | int  $id =  "{id}"): void
      {
-          $callback = function () {
-               throw new Exception("Error Processing Request", 1);
-          };
-          try {
-               if ($resource != '{source}') {
-                    $this->result = DB::table("{$this->prefix}_{$resource}")->get();
-                    if ($id != '{id}') {
-                         $id = intval($id);
-                         $this->result = ($this->result->where('id', $id)->first() != NULL) ? $this->result->where('id', $id)->first() : $callback();
-                    }
-                    _json(['code' => 200, 'data' => $this->result]);
+          if ($resource != '{source}') {
+               $this->result = DB::table("{$this->prefix}_{$resource}")->get();
+
+               if ($id !=  "{id}") {
+                    $id = intval($id);
+                    $this->result = ($this->result->where('id', $id)->first() != NULL) ? $this->result->where('id', $id)->first() : NULL;
                }
-          } catch (\Throwable $th) {
-               //print_debug($th->getMessage());
+
+               ($this->result != NULL) ? _json(['code' => 200, 'data' => $this->result]) : _json([
+                    'code' => 404,
+                    'data' => [
+                         'message' => "Not Found id: {$id} table {$resource}"
+                    ]
+               ]);
+          } else {
                _json([
                     'code' => 404,
                     'data' => [

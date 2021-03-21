@@ -188,11 +188,12 @@ trait APIManager
      * @param string $info['type']
      * @param string $info['message']
      * @param string $info['user']
-     * @return void
+     * @return bool
      */
-    public function ApiLogs(array $data): void
+    public function ApiLogs(array $data): bool
     {
         new LogsManager($data);
+        return true;
     }
 
 
