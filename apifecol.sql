@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 07-02-2021 a las 02:37:39
+-- Tiempo de generación: 21-03-2021 a las 03:12:27
 -- Versión del servidor: 5.7.33-0ubuntu0.18.04.1
--- Versión de PHP: 7.4.13
+-- Versión de PHP: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -29,22 +29,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `api_billers` (
   `id` int(12) NOT NULL,
   `profile_id` int(12) DEFAULT NULL,
-  `name` varchar(120) CHARACTER SET latin1 DEFAULT NULL,
-  `identification_number` int(12) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `business_name` varchar(255) DEFAULT NULL,
+  `identification_number` varchar(255) DEFAULT NULL,
   `dv` int(12) DEFAULT NULL,
   `language_id` int(12) DEFAULT NULL,
   `tax_id` int(12) DEFAULT NULL,
-  `type_environment_id` int(12) DEFAULT NULL,
-  `type_document_identification_id` int(12) DEFAULT NULL,
+  `type_environment_id` int(12) DEFAULT '2',
   `country_id` int(12) DEFAULT NULL,
   `type_currency_id` int(12) DEFAULT NULL,
   `type_organization_id` int(12) DEFAULT NULL,
   `type_regime_id` int(12) DEFAULT NULL,
+  `liability_id` int(12) DEFAULT NULL,
+  `nit_type_id` int(12) DEFAULT NULL,
   `municipality_id` int(12) DEFAULT NULL,
-  `deparment_id` int(12) DEFAULT NULL,
-  `bank_account_id` int(12) DEFAULT NULL,
-  `bank_account_name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `bank_account_number` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `merchant_registration` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `software_id` varchar(512) CHARACTER SET latin1 DEFAULT NULL,
   `pin` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
@@ -54,7 +52,7 @@ CREATE TABLE `api_billers` (
   `address` varchar(512) CHARACTER SET latin1 DEFAULT NULL,
   `phone` varchar(25) CHARACTER SET latin1 DEFAULT NULL,
   `email` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `certificate` text CHARACTER SET latin1,
+  `certificate` longblob,
   `certificate_password` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `certificate_validity` datetime DEFAULT NULL,
   `host_email` varchar(55) CHARACTER SET latin1 DEFAULT NULL,
@@ -72,8 +70,9 @@ CREATE TABLE `api_billers` (
 -- Volcado de datos para la tabla `api_billers`
 --
 
-INSERT INTO `api_billers` (`id`, `profile_id`, `name`, `identification_number`, `dv`, `language_id`, `tax_id`, `type_environment_id`, `type_document_identification_id`, `country_id`, `type_currency_id`, `type_organization_id`, `type_regime_id`, `municipality_id`, `deparment_id`, `bank_account_id`, `bank_account_name`, `bank_account_number`, `merchant_registration`, `software_id`, `pin`, `test_id`, `printing_format`, `send_method`, `address`, `phone`, `email`, `certificate`, `certificate_password`, `certificate_validity`, `host_email`, `host_username`, `host_password`, `host_port`, `integrations`, `created_at`, `updated_at`, `status`, `image`) VALUES
-(1, 1, 'PLENUSSERIVCES S.A.S', 901004305, 8, 53, 1, 2, 6, 52, 52, 1, 1, 111, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 'CRA 85C N 55A 32', '3115443067', 'contacto@plenusservices.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL);
+INSERT INTO `api_billers` (`id`, `profile_id`, `name`, `business_name`, `identification_number`, `dv`, `language_id`, `tax_id`, `type_environment_id`, `country_id`, `type_currency_id`, `type_organization_id`, `type_regime_id`, `liability_id`, `nit_type_id`, `municipality_id`, `merchant_registration`, `software_id`, `pin`, `test_id`, `printing_format`, `send_method`, `address`, `phone`, `email`, `certificate`, `certificate_password`, `certificate_validity`, `host_email`, `host_username`, `host_password`, `host_port`, `integrations`, `created_at`, `updated_at`, `status`, `image`) VALUES
+(2, 1, 'PLENUSSERVICES SAS', 'Plenus Services', '901004305', NULL, 53, 1, 2, 52, 52, 1, 1, 1, 6, 111, 'A25asdfaf584542', NULL, NULL, NULL, NULL, 3, 'AV siempre viva 742', '94268952', 'correo@miempresa.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-03-19 18:49:30', 1, NULL),
+(3, 1, 'Juan Bautista', 'Juan Bautista', '1054561218', NULL, 53, 1, 2, 52, 52, 1, 1, 1, 6, 111, 'A25asdfaf584542', NULL, NULL, NULL, NULL, 3, 'AV siempre viva 742', '94268952', 'correo@miempresa.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-03-19 18:49:30', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -87,7 +86,7 @@ CREATE TABLE `api_countries` (
   `name` varchar(256) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Facturacion';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Listings';
 
 --
 -- Volcado de datos para la tabla `api_countries`
@@ -1110,20 +1109,6 @@ INSERT INTO `api_languages` (`id`, `code`, `description`, `created_at`, `updated
 (150, 'zh_HK', 'chino [Hong Kong]', NULL, NULL),
 (151, 'zh_SG', 'chino [Singapur]', NULL, NULL),
 (152, 'zh_TW', 'chino [Taiwán]', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `api_liability_asigned`
---
-
-CREATE TABLE `api_liability_asigned` (
-  `id` int(12) NOT NULL,
-  `id_liability` int(12) DEFAULT NULL,
-  `biller_id` int(12) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2452,6 +2437,7 @@ CREATE TABLE `api_profiles` (
   `main_color` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `system_responsible` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `codpostal` varchar(10) CHARACTER SET latin1 DEFAULT '',
+  `instance` varchar(255) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `status` int(1) DEFAULT '1'
@@ -2461,8 +2447,8 @@ CREATE TABLE `api_profiles` (
 -- Volcado de datos para la tabla `api_profiles`
 --
 
-INSERT INTO `api_profiles` (`id`, `company`, `description`, `phone`, `regimen`, `address`, `city_id`, `country_id`, `id_fiscal`, `package_code`, `email`, `password`, `language_id`, `name`, `brand_logo`, `signature`, `main_color`, `system_responsible`, `codpostal`, `updated_at`, `created_at`, `status`) VALUES
-(1, 'Plenus Services', 'TI Services', '3158878359', 1, 'Cra 85I #53-30', 1, 1, 1, 1, 'juan.bautista@plenusservices.com', '$2y$10$ERzokvIwvAD4wSemp81kEOQm3r4C/72wXwYDlldmheDhHtxcIzuHO', 1, 'Juan Bautista', NULL, NULL, '#333333', NULL, NULL, '2021-02-06 00:00:00', '2021-02-06 00:00:00', 1);
+INSERT INTO `api_profiles` (`id`, `company`, `description`, `phone`, `regimen`, `address`, `city_id`, `country_id`, `id_fiscal`, `package_code`, `email`, `password`, `language_id`, `name`, `brand_logo`, `signature`, `main_color`, `system_responsible`, `codpostal`, `instance`, `updated_at`, `created_at`, `status`) VALUES
+(1, 'Plenus Services', 'TI Services', '3158878359', 1, 'Cra 85I #53-30', 1, 1, 1, 1, 'juan.bautista@plenusservices.com', '$2y$10$ERzokvIwvAD4wSemp81kEOQm3r4C/72wXwYDlldmheDhHtxcIzuHO', 1, 'Juan Bautista', NULL, NULL, '#333333', NULL, NULL, NULL, '2021-02-06 00:00:00', '2021-02-06 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -3011,6 +2997,7 @@ INSERT INTO `api_type_regimes` (`id`, `name`, `code`, `created_at`, `updated_at`
 --
 ALTER TABLE `api_billers`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `identification_number` (`identification_number`),
   ADD KEY `Profile` (`profile_id`),
   ADD KEY `Language` (`language_id`),
   ADD KEY `Tax` (`tax_id`),
@@ -3019,9 +3006,10 @@ ALTER TABLE `api_billers`
   ADD KEY `currency` (`type_currency_id`),
   ADD KEY `organization` (`type_organization_id`),
   ADD KEY `type_regime` (`type_regime_id`),
-  ADD KEY `deparment` (`deparment_id`),
   ADD KEY `send_method` (`send_method`),
-  ADD KEY `type_document_id` (`type_document_identification_id`);
+  ADD KEY `nit` (`nit_type_id`),
+  ADD KEY `liabilities` (`liability_id`),
+  ADD KEY `municipalities` (`municipality_id`);
 
 --
 -- Indices de la tabla `api_countries`
@@ -3079,14 +3067,6 @@ ALTER TABLE `api_item_clasificator`
 --
 ALTER TABLE `api_languages`
   ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `api_liability_asigned`
---
-ALTER TABLE `api_liability_asigned`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `liability` (`id_liability`),
-  ADD KEY `biller` (`biller_id`);
 
 --
 -- Indices de la tabla `api_municipalities`
@@ -3181,6 +3161,11 @@ ALTER TABLE `api_type_regimes`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `api_billers`
+--
+ALTER TABLE `api_billers`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT de la tabla `api_countries`
 --
 ALTER TABLE `api_countries`
@@ -3225,11 +3210,6 @@ ALTER TABLE `api_item_clasificator`
 --
 ALTER TABLE `api_languages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
---
--- AUTO_INCREMENT de la tabla `api_liability_asigned`
---
-ALTER TABLE `api_liability_asigned`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `api_municipalities`
 --
@@ -3313,11 +3293,12 @@ ALTER TABLE `api_billers`
   ADD CONSTRAINT `Tax` FOREIGN KEY (`tax_id`) REFERENCES `api_taxes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `country` FOREIGN KEY (`country_id`) REFERENCES `api_countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `currency` FOREIGN KEY (`type_currency_id`) REFERENCES `api_type_currencies` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `deparment` FOREIGN KEY (`deparment_id`) REFERENCES `api_departments` (`id`),
   ADD CONSTRAINT `environment` FOREIGN KEY (`type_environment_id`) REFERENCES `api_type_environments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `liabilities` FOREIGN KEY (`liability_id`) REFERENCES `api_type_liabilities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `municipalities` FOREIGN KEY (`municipality_id`) REFERENCES `api_municipalities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `nit` FOREIGN KEY (`nit_type_id`) REFERENCES `api_nit_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `organization` FOREIGN KEY (`type_organization_id`) REFERENCES `api_type_organization` (`id`),
   ADD CONSTRAINT `send_method` FOREIGN KEY (`send_method`) REFERENCES `api_invoices_send_method` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `type_document_id` FOREIGN KEY (`type_document_identification_id`) REFERENCES `api_type_documents` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `type_regime` FOREIGN KEY (`type_regime_id`) REFERENCES `api_type_regimes` (`id`);
 
 --
@@ -3332,13 +3313,6 @@ ALTER TABLE `api_delivery_company`
 --
 ALTER TABLE `api_departments`
   ADD CONSTRAINT `departaments and countri` FOREIGN KEY (`country_id`) REFERENCES `api_countries` (`id`) ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `api_liability_asigned`
---
-ALTER TABLE `api_liability_asigned`
-  ADD CONSTRAINT `biller` FOREIGN KEY (`biller_id`) REFERENCES `api_billers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `liability` FOREIGN KEY (`id_liability`) REFERENCES `api_type_liabilities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `api_municipalities`
