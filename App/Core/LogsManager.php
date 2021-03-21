@@ -84,10 +84,9 @@ class LogsManager
         # Crear carpeta si no existe
         if (!file_exists($this->log_path . $this->log_file)) {
             if (!file_exists($this->log_path)) {
-                mkdir($this->log_path, 777, true);
+                mkdir($this->log_path);
                 chmod($this->log_path, 777);
             }
-
             $file       = $this->log_path . $this->log_file;
             $fp         = fopen($file, 'w+');
             $jsonVECTOR = array(
