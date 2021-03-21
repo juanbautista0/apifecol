@@ -61,7 +61,6 @@ class Modules extends Controller
           $this->SetHeaders();
           $this->module_path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . config()->APP_MODULE_PATH . DIRECTORY_SEPARATOR;
 
-
           $process = function (bool $context = false, array $data = []) {
                /**
                 * $data['key]
@@ -104,7 +103,7 @@ class Modules extends Controller
      public function Enrichment(array $profile, string $nit, string $db, int $profile_id)
      {
           $this->info   = $profile;
-          $this->info['instance']  = (config()->APP_MULTITENANCY !== 'false')?$nit:'';
+          $this->info['instance']  = (config()->APP_MULTITENANCY !== 'false') ? $nit : '';
           $this->info['database']   = $db;
           $this->info['profile_id'] = $profile_id;
      }
@@ -127,7 +126,7 @@ class Modules extends Controller
           //Param
           $this->param = (isset($uri[4]) && !empty($uri[4])) ? $uri[4] : null;
 
-          $this->manager = new ModuleManager((!empty($this->info['instance']))?$this->info['instance']:'');
+          $this->manager = new ModuleManager((!empty($this->info['instance'])) ? $this->info['instance'] : '');
 
 
           // (EN) Check that the module and its package exist

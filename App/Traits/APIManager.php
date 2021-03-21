@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use \App\Core\LogsManager;
+
+
 trait APIManager
 {
     public $info_api;
@@ -177,6 +180,21 @@ trait APIManager
     public function get_status_message(): void
     {
     }
+
+    /**
+     * ApiLogs
+     * @access public
+     * @param array $info
+     * @param string $info['type']
+     * @param string $info['message']
+     * @param string $info['user']
+     * @return void
+     */
+    public function ApiLogs(array $data): void
+    {
+        new LogsManager($data);
+    }
+
 
     /**
      * SetMainHeaders

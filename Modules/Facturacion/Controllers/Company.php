@@ -43,6 +43,11 @@ class Company extends Controller implements Http
      */
     private $relations;
 
+    /**
+     * @var array $profile
+     */
+    public $profile;
+
     public function __construct(public $info)
     {
         $this->model =  new Biller;
@@ -87,10 +92,11 @@ class Company extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    protected function _GET(string | int $nit = '{nit}'): void
+    public function _GET(string | int $nit = '{nit}'): void
     {
+       
         //Get biller 
-        $this->result = $this->model::where('identification_number', $nit)->first();
+        $this->result = $this->model::with($this->relations)->where('identification_number', $nit)->first();
 
         //Set Dv
         ($this->result != NULL) ? $this->result->dv = $this->GetDv($this->result->identification_number) : false;
@@ -106,46 +112,45 @@ class Company extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    protected function _PUT(string | int $nit = '{nit}'): void
+    public function _PUT(string | int $nit = '{nit}'): void
     {
         //Get biller 
         $this->result = $this->model::where('identification_number', $nit)->first();
-
         //Model enrichment
-        $ps = function () {
-            //Biller validate
-            if ($this->result != NULL) :
-                try {
-                    foreach ($this->CustomRequest() as $key => $value) {
-                        $this->result->{$key} = $value;
-                    }
-                    return ($this->result->save()) ? true : false;
-                } catch (\Throwable $th) {
-                    $this->tmp['code'] = 500;
-                    $this->tmp['data']['message'] = $th->getMessage();
+        //Biller validate
+        if ($this->result != NULL) :
+            try {
+                foreach ($this->CustomRequest() as $key => $value) {
+                    $this->result->{$key} = $value;
+                }
+                if ($this->result->save()) {
+                    //Successful biller update
+                    $this->tmp['code'] = 200;
+                    $this->tmp['data']['message'] = 'Successful biller update';
+                    _json($this->tmp);
+                } else {
+                    //Successful biller update
+                    $this->tmp['code'] = 400;
+                    $this->tmp['data']['message'] = 'Bad Request';
                     _json($this->tmp);
                 }
-
-            else :
-                //Biller not found
-                $this->tmp['code'] = 404;
-                $this->tmp['data']['message'] = 'Biller not found';
+            } catch (\Throwable $th) {
+                $this->ApiLogs([
+                    'type'    => 'ERROR',
+                    'message' => $th->getMessage(),
+                    'user'    => $this->profile['email']
+                ]);
+                $this->tmp['code'] = 500;
+                $this->tmp['data']['message'] = $th->getMessage();
                 _json($this->tmp);
-            endif;
-        };
-        //Response process
-        $ps_a = function (bool $ctx) {
-            if ($ctx) :
-                $this->tmp['data']['message'] = 'Successful biller update';
-            else :
-                $this->tmp['code'] = 400;
-                $this->tmp['data']['message'] = 'Bad Request';
-            endif;
+            }
 
-            return $this->tmp;
-        };
-        //Process, validate and respond
-        ($ps) ?_json($ps_a(true)): _json($ps_a(false));
+        else :
+            //Biller not found
+            $this->tmp['code'] = 404;
+            $this->tmp['data']['message'] = 'Biller not found';
+            _json($this->tmp);
+        endif;
     }
     /**
      * _POST
@@ -155,7 +160,7 @@ class Company extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    protected function _POST(string | int $nit = '{nit}'): void
+    public function _POST(string | int $nit = '{nit}'): void
     {
     }
     /**
@@ -166,7 +171,12 @@ class Company extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    protected function _DELETE(string | int $nit = '{nit}'): void
+    public function _DELETE(string | int $nit = '{nit}'): void
     {
+        $this->ApiLogs([
+            'type'    => 'TEST',
+            'message' => $nit,
+            'user'    => $this->profile['email']
+        ]);
     }
 }
