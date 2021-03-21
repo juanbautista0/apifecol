@@ -1,5 +1,7 @@
 App/View/cache/
 App/Logs
+Logs
+INSTANCES
 myapifecol/node_modules
 Swagger/node_modules
 .ionide/

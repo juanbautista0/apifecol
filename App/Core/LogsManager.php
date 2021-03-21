@@ -64,7 +64,7 @@ class LogsManager
 
     private function GetPath(): string
     {
-        return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'LOGS' . DIRECTORY_SEPARATOR;
+        return dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Logs' . DIRECTORY_SEPARATOR;
     }
 
     /**
