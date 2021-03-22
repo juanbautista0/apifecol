@@ -1,0 +1,13 @@
+{
+    "detalles": {
+      "name": "Facturación",
+      "package": "Facturacion",
+      "main_controller": "Company",
+      "author": "Juan bautista",
+      "version": "1.0",
+      "url": "",
+      "desc": "Módulo de facturación electrónica",
+      "status": "activo",
+      "mant_mode": false
+    }
+  }

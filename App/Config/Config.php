@@ -8,7 +8,6 @@
  * @author  Juan Bautista <soyjuanbautista0@gmail.com>
  * 
  */
-define('APIFECOL_START', microtime(true));
 
 /*
 |-------------------------------------------------------------------
@@ -34,7 +33,7 @@ $env->load();
 |
 */
 
-if ($_ENV['APP_DEBUG'] == "true") :
+if ($_ENV['APP_DEBUG'] == "true"): 
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -48,7 +47,7 @@ endif;
 |
 */
 
-if (isset($_ENV['MEMORY_LIMIT'])) :
+if (isset($_ENV['MEMORY_LIMIT'])): 
     ini_set('memory_limit', $_ENV['MEMORY_LIMIT']);
 endif;
 
@@ -59,7 +58,7 @@ endif;
 |-------------------------------------------------------------------
 |
 */
-if (isset($_ENV['POWERED_BY'])) :
+if (isset($_ENV['POWERED_BY'])): 
     header("X-Powered-By: {$_ENV['POWERED_BY']}");
 endif;
 
@@ -70,9 +69,29 @@ endif;
 |-------------------------------------------------------------------
 |
 */
-if (isset($_ENV['APP_TIME_ZONE'])) :
+if (isset($_ENV['APP_TIME_ZONE'])): 
     date_default_timezone_set($_ENV['APP_TIME_ZONE']);
 endif;
+
+/*
+|-------------------------------------------------------------------
+| (EN) Set App directory
+| (ES) Establecer el directorio de aplicación
+|-------------------------------------------------------------------
+|
+*/
+$_ENV['APP_DIRECTORY'] = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
+
+
+/*
+|-------------------------------------------------------------------
+| (EN) Set Instances directory
+| (ES) Establecer el directorio de instancias
+|-------------------------------------------------------------------
+|
+*/
+$_ENV['APP_INSTANCES_PATH'] = $_ENV['APP_DIRECTORY'].$_ENV['APP_INSTANCES_PATH'].DIRECTORY_SEPARATOR;
+
 
 /*
 |-------------------------------------------------------------------
@@ -81,4 +100,4 @@ endif;
 |-------------------------------------------------------------------
 |
 */
-require_once dirname(dirname(__FILE__)).'/Core/Helpers.php';
+require_once dirname(dirname(__FILE__)) . '/Core/Helpers.php';

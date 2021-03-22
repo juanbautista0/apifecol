@@ -13,7 +13,7 @@ use Exception;
 
 class Token
 {
-    private static $secret_key =  'asdawdsd8ws.6@';
+    private static $secret_key;
     private static $encrypt = ['HS256'];
     private static $aud = null;
     private static $private_key;
@@ -24,8 +24,8 @@ class Token
 
     public function __construct()
     {
-        self::$private_key = ($this->issetCertificate('.pem') == true) ? file_get_contents(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $this->certificate . '.pem') : self::$secret_key;
-        self::$public_key = ($this->issetCertificate('.pub') ==true) ? file_get_contents(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $this->certificate . '.pub') : self::$secret_key;
+        self::$private_key = config()->APP_SECRET_KEY;
+        self::$public_key = config()->APP_PUBLIC_KEY;
     }
 
     /**
@@ -39,10 +39,15 @@ class Token
      */
     public static function SignIn(array $data = [], int $exp): string
     {
+        //Nombre de sesión
         session_name(self::$session_name);
+        //Tiempo
         $time = time();
+        //Tiempo formateado
         $time = $time + self::$token_time;
+        //Tiempo de expiración 
         $exp = $exp ?? $time;
+        //Estructura de un token (JWT)
         $token = array(
             'exp' => $exp,
             'aud' => self::Aud(),
@@ -97,7 +102,7 @@ class Token
      * @access public
      * @param string $token
      * Contiene el token codificado
-     * @return object
+     * @return array
      */
     public static function GetData(string $token): array
     {
