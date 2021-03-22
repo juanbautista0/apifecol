@@ -63,8 +63,9 @@ class Session
      * (ES) Método que trae los datos de un JWT
      * @param string $token
      * Token pa decodificar
+     * @return array
      */
-    public static function SessionGetData(string $tokenString)
+    public static function SessionGetData(string $tokenString): array
     {
         self::$token = new Token;
         if (!empty($tokenString)) {

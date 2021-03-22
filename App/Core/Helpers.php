@@ -11,7 +11,7 @@ if (!function_exists('_json')) {
      * (EN) Http Code
      * @return void
      */
-    function _json(array $data, $code = 200, $exe_time = true)
+    function _json(array $data, $code = 200, $callback = false, $exe_time = true)
     {
         if (isset($data['code']) && $code == 200) {
             http_response_code($data['code']);
@@ -24,6 +24,7 @@ if (!function_exists('_json')) {
         
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        ($callback)?$callback():true;
         die;
     }
 }

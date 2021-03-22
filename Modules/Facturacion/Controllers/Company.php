@@ -13,12 +13,14 @@
 
 use \App\Traits\APIManager;
 use \Traits\Dv;
+use \Traits\DeployBillerDirectory;
 use Models\Biller;
 
 class Company extends Controller implements Http
 {
     use APIManager;
     use Dv;
+    use DeployBillerDirectory;
     public $process;
 
 
@@ -60,11 +62,11 @@ class Company extends Controller implements Http
      * index
      * Main method
      * @access public
-     * @return void
+     * @return mixed
      */
-    public function index()
+    public function index(): mixed
     {
-        _json([], 404);
+        return  _json([], 404);
     }
 
     /**
@@ -82,6 +84,7 @@ class Company extends Controller implements Http
             'PUT'    => $this->_PUT($nit),
             'POST'   => $this->_POST($nit),
             'DELETE' => $this->_DELETE($nit),
+            default  =>  _json(['code' => 404, 'data' => ['message' => 'Http method not found']], 404)
         };
     }
 
@@ -103,13 +106,7 @@ class Company extends Controller implements Http
         ($this->result != NULL) ? $this->result->dv = $this->GetDv((int) $this->result->identification_number) : false;
 
         //Validation and response
-        ($this->result != NULL) ? _json([
-            'code' => 200,
-            'data' => $this->result->toArray()
-        ], 200) : _json([
-            'code' => 404,
-            'data' => 'Not found'
-        ], 404);
+        ($this->result != NULL) ? _json(['code' => 200, 'data' => $this->result->toArray()], 200) : _json(['code' => 404, 'data' => 'Not found'], 404);
     }
     /**
      * _PUT
@@ -131,6 +128,7 @@ class Company extends Controller implements Http
                     $this->result->{$key} = $value;
                 }
                 if ($this->result->save()) {
+
                     //Successful biller update
                     $this->tmp['code'] = 200;
                     $this->tmp['data']['message'] = 'Successful biller update';
@@ -171,22 +169,15 @@ class Company extends Controller implements Http
     {
         //Nit Validation
         if ($nit != '{nit}') {
-            ($this->model::where('identification_number', $nit)->first() != NULL) ? _json([
-                'code' => 409,
-                'data' => ['message' =>  "NIT {$nit} already exists"]
-            ]) : true;
+            ($this->model::where('identification_number', $nit)->first() != NULL) ? _json(['code' => 409, 'data' => ['message' => "NIT {$nit} already exists"]]) : true;
             //Model enrichment
             foreach ($this->CustomRequest() as $key => $value) {
                 $this->model->{$key} = $value;
             }
             //Save biller
-            ($this->model->save()) ? _json([
-                'code' => 201,
-                'data' => ['message' => 'Created']
-            ]) : _json([
-                'code' => 400,
-                'data' => 'Bad Request'
-            ], 400);
+            ($this->model->save()) ? _json(['code' => 201, 'data' => ['message' => 'Created']], 201, function () use ($nit) {
+                $this->StorageDirectory(config()->APP_DIRECTORY . config()->APP_INSTANCES_PATH . DIRECTORY_SEPARATOR . $nit);
+            }) : _json(['code' => 400, 'data' => 'Bad Request'], 400);
         }
     }
     /**
@@ -205,27 +196,17 @@ class Company extends Controller implements Http
         if ($this->result != NULL) {
 
             //Remove/delete action
-            ($this->result->delete()) ? _json([
-                'code' => 200,
-                'data' => [
-                    'message' => 'OK',
-                    'logs'    =>  $this->ApiLogs([
-                        'type'    => 'DB-QUERY',
-                        'message' => "Biller $nit deleted",
-                        'user'    => $this->profile['email']
-                    ])
-                ]
-            ], 200) :
-                _json([
-                    'code' => 400,
-                    'data' => 'Bad Request'
-                ], 400);
+            ($this->result->delete()) ? _json(['code' => 200, 'data' => [
+                'message' => 'OK',
+                'logs'    =>  $this->ApiLogs([
+                    'type'    => 'DB-QUERY',
+                    'message' => "Biller $nit deleted",
+                    'user'    => $this->profile['email']
+                ])
+            ]], 200) : _json(['code' => 400, 'data' => 'Bad Request'], 400);
         } else {
             //Not found Biller
-            _json([
-                'code' => 404,
-                'data' => 'Not found'
-            ], 404);
+            _json(['code' => 404, 'data' => 'Not found'], 404);
         }
     }
 }

@@ -2,7 +2,7 @@ openapi: "3.0.0"
 info:
   version: "0.0.1"
   title: Apifecol
-  description: "Documentación API Facturación Electrónica DIAN UBL2.1"
+  description: "Documentación API Facturación Electrónica DIAN. \n Hecho con amor en Colombia 🇨🇴"
   contact:
     email: "soyjuanbautista0@gmail.com"
   license:
@@ -66,6 +66,35 @@ paths:
                 items: {}
         401:
           description: Access permission denied
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+  /modules/facturacion/listings:
+    get:
+      tags:
+        - "Listados"
+      summary: "(ES): Ver listados de configuraciones y valores DIAN. (EN): See list of DIAN configurations and values."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        401:
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -618,7 +647,7 @@ paths:
       parameters:
         - name: nit
           in: path
-          description: NIT de empresa"
+          description: NIT de empresa
           required: true
           schema:
             type: integer
@@ -629,7 +658,7 @@ paths:
           application/json:
             schema:
               required:
-                - name 
+                - name
                 - business_name
                 - identification_number
                 - nit_type_id
@@ -754,7 +783,7 @@ paths:
               example:
                 name: PLENUSSERIVCES S.A.S
                 business_name: Plenus Services
-                identification_number: '901004305'
+                identification_number: "901004305"
                 language_id: 53
                 tax_id: 1
                 type_environment_id: 2
@@ -765,7 +794,7 @@ paths:
                 nit_type_id: 6
                 municipality_id: 111
                 merchant_registration: A25584542
-                printing_format: '1'
+                printing_format: "1"
                 address: AV siempre viva 742
                 phone: 94268952
                 email: correo@miempresa.com
@@ -862,3 +891,145 @@ paths:
               schema:
                 type: object
                 items: {}
+  /modules/facturacion/Config/software/{nit}:
+    put:
+      tags:
+        - "Configuración"
+      summary: "(ES): Configuración de software. (EN): Software config."
+      produces:
+        - "application/json"
+      parameters:
+        - name: nit
+          in: path
+          description: NIT de empresa
+          required: true
+          type: string
+          format: string
+      requestBody:
+        description: Objeto para actualizar la empresa.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                software_id:
+                  description: Identificador del software (DIAN)
+                  type: string
+                pin:
+                  description: Pin del software (DIAN)
+                  type: string
+                test_id:
+                  description: Identificador de pruebas (DIAN)
+                  type: string
+            example:
+              software_id: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              pin: "94266"
+              test_id: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+  /modules/facturacion/Config/certificate/{nit}:
+    put:
+      tags:
+        - "Configuración"
+      summary: "(ES): Actualización de certificado. (EN): Certificate update."
+      produces:
+        - "application/json"
+      parameters:
+        - name: nit
+          in: path
+          description: NIT de empresa
+          required: true
+          type: string
+          format: string
+      requestBody:
+        description: Objeto el certificado.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                certificate:
+                  description: Certificado de firmar electrónica codifcado en base64
+                  type: string
+                certificate_password:
+                  description: Contraseña del certificado
+                  type: string
+                certificate_validity:
+                  description: Vigencia del certificado yyyy-mm-dd
+                  type: string
+                  format: date
+            example:
+              certificate: "base64"
+              certificate_password: "********"
+              certificate_validity: "2021-05-26"
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+

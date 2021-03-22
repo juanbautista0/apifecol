@@ -102,7 +102,7 @@ class Token
      * @access public
      * @param string $token
      * Contiene el token codificado
-     * @return object
+     * @return array
      */
     public static function GetData(string $token): array
     {
