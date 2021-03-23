@@ -100,7 +100,7 @@ class Company extends Controller implements Http
     {
 
         //Get biller 
-        $this->result = $this->model::with([])->where('identification_number', $nit)->first();
+        $this->result = $this->model::with($this->relations)->where('identification_number', $nit)->first();
 
         //Set Dv
         ($this->result != NULL) ? $this->result->dv = $this->GetDv((int) $this->result->identification_number) : false;

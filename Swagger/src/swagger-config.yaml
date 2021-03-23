@@ -1,26 +1,25 @@
 openapi: "3.0.0"
 info:
-  version: "0.0.1"
+  version: "1.0.0"
   title: Apifecol
-  description: "Documentación API Facturación Electrónica DIAN. \n Hecho con amor en Colombia 🇨🇴"
+  description: "Documentación API Facturación Electrónica DIAN."
   contact:
+    name: "Juan Bautista"
     email: "soyjuanbautista0@gmail.com"
   license:
     name: "GNU General Public License v3.0"
     url: "https://github.com/juanbautista0/apifecol/blob/main/LICENSE"
 servers:
   - url: "http://localhost:8025"
-    description: "Identity Server test API"
+    description: "Server"
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
 security:
   - bearerAuth: []
-
 paths:
   /info:
     get:
@@ -168,7 +167,7 @@ paths:
         - name: nit
           in: path
           description: NIT de empresa
-          required: false
+          required: true
           type: integer
           format: int
       responses:
@@ -395,8 +394,7 @@ paths:
               schema:
                 type: object
                 items: {}
-
-          post:
+      post:
         tags:
           - Empresas
         summary: "(ES): Creación de empresa. (EN): Create company."
@@ -1032,4 +1030,284 @@ paths:
               schema:
                 type: object
                 items: {}
-
+  /modules/facturacion/resolution/config/{nit}/{resolution_id}:
+    get:
+      tags:
+        - "Resoluciones"
+      summary: "(ES): Resoluciones de facturación (DIAN). (EN): Resolutions billing (DIAN)."
+      produces:
+        - "application/json"
+      parameters:
+        - name: nit
+          in: path
+          description: NIT de empresa
+          required: true
+          type: integer
+          format: int
+        - name: resolution_id
+          in: path
+          description: ID resolución
+          required: false
+          type: integer
+          format: int
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+    put:
+      tags:
+        - "Resoluciones"
+      summary: "(ES): Actualizar resolución de facturación (DIAN). (EN): Update billing resolution (DIAN)."
+      produces:
+        - "application/json"
+      parameters:
+        - name: nit
+          in: path
+          description: NIT de empresa
+          required: true
+          type: integer
+          format: int
+        - name: resolution_id
+          in: path
+          description: ID resolución
+          required: false
+          type: integer
+          format: int
+      requestBody:
+        description: Objeto para actualizar la empresa.
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - type_document_id
+                - prefix
+                - resolution
+                - resolution_date
+                - technical_key
+                - from
+                - to
+                - date_from
+                - date_to
+              properties:
+                type_document_id:
+                  description: Identificador de tipo de documento
+                  type: integer
+                  format: int
+                prefix:
+                  description: Prefijo de facturación
+                  type: string
+                resolution:
+                  description: Número de resolución (DIAN)
+                  type: integer
+                resolution_date:
+                  description: Fecha de resolución
+                  type: date
+                  format: yyyy-mm-dd
+                technical_key:
+                  description: Llave técnica (DIAN)
+                  type: string
+                  format: string
+                from:
+                  description: Rango desde
+                  type: integer
+                  format: int
+                to:
+                  description: Rango hasta
+                  type: integer
+                  format: int
+                date_from:
+                  description: Fecha desde
+                  type: date
+                  format: yyyy-mm-dd
+                date_to:
+                  description: Fecha hasta
+                  type: date
+                  format: yyyy-mm-dd
+              example:
+                type_document_id: 1
+                prefix: "ps"
+                resolution: "23478789878987"
+                resolution_date: "2021-02-15"
+                technical_key: "sdg47s7g89sdf7h987sdh78989h7897s8ghs89h78"
+                from: 1
+                to: 1000
+                date_from: "2021-02-15"
+                date_to: "2022-02-15"
+    delete:
+      tags:
+        - "Resoluciones"
+      summary: "(ES): Eliminar resolución de facturación (DIAN). (EN): Delete billing resolution (DIAN)."
+      produces:
+        - "application/json"
+      parameters:
+        - name: nit
+          in: path
+          description: NIT de empresa
+          required: true
+          type: integer
+          format: int
+        - name: resolution_id
+          in: path
+          description: ID resolución
+          required: false
+          type: integer
+          format: int
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+  /modules/facturacion/resolution/config/{nit}:
+    post:
+      tags:
+        - "Resoluciones"
+      summary: "(ES): Crear resolución de facturación (DIAN). (EN): Create billing resolution (DIAN)."
+      produces:
+        - "application/json"
+      parameters:
+        - name: nit
+          in: path
+          description: NIT de empresa
+          required: true
+          type: integer
+          format: int
+      requestBody:
+        description: Objeto para actualizar la empresa.
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - type_document_id
+                - prefix
+                - resolution
+                - resolution_date
+                - technical_key
+                - from
+                - to
+                - date_from
+                - date_to
+              properties:
+                type_document_id:
+                  description: Identificador de tipo de documento
+                  type: integer
+                  format: int
+                prefix:
+                  description: Prefijo de facturación
+                  type: string
+                resolution:
+                  description: Número de resolución (DIAN)
+                  type: integer
+                resolution_date:
+                  description: Fecha de resolución
+                  type: date
+                  format: yyyy-mm-dd
+                technical_key:
+                  description: Llave técnica (DIAN)
+                  type: string
+                  format: string
+                from:
+                  description: Rango desde
+                  type: integer
+                  format: int
+                to:
+                  description: Rango hasta
+                  type: integer
+                  format: int
+                date_from:
+                  description: Fecha desde
+                  type: date
+                  format: yyyy-mm-dd
+                date_to:
+                  description: Fecha hasta
+                  type: date
+                  format: yyyy-mm-dd
+              example:
+                type_document_id: 1
+                prefix: "ps"
+                resolution: "23478789878987"
+                resolution_date: "2021-02-15"
+                technical_key: "sdg47s7g89sdf7h987sdh78989h7897s8ghs89h78"
+                from: 1
+                to: 1000
+                date_from: "2021-02-15"
+                date_to: "2022-02-15"
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
