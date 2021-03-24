@@ -1030,7 +1030,7 @@ paths:
               schema:
                 type: object
                 items: {}
-  /modules/facturacion/resolution/config/{nit}/{resolution_id}:
+  /modules/facturacion/resolution/config/{nit}/{id}:
     get:
       tags:
         - "Resoluciones"
@@ -1044,7 +1044,7 @@ paths:
           required: true
           type: integer
           format: int
-        - name: resolution_id
+        - name: id
           in: path
           description: ID resolución
           required: false
@@ -1092,7 +1092,7 @@ paths:
           required: true
           type: integer
           format: int
-        - name: resolution_id
+        - name: id
           in: path
           description: ID resolución
           required: false
@@ -1159,6 +1159,42 @@ paths:
                 to: 1000
                 date_from: "2021-02-15"
                 date_to: "2022-02-15"
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                items: {}
     delete:
       tags:
         - "Resoluciones"
@@ -1172,7 +1208,7 @@ paths:
           required: true
           type: integer
           format: int
-        - name: resolution_id
+        - name: id
           in: path
           description: ID resolución
           required: false

@@ -83,17 +83,17 @@ class Resolution extends Controller implements Http
      * (ES) Creación de resolución de facturación DIAN.
      * @access public
      * @param int $nit
-     * @param string $resolution_id
+     * @param string $id
      * @return void
      */
-    public function config(int | string $nit, string  $resolution_id = '{resolution_id}'): void
+    public function config(int | string $nit, string  $id = '{id}'): void
     {
         //Http method validate
         $this->process = match ($this->GetRequestMethod()) {
-            'GET' => $this->_GET(intval($nit), $resolution_id),
-            'PUT' => $this->_PUT($nit, $resolution_id),
+            'GET' => $this->_GET(intval($nit), $id),
+            'PUT' => $this->_PUT($nit, $id),
             'POST' => $this->_POST($nit),
-            'DELETE' => $this->_DELETE($resolution_id),
+            'DELETE' => $this->_DELETE($nit, $id),
             default => _json(['code' => 404, 'data' => ['message' => 'Http method not found']], 404)
         };
     }
@@ -106,16 +106,15 @@ class Resolution extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    public function _GET(int $nit, string | int $resolution_id = '{resolution_id}'): void
+    public function _GET(int $nit, string | int $id = '{id}'): void
     {
-
         //Get biller
         $this->biller = $this->biller::where('identification_number', $nit)->first();
         //Biller validate
         ($this->biller != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Biller not found']]);
 
-        if ($resolution_id != '{resolution_id}') {
-            $this->result = $this->model::with($this->relations)->where('id', $resolution_id)->where('biller_id', $this->biller->id)->first();
+        if ($id != '{id}') {
+            $this->result = $this->model::with($this->relations)->where('id', $id)->where('biller_id', $this->biller->id)->first();
             //Resolution validate
             ($this->result != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Resolution not found']]);
         } else {
@@ -134,13 +133,13 @@ class Resolution extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    public function _PUT(string | int $nit = '{nit}', string | int $resolution_id = '{resolution_id}'): void
+    public function _PUT(string | int $nit = '{nit}', string | int $id = '{id}'): void
     {
         if ($this->biller::where('identification_number', $nit)->first() != NULL) {
             //validate if isset resolution by id
-            ($this->model::where('id', $resolution_id)->first() != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Resolution not found']]);
+            ($this->model::where('id', $id)->first() != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Resolution not found']]);
 
-            $this->model = $this->model::where('id', $resolution_id)->first();
+            $this->model = $this->model::where('id', $id)->first();
             $emptyField = function ($field) {
                 _json(['code' => 400, 'data' => ['message' => "Bad Request, field {$field} is required."]]);
             };
@@ -215,14 +214,18 @@ class Resolution extends Controller implements Http
      * @param string,int $nit
      * @return void
      */
-    public function _DELETE(string | int $resolution_id = '{resolution_id}'): void
+    public function _DELETE(string | int $nit = '{nit}', string | int $id = '{id}'): void
     {
+        //Get biller
+        $this->biller = $this->biller::where('identification_number', $nit)->first();
+        //Biller validate
+        ($this->biller != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Biller not found']]);
         //Get resolution
-        $this->result = $this->model::where('id', $resolution_id)->first();
+        $this->result = $this->model::where('id', $id)->first();
         //resolution validate and delete process
         ($this->result != NULL) ? true : _json(['code' => 404, 'data' => 'Resolution Not found'], 404);
 
         //Remove/delete/log action
-        ($this->result->delete()) ? _json(['code' => 200, 'data' => ['message' => 'OK', 'logs' => $this->ApiLogs(['type' => 'DB-QUERY', 'message' => "Resolution {$resolution_id} deleted", 'user' => $this->profile['email']])]], 200) : _json(['code' => 400, 'data' => 'Bad Request'], 400);
+        ($this->result->delete()) ? _json(['code' => 200, 'data' => ['message' => 'OK', 'logs' => $this->ApiLogs(['type' => 'DB-QUERY', 'message' => "Resolution {$id} deleted", 'user' => $this->profile['email']])]], 200) : _json(['code' => 400, 'data' => 'Bad Request'], 400);
     }
 }
