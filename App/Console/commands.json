@@ -2,7 +2,8 @@
   "make": {
     "controller": "apifecol make controller __name__: (EN) Create a new controller class. | (ES) Crear una nueva clase de controlador.",
     "model": "apifecol make model __name__: (EN) Create a new Base model class. | (ES) Crear una nueva clase del Modelo Base.",
-    "module": "apifecol make module __name__: (EN) Create a new Plugin. | (ES) Crear un nuevo complemento."
+    "module": "apifecol make module __name__: (EN) Create a new Plugin. | (ES) Crear un nuevo complemento.",
+    "server": "apifecol make server __name__: (EN) Start a new server, only development. | (ES) Iniciar un nuevo servidor, solo para desarrollo."
   },
   "deployment": {
     "htaccess": "apifecol make htaccess __name__: (EN) Crear archivos htaccess. | (ES) Crear archivos htaccess."

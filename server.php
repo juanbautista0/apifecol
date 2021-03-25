@@ -7,6 +7,12 @@
  * @author   Juan Bautista <soyjuanbautista@gmail.com>
  */
 
+$uri = urldecode(
+    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
+);
+
+$path_console = __DIR__ . DIRECTORY_SEPARATOR;
+
 
 define('APIFECOL_START', microtime(true));
 
@@ -20,7 +26,7 @@ define('APIFECOL_START', microtime(true));
 | (ES) Cargador de clases mediante composer para toda la aplicacion
 |
 */
-(file_exists('../vendor/autoload.php')) ? require '../vendor/autoload.php' : true;
+(file_exists('../vendor/autoload.php')) ? require  '../vendor/autoload.php' : (isset($path_console) && file_exists($path_console . 'vendor/autoload.php') ? require $path_console . 'vendor/autoload.php' : true);
 
 
 
@@ -33,7 +39,7 @@ define('APIFECOL_START', microtime(true));
 | (ES) Aquí se incluyen las configuraciones de la aplicacion
 |
 */
-require '../App/Config/Config.php';
+require (isset($path_console)) ? $path_console . 'App/Config/Config.php' : '../App/Config/Config.php';
 
 
 /*
@@ -46,9 +52,9 @@ require '../App/Config/Config.php';
 |
 */
 
-spl_autoload_register(function ($className) {
-    $path_core = '../App/Core/' . str_replace('\\', '/', $className) .  '.php';
-
+spl_autoload_register(function ($className) use ($path_console) {
+    $path_core = (isset($path_console)) ? str_replace('\\', '/', $className) .  '.php' : '../App/Core/' . str_replace('\\', '/', $className) .  '.php';
+    //echo $path_core."<br>";die;
     //Instance by namespace
     $by_namespace = function () use ($className) {
         //Class

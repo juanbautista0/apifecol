@@ -18,7 +18,7 @@
 | (EN) Dotenv class instance for using environment variables
 | (ES) Instancia de la clase Dotenv para el uso de variables de entorno
 */
-$env = Dotenv\Dotenv::createMutable(dirname(dirname(__FILE__)) . '../../');
+$env = Dotenv\Dotenv::createMutable((isset($path_console))?$path_console:dirname(dirname(__FILE__)) . '../../');
 $env->load();
 
 
