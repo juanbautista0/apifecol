@@ -11,7 +11,9 @@
  * Hecho con amor en Colombia 🇨🇴.
  */
 
+use \App\Core\Controller;
 use App\Traits\APIManager;
+use \App\Interfaces\Http;
 use App\Core\Session;
 use Models\Biller;
 use Models\Config\Country;

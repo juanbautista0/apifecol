@@ -1,4 +1,5 @@
 <?php
+namespace App\Core;
 
 /**
  * Main controller Api Fecol Framework
@@ -15,6 +16,6 @@
 
 
 
-class Controller extends Core
+class Controller extends Kernel
 {
 }

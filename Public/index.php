@@ -18,9 +18,8 @@ define('APIFECOL_START', microtime(true));
 | (ES) Cargador de clases mediante composer para toda la aplicacion
 |
 */
-if (file_exists('../vendor/autoload.php')) {
-    require '../vendor/autoload.php';
-}
+(file_exists('../vendor/autoload.php')) ? require '../vendor/autoload.php' : true;
+
 
 
 /*
@@ -45,20 +44,20 @@ require '../App/Config/Config.php';
 |
 */
 spl_autoload_register(function ($className) {
+    $path_core = '../App/Core/' . str_replace('\\', '/', $className) .  '.php';
 
-    //Instantiated by the new statement 
-    if (file_exists('../App/Core/' . str_replace('\\', '/', $className) .  '.php')): 
-        require_once '../App/Core/' . str_replace('\\', '/', $className) .  '.php';
-    else: 
+    //Instance by namespace
+    $by_namespace = function () use ($className) {
+        //Class
         $class = explode('\\', $className);
-        if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php')): 
-            //Instance by namespace
-            if ($className != 'int'): 
-                require_once  dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php';
-            endif;
-        endif;
+        //Path file
+        $path_file  = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php';
+        //Require
+        (file_exists($path_file)) ? ($className != 'int' ? require_once $path_file : true) : true;
+    };
 
-    endif;
+    //Instantiated by the new statement or by namespace
+    (file_exists($path_core)) ? require_once $path_core : $by_namespace();
 });
 
 /*
@@ -70,4 +69,4 @@ spl_autoload_register(function ($className) {
 | (ES) Apifecol se inicia en una sola linea
 */
 
-$start = new Core;
+$start = new App\Core\Kernel;

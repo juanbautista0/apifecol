@@ -1048,8 +1048,8 @@ paths:
           in: path
           description: ID resolución
           required: false
-          type: integer
-          format: int
+          type: string
+          format: string
       responses:
         200:
           description: Ok

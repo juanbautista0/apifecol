@@ -10,7 +10,8 @@
  * 
  * Hecho con amor en Colombia 🇨🇴.
  */
-
+use \App\Core\Controller;
+use App\Interfaces\Http;
 use App\Core\Session;
 use \App\Traits\APIManager;
 use \Traits\Dv;

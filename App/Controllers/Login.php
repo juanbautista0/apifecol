@@ -6,7 +6,8 @@
  * @package Controllers
  */
 
-
+use \App\Core\Controller;
+use App\Interfaces\Http;
 use Illuminate\Database\Capsule\Manager as DB;
 use \App\Traits\APIManager;
 use \App\Core\Session;

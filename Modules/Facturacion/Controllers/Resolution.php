@@ -11,6 +11,8 @@
  * Hecho con amor en Colombia 🇨🇴.
  */
 
+use \App\Core\Controller;
+use \App\Interfaces\Http;
 use \App\Traits\APIManager;
 use Models\Biller;
 use Models\Config\Resolution as Resolutions;
@@ -86,14 +88,14 @@ class Resolution extends Controller implements Http
      * @param string $id
      * @return void
      */
-    public function config(int | string $nit, string  $id = '{id}'): void
+    public function config(int | string $nit, int |string  $id = '{id}'): void
     {
         //Http method validate
         $this->process = match ($this->GetRequestMethod()) {
-            'GET' => $this->_GET(intval($nit), $id),
-            'PUT' => $this->_PUT($nit, $id),
+            'GET' => $this->_GET(intval($nit), ($id != ',') ? $id : '{id}'),
+            'PUT' => $this->_PUT(intval($nit), ($id != ',') ? $id : '{id}'),
             'POST' => $this->_POST($nit),
-            'DELETE' => $this->_DELETE($nit, $id),
+            'DELETE' => $this->_DELETE(intval($nit), ($id != ',') ? $id : '{id}'),
             default => _json(['code' => 404, 'data' => ['message' => 'Http method not found']], 404)
         };
     }

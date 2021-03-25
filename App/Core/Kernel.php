@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Core;
 /**
  * Core Class
  * (EN) It is responsible for executing the mvc pattern of the genesis framework.
@@ -9,7 +9,7 @@
  */
 
 
-class Core
+class Kernel
 {
     /**
      *

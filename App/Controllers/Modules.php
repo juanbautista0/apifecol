@@ -7,12 +7,14 @@
  * @package Controllers
  */
 
+use \App\Core\Controller;
+use App\Interfaces\Http;
 use App\Core\ModuleManager;
 use \App\Traits\APIManager;
 use \App\Core\Session;
 use \App\Models\Profile;
 
-class Modules extends Controller
+class Modules extends Controller implements Http
 {
      use APIManager;
 
@@ -142,6 +144,7 @@ class Modules extends Controller
                // (EN) Require the module with its representation in controller
                //((ES) Requerir el módulo con su representación en controlador)
                require_once $this->manager->plugins_path . $this->module . DIRECTORY_SEPARATOR . "Controllers" . DIRECTORY_SEPARATOR . $this->controller . ".php";
+
                $this->controller              = new $this->controller($this->info);
                $this->controller->profile     = $this->info;
                $this->controller->path_module = $this->manager->plugins_path . $this->module . DIRECTORY_SEPARATOR;
@@ -182,19 +185,26 @@ class Modules extends Controller
 
           try {
                spl_autoload_register(function ($className) use ($path) {
-                    //Instantiated by the new statement 
-                    if (file_exists($path . str_replace('\\', '/', $className) .  '.php')) :
-                         require_once $path . str_replace('\\', '/', $className) .  '.php';
-                    else :
-                         //Instance by namespace
-                         if ($className != 'int') :
-                              $class = explode('\\', $className);
-                              //echo  $path . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php';
-                              if (file_exists($path . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php')) :
-                                   require_once  $path . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php';
-                              endif;
-                         endif;
-                    endif;
+                    $path_controller =  DIRECTORY_SEPARATOR . str_replace('\\', '/', $className) .  '.php';
+                    //_json([$path_controller]);
+                    //Instance by namespace
+                    $by_namespace = function () use ($className, $path) {
+
+                         //Class
+                         $class = explode('\\', $className);
+                         //_json([$class, $path, str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php']);
+                         //Path file
+                         $path_file  =   $path . str_replace('\\', '/',  join("\\", array_unique($class))) .  '.php';
+                         //Require
+                         (file_exists($path_file)) ? ($className != 'int' ? require_once DIRECTORY_SEPARATOR . $path_file : true) : true;
+                    };
+
+                    $by_statement = function () use ($path_controller) {
+                         +require_once $path_controller;
+                    };
+
+                    //Instantiated by the new statement or by namespace
+                    (file_exists($path_controller)) ? $by_statement() : $by_namespace();
                });
           } catch (\Exception $th) {
                throw $th;
