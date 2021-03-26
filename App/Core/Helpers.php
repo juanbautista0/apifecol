@@ -18,13 +18,13 @@ if (!function_exists('_json')) {
         } else {
             http_response_code($code);
         }
-        if($exe_time && isset($data['data'])){
+        if ($exe_time && isset($data['data'])) {
             //$data['data']['execution_time'] = (microtime(true) - APIFECOL_START);
         }
-        
+
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        ($callback)?$callback():true;
+        ($callback) ? $callback() : true;
         die;
     }
 }
@@ -132,5 +132,62 @@ if (!function_exists('form_validator')) {
         else :
             return true;
         endif;
+    }
+}
+
+if (!function_exists('check_base64_image')) {
+
+    /**
+     * (EN) Base64 image validator
+     * (ES) Validador de imagenes en base64
+     * @param string $base64
+     * @param string $extension
+     * @return bool
+     */
+    function check_base64_image($base64, $extension = '.jpg'): bool
+    {
+        $img = imagecreatefromstring(base64_decode($base64));
+        if (!$img) {
+            return false;
+        }
+
+        imagejpeg($img, "tmp{$extension}");
+        $info = getimagesize("tmp{$extension}");
+        unlink("tmp{$extension}");
+
+        if ($info[0] > 0 && $info[1] > 0 && $info['mime']) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('upload_base64_image')) {
+
+    /**
+     * (EN) Image loader base 64
+     * (ES) Cargador de imagenes en base64
+     * @param string $base64
+     * @param string $extension
+     * @return bool
+     */
+    function upload_base64_image($base64, $destination_path, $file_name): bool
+    {
+        if (file_exists($destination_path)) {
+            $img = imagecreatefromstring(base64_decode($base64));
+            if (!$img) {
+                return false;
+            }
+            imagejpeg($img, "{$destination_path}{$file_name}");
+            $info = getimagesize("{$destination_path}{$file_name}");
+
+            if ($info[0] > 0 && $info[1] > 0 && $info['mime']) {
+                return true;
+            }
+
+            return false;
+        }
+        return false;
     }
 }

@@ -130,7 +130,6 @@ class Modules extends Controller implements Http
 
           $this->manager = new ModuleManager((!empty($this->info['instance'])) ? $this->info['instance'] : '');
 
-
           // (EN) Check that the module and its package exist
           // (ES) Comrpobar que el módulo y su paquete existe
           if (file_exists($this->manager->plugins_path . $this->module . DIRECTORY_SEPARATOR . "Controllers" . DIRECTORY_SEPARATOR . $this->controller . ".php")) {
@@ -168,7 +167,7 @@ class Modules extends Controller implements Http
                     }
                }
           } else {
-               _json([], 404);
+               _json(["test"], 404);
           }
      }
 

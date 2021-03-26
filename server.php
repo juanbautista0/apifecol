@@ -6,15 +6,11 @@
  * @package  Public
  * @author   Juan Bautista <soyjuanbautista@gmail.com>
  */
-
-$uri = urldecode(
-    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
-);
+define('APIFECOL_START', microtime(true));
 
 $path_console = __DIR__ . DIRECTORY_SEPARATOR;
 
 
-define('APIFECOL_START', microtime(true));
 
 
 /*

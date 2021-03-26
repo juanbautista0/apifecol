@@ -12,6 +12,7 @@
  */
 
 use \App\Core\Controller;
+use App\Core\Session;
 use App\Interfaces\Http;
 use \App\Traits\APIManager;
 use \Traits\Dv;
@@ -55,6 +56,11 @@ class Company extends Controller implements Http
 
     public function __construct(public $info)
     {
+        $this->SetHeaders();
+
+        //(EN) validate authentication (Set private controller)
+        //(ES) Validar autenticación (Definir si el controlador es privado)
+        Session::sessionValidator($this->GetAuthorizationHeader());
         $this->model =  new Biller;
         $this->relations = ['Location.Department.Country', 'NitType', 'Regime', 'Organization', 'Liability'];
         $this->tmp = $this->ResponseTemplate();

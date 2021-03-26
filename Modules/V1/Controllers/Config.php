@@ -10,6 +10,7 @@
  * 
  * Hecho con amor en Colombia 🇨🇴.
  */
+
 use \App\Core\Controller;
 use App\Interfaces\Http;
 use App\Core\Session;
@@ -162,7 +163,7 @@ class Config extends Controller implements Http
             $this->model->certificate_validity = $this->process['certificate_validity'];
 
             //Save proces and response
-            ($this->model->save()) ? _json(['code' => 200, 'data' => ['message' => 'Successful certificate update']], 200, function () use ($current, $nit) {
+            ($this->model->save()) ? _json(['code' => 200, 'data' => ['message' => 'Certificate successfully updated']], 200, function () use ($current, $nit) {
                 $this->ApiLogs([
                     'type'    => 'DB-QUERY',
                     'message' => "Biller {$nit} has updated his certificate, the file ({$current}) has been removed.",
@@ -172,6 +173,68 @@ class Config extends Controller implements Http
             }) : _json(['code' => 400, 'data' => ['message' => 'Bad Request']], 400);
         } else {
             _json(['code' => 400, 'data' => ['message' => 'Bad Request, biller nit is a required value']], 404);
+        }
+    }
+
+    /**
+     * Logo
+     * (EN) Company logo update
+     * (ES) Actualizar logo de empresa
+     * @access public
+     * @param string $nit
+     * @return void
+     */
+    public function Logo(string $nit = '{nit}'): void
+    {
+
+        try {
+            //Http method validate
+            ($this->GetRequestMethod() != 'PUT') ? _json(['code' => 404, 'data' => ['message' => 'Http method not found']], 404) : true;
+
+            //Nit validate
+            ($nit != '{nit}' || $nit != ',') ? true : _json(['code' => 400, 'data' => ['message' => 'Bad Request, biller nit is a required value']], 404);
+
+            //Get Biller
+            $this->model = Biller::where('identification_number', $nit)->first();
+
+
+            //Biller validation
+            ($this->model == NULL) ? _json(['code' => 404, 'data' => ['message' => 'Biller not found']], 404) : true;
+
+            //Get values request
+            $this->process = $this->CustomRequest();
+            //Field validate
+            (isset($this->process['logo'])) ? true : _json(['code' => 400, 'data' => ['message' => 'Bad Request, biller nit is a required value']], 404);
+
+            //image format validation
+            (!check_base64_image($this->process['logo'])) ? throw new Exception('Formato de certificado invalido.') : true;
+            //File name image
+            $file_name = "logo_{$nit}" . time() . '.jpg';
+            //Current image
+            $current = $this->model->image;
+
+            //Upload and save image
+            (!upload_base64_image($this->process['logo'], config()->APP_INSTANCES_PATH  . $nit . DIRECTORY_SEPARATOR, $file_name)) ? throw new Exception("No target directory exists") : true;
+
+            //Define the file name in the model
+            $this->model->image = $file_name;
+
+            //Save model
+            ($this->model->save()) ? _json(
+                ['code' => 200, 'data' => ['message' => 'Logo successfully updated']],
+                200,
+                function () use ($current, $nit) {
+
+                    if (file_exists(config()->APP_INSTANCES_PATH  . $nit .DIRECTORY_SEPARATOR. $current)) {
+                        unlink(config()->APP_INSTANCES_PATH  . $nit .DIRECTORY_SEPARATOR. $current);
+                    }
+                }
+            ) : _json(['code' => 400, 'data' => ['message' => 'Bad Request']], 400);
+        } catch (\Exception $th) {
+            _json([
+                'code' => 422,
+                'data' => ['message' => $th->getMessage()]
+            ], 422);
         }
     }
 }
