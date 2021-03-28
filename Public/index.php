@@ -38,11 +38,11 @@ require '../App/Config/Config.php';
 
 /*
 |--------------------------------------------------------------------------
-| Register The Auto Loader Genesis
+| Register The Auto Loader Apifecol
 |--------------------------------------------------------------------------
 |
-| (EN) Genesis Automatic class loader
-| (ES) Cargador de clases automatico de genesis 
+| (EN) Apifecol Automatic class loader
+| (ES) Cargador de clases automatico de Apifecol 
 |
 */
 

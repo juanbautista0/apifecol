@@ -40,11 +40,11 @@ require (isset($path_console)) ? $path_console . 'App/Config/Config.php' : '../A
 
 /*
 |--------------------------------------------------------------------------
-| Register The Auto Loader Genesis
+| Register The Auto Loader Apifecol
 |--------------------------------------------------------------------------
 |
-| (EN) Genesis Automatic class loader
-| (ES) Cargador de clases automatico de genesis 
+| (EN) Apifecol Automatic class loader
+| (ES) Cargador de clases automatico de Apifecol 
 |
 */
 

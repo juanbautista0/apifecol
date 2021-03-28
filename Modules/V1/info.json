@@ -1,7 +1,7 @@
 {
     "detalles": {
       "name": "Facturación",
-      "package": "v1",
+      "package": "V1",
       "main_controller": "Company",
       "author": "Juan bautista",
       "version": "1.0",

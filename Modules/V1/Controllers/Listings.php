@@ -5,7 +5,7 @@
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  * @author Apifecol
  * @license GNU General Public License v3.0 <https:   //www.gnu.org/licenses/gpl-3.0.html>
- * @package Facturacion
+ * @package V1
  * @subpackage Controllers
  * 
  * Hecho con amor en Colombia 🇨🇴.
@@ -27,7 +27,8 @@ use Models\Config\TypeEnvironment;
 use Models\Config\Liability;
 use Models\Config\NitType;
 use Models\Config\Organization;
-
+use Models\Config\TypeItemIdentificaction;
+use Models\Config\TypeUnitMeasure;
 
 class Listings extends Controller implements Http
 {
@@ -83,6 +84,8 @@ class Listings extends Controller implements Http
                'TypeEnvironment'            => [new TypeEnvironment, '(EN) Types environment. (ES) Tipos de ambientes.'],
                'TypeOrganization'           => [new Organization, '(EN) Types organizations. (ES) Tipos de organizaciones.'],
                'TypeDocumentIdentification' => [new NitType, '(EN) Types of identification documents. (ES) Tipos de documentos de identificación'],
+               'TypeItemIdentification'     => [new TypeItemIdentificaction, '(EN) Types of identification Items. (ES) Tipos de identificación de items'],
+               'TypeUnitMeasure'            => [new TypeUnitMeasure, '(EN) Unit of measure types. (ES) Tipos de unidad de medida'],
           ];
      }
 

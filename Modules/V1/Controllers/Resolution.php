@@ -5,7 +5,7 @@
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  * @author Apifecol
  * @license GNU General Public License v3.0 <https:   //www.gnu.org/licenses/gpl-3.0.html>
- * @package Facturacion
+ * @package V1
  * @subpackage Controllers
  *
  * Hecho con amor en Colombia 🇨🇴.

@@ -29,6 +29,18 @@ if (!function_exists('_json')) {
     }
 }
 
+if (!function_exists('html_minify')) {
+    /**
+     * (EN) Html minify
+     * (ES) Minificaodr de código html
+     */
+    function html_minify($html)
+    {
+        $busca     = array('/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s');
+        $reemplaza = array('>', '<', '\\1');
+        return preg_replace($busca, $reemplaza, $html);
+    }
+}
 
 if (!function_exists('bootORM')) {
     /**
@@ -189,5 +201,155 @@ if (!function_exists('upload_base64_image')) {
             return false;
         }
         return false;
+    }
+}
+
+if (!function_exists('rmdir_')) {
+    /**
+     * (EN) Directory deletion recursively.
+     * (ES) Eliminación de directorio de manera recursiva.
+     */
+    function rmdir_($path, bool $path_delete = false)
+    {
+        if (!is_dir($path)) {
+            throw new InvalidArgumentException("{$path} is not a directory");
+        }
+        if (substr($path, strlen($path) - 1, 1) != '/') {
+            $path .= '/';
+        }
+        $dotfiles = glob($path . '.*', GLOB_MARK);
+        $files    = glob($path . '*', GLOB_MARK);
+        $files    = array_merge($files, $dotfiles);
+        foreach ($files as $file) {
+            if (basename($file) == '.' || basename($file) == '..') {
+                continue;
+            } else if (is_dir($file)) {
+                rmdir_($file);
+            } else {
+                unlink($file);
+            }
+        }
+        if (!$path_delete && rmdir($path)) {
+            return true;
+        } else if ($path_delete) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('inputs_validator')) {
+    /**
+     * (EN) Form validator
+     * (ES) Validador de formulario
+     */
+    function inputs_validator(array $inputs = [], array $requireds = [], array $exceptions = [], string $entity = "")
+    {
+        $empty = function ($i, $callback = false) {
+            ($callback) ? $callback() : true;
+            return _json([
+                'code' => 400,
+                'data' => [
+                    'message'      => 'Empty fields',
+                    'empty_fields' => $i
+                ]
+            ], 400);
+        };
+        //validar entradas
+        (empty($inputs)) ? $empty($entity, function () use ($requireds, $entity, $exceptions) {
+            return _json([
+                'code' => 400,
+                'data' => [
+                    'message'      => 'Empty fields',
+                    'empty_fields' => $entity,
+                    'example'      => $requireds,
+                    'not_required' => array_keys($exceptions)
+                ]
+            ], 400);
+        }) : true;
+
+        //Iteración sobre los campos requeridos
+        foreach ($requireds as $key => $value) {
+            //Validar si existe el indice principal
+            if (isset($inputs[$key])) {
+
+                if (!isset($exceptions[$key])) {
+                    //Validar si indice es un array
+                    if (is_array($inputs[$key]) && isset($requireds[$key])) {
+
+                        //Si es un array iteramos sobre los campos del mismo
+                        foreach ($requireds[$key] as $key1 => $value1) {
+                            if (is_array($inputs[$key][$key1])) {
+                                //Comentar y crear la forma de validar
+                                continue;
+                                foreach ($inputs[$key][$key1] as $key2 => $value2) {
+                                    if (isset($requireds[$key][$key1][$key2])) {
+                                        //Validar si existe
+                                        (!isset($inputs[$key][$key1][$key2])) ? $empty("{$key}=>{$key2}") : true;
+                                        //validar que no esté vacio
+                                        (empty($inputs[$key][$key1][$key2])) ? $empty("{$key}=>{$key2}") : true;
+                                    } else {
+                                        //Mensaje de campo vacio
+                                        $empty("{$key}=>{$key2}");
+                                    }
+                                }
+                            } else {
+                                if (isset($requireds[$key][$key1])) {
+                                    //Validar si existe
+                                    (!isset($inputs[$key][$key1])) ? $empty("{$key}=>{$key1}") : true;
+                                    //validar que no esté vacio
+                                    (empty($inputs[$key][$key1])) ? $empty("{$key}=>{$key1}") : true;
+                                } else {
+                                    //Mensaje de campo vacio
+                                    $empty("{$key}=>{$key1}");
+                                }
+                            }
+                        }
+                    } else {
+                        //Validar que no esté vacio
+                        ($inputs[$key] === NULL || $inputs[$key] == "") ? $empty($key) : true;
+                    }
+                } elseif (isset($exceptions[$key]) && !empty($inputs[$key])) {
+                    //Validar si indice es un array
+                    if (is_array($inputs[$key])) {
+                        //Si es un array iteramos sobre los campos del mismo
+                        foreach ($requireds[$key] as $key1 => $value1) {
+
+                            if (isset($inputs[$key][$key1])) {
+                                (!isset($inputs[$key][$key1]))                                ? $empty("{$key}=>{$key1}") : true;
+                                ($inputs[$key][$key1] === NULL || $inputs[$key][$key1] == "") ? $empty("{$key}=>{$key1}") : true;
+                            } else {
+                                $empty("{$key}=>{$key1}");
+                            }
+                        }
+                    } else {
+                        //Validar que no esté vacio
+                        ($inputs[$key] === NULL || $inputs[$key] == "") ? $empty($key) : true;
+                    }
+                } else {
+                    continue;
+                    if (is_array($inputs[$key])) {
+                        //Si es un array iteramos sobre los campos del mismo
+                        foreach ($inputs[$key] as $key1 => $value1) {
+
+                            if (isset($inputs[$key][$key1])) {
+                                ($inputs[$key][$key1] === NULL || $inputs[$key][$key1] == "") ? $empty("{$key}=>{$key1}") : true;
+                            } else {
+                                $empty("{$key}=>{$key1}");
+                            }
+                        }
+                    } else {
+                        ($inputs[$key] === NULL || $inputs[$key] == "") ? $empty($key) : true;
+                    }
+                }
+            } else {
+                //Sino existe en las entradas, pero si en los requeridos y no está en excepciones
+                if (isset($requireds[$key]) && !isset($exceptions[$key])) {
+                    //Mensaje de campo vacio
+                    $empty($key);
+                }
+            }
+        }
     }
 }
