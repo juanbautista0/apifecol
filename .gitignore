@@ -4,6 +4,7 @@ Logs
 INSTANCES
 myapifecol/node_modules
 Swagger/node_modules
+Swagger/node_modules/
 .ionide/
 vendor
 .env
