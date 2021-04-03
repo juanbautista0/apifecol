@@ -10,8 +10,9 @@ class Profile extends CustomModel
      *
      * @var string
      */
-    protected $table = 'profile';
+    protected $table = 'api_profiles';
     protected $primaryKey = 'id';
+    protected $hidden = array('password');
 
     public function Biller()
     {

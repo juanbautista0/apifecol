@@ -1,15 +1,18 @@
 <?php
 
+namespace App\Core;
+
 /**
  * Core Class
- * (EN) It is responsible for executing the mvc pattern of the genesis framework.
- * (ES) Se encarga de ejecutar el patron mvc del framework genesis.
+ * (EN) It is in charge of executing the framework's mvc pattern and routing drivers from the application directory.
+ * (ES) Se encarga de ejecutar el patron mvc del framework y el enrutamiento de controladores del directorio de aplicación.
  *
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  */
 
+use Exception;
 
-class Core
+class Kernel
 {
     /**
      *
@@ -51,47 +54,61 @@ class Core
 
     public function __construct()
     {
+
         $this->currentController = $_ENV['APP_CONTROLLER'];
         $this->currentMethod = $_ENV['APP_INDEX'];
+        \App\Core\ErrorHandler::Init();
 
-        //$this->errorTry();
-        //$this->hostUri();
-        $url = $this->getUrl();
-        unset($_GET['url']);
+        try {
+            //$this->errorTry();
 
-        //(EN) Search in Controllers if the called controller exists.
-        //(ES) Buscar en Controladores si el controlador llamado existe.
-        if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($url[0]) . '.php')) {
+            $url = $this->getUrl();
+            unset($_GET['url']);
 
-            // (EN) If the controller exists it is set as the default controller.
-            // (ES) Si el controlador existe se setea como controlador por defecto.
-            $this->currentController = ucwords($url[0]);
-            //Unset index
-            unset($url[0]);
-        }
-        if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($this->currentController) . '.php')) {
-            // (EN) Require controller
-            // (ES) Requerir el controlador
-            require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($this->currentController) . '.php';
-            $this->currentController = new $this->currentController;
-        }
-        // (EN) Check the second part of the url, the method the action.
-        // (ES) Chequear la segunda parte de la url, el método la acción.
-        if (isset($url[1])) {
-            if (method_exists($this->currentController, $url[1])) {
-                //Chequeamos el método
-                $this->currentMethod = $url[1];
-                unset($url[1]);
+            //(EN) Search in Controllers if the called controller exists.
+            //(ES) Buscar en Controladores si el controlador llamado existe.
+            if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($url[0]) . '.php')) {
+
+                // (EN) If the controller exists it is set as the default controller.
+                // (ES) Si el controlador existe se setea como controlador por defecto.
+                $this->currentController = ucwords($url[0]);
+                //Unset index
+                unset($url[0]);
             }
+            if (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($this->currentController) . '.php')) {
+                // (EN) Require controller
+                // (ES) Requerir el controlador
+                require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . ucwords($this->currentController) . '.php';
+                $this->currentController = new $this->currentController;
+            }
+            // (EN) Check the second part of the url, the method the action.
+            // (ES) Chequear la segunda parte de la url, el método la acción.
+            if (isset($url[1])) {
+                if (method_exists($this->currentController, $url[1])) {
+                    //Chequeamos el método
+                    $this->currentMethod = $url[1];
+                    unset($url[1]);
+                }
+            }
+
+            // (EN) Get parameters
+            // (ES) Obtener parametros
+            $this->parameters = $url ? array_values($url) : [];
+
+            // (EN) Callback with an array of parameters.
+            // (ES) Llamada de retorno con un array de parámetros.
+            call_user_func_array([$this->currentController, $this->currentMethod], $this->parameters);
+        } catch (\Throwable $th) {
+            _json([
+                'code'       => 500,
+                'data'          => [
+                    'message'    => "Server error",
+                    'error'      => $th->getMessage(),
+                    'line' => $th->getLine(),
+                    'file' => explode(".", basename($th->getFile()))[0],
+                ]
+            ]);
         }
-
-        // (EN) Get parameters
-        // (ES) Obtener parametros
-        $this->parameters = $url ? array_values($url) : [];
-
-        // (EN) Callback with an array of parameters.
-        // (ES) Llamada de retorno con un array de parámetros.
-        call_user_func_array([$this->currentController, $this->currentMethod], $this->parameters);
     }
 
     /**
@@ -154,6 +171,8 @@ class Core
      */
     public function errorTry()
     {
+
+
         set_error_handler(function ($errno, $errstr, $errfile, $errline, $errcontext) {
             if (0 === error_reporting()) {
                 return false;

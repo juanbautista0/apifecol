@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc04400b07906375e5ae927e966288b2",
+    "content-hash": "29f2d56aad7162a4c9d59156738a1d86",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -86,20 +86,6 @@
                 "redis",
                 "xcache"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcache",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-01-04T19:38:55+00:00"
         },
         {
@@ -108,12 +94,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "b4d5a629e5262424030a88787f2ce3527b88a4a3"
+                "reference": "715a39150cbf961d7ce19b3f1783f6a76a01afe5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/b4d5a629e5262424030a88787f2ce3527b88a4a3",
-                "reference": "b4d5a629e5262424030a88787f2ce3527b88a4a3",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/715a39150cbf961d7ce19b3f1783f6a76a01afe5",
+                "reference": "715a39150cbf961d7ce19b3f1783f6a76a01afe5",
                 "shasum": ""
             },
             "require": {
@@ -138,11 +124,6 @@
                 "bin/doctrine-dbal"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
@@ -193,21 +174,7 @@
                 "sqlserver",
                 "sqlsrv"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-21T13:01:11+00:00"
+            "time": "2021-02-02T19:05:16+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -278,20 +245,6 @@
                 "event manager",
                 "event system",
                 "events"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fevent-manager",
-                    "type": "tidelift"
-                }
             ],
             "time": "2021-01-20T18:51:22+00:00"
         },
@@ -365,20 +318,6 @@
                 "uppercase",
                 "words"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finflector",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-10-28T16:09:51+00:00"
         },
         {
@@ -437,12 +376,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Result-Type.git",
-                "reference": "74acfe25f0019fb8af8b5b1eda0681e8e253fee2"
+                "reference": "cce288e91826d6d33d76b57f1ad4bdc3f3a8c1d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/74acfe25f0019fb8af8b5b1eda0681e8e253fee2",
-                "reference": "74acfe25f0019fb8af8b5b1eda0681e8e253fee2",
+                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/cce288e91826d6d33d76b57f1ad4bdc3f3a8c1d6",
+                "reference": "cce288e91826d6d33d76b57f1ad4bdc3f3a8c1d6",
                 "shasum": ""
             },
             "require": {
@@ -476,17 +415,7 @@
                 "Result-Type",
                 "result"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/graham-campbell/result-type",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-11-28T23:32:07+00:00"
+            "time": "2021-01-25T20:12:13+00:00"
         },
         {
             "name": "illuminate/container",
@@ -642,6 +571,114 @@
             "time": "2021-01-21T14:08:35+00:00"
         },
         {
+            "name": "illuminate/events",
+            "version": "7.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/events.git",
+                "reference": "6f64db49dbfd490c6e30c983964543a054882faf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/events/zipball/6f64db49dbfd490c6e30c983964543a054882faf",
+                "reference": "6f64db49dbfd490c6e30c983964543a054882faf",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "^7.0",
+                "illuminate/contracts": "^7.0",
+                "illuminate/support": "^7.0",
+                "php": "^7.2.5|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Events\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Events package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2020-10-27T15:11:37+00:00"
+        },
+        {
+            "name": "illuminate/filesystem",
+            "version": "7.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/filesystem.git",
+                "reference": "2013f94a3a7dff008be54884774548e3c222c3e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/2013f94a3a7dff008be54884774548e3c222c3e8",
+                "reference": "2013f94a3a7dff008be54884774548e3c222c3e8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^7.0",
+                "illuminate/support": "^7.0",
+                "php": "^7.2.5|^8.0",
+                "symfony/finder": "^5.0"
+            },
+            "suggest": {
+                "ext-ftp": "Required to use the Flysystem FTP driver.",
+                "illuminate/http": "Required for handling uploaded files (^7.0).",
+                "league/flysystem": "Required to use the Flysystem local and FTP drivers (^1.1).",
+                "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (^1.0).",
+                "league/flysystem-cached-adapter": "Required to use the Flysystem cache (^1.0).",
+                "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0).",
+                "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0).",
+                "symfony/mime": "Required to enable support for guessing extensions (^5.0)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Filesystem\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Filesystem package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2020-10-27T15:11:37+00:00"
+        },
+        {
             "name": "illuminate/support",
             "version": "7.x-dev",
             "source": {
@@ -704,17 +741,131 @@
             "time": "2020-12-22T16:12:23+00:00"
         },
         {
+            "name": "illuminate/view",
+            "version": "7.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/view.git",
+                "reference": "31c35ed36a75c5fbb8a1b5a13cfe2813d7d5d044"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/view/zipball/31c35ed36a75c5fbb8a1b5a13cfe2813d7d5d044",
+                "reference": "31c35ed36a75c5fbb8a1b5a13cfe2813d7d5d044",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/container": "^7.0",
+                "illuminate/contracts": "^7.0",
+                "illuminate/events": "^7.0",
+                "illuminate/filesystem": "^7.0",
+                "illuminate/support": "^7.0",
+                "php": "^7.2.5|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\View\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate View package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2021-03-04T13:07:30+00:00"
+        },
+        {
+            "name": "jenssegers/blade",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jenssegers/blade.git",
+                "reference": "22a3700e9fc469c19dd1c5e5bd1b9138195e421f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jenssegers/blade/zipball/22a3700e9fc469c19dd1c5e5bd1b9138195e421f",
+                "reference": "22a3700e9fc469c19dd1c5e5bd1b9138195e421f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/view": "^5.5|^6.0|^7.0|^8.0",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0|^7.0",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jenssegers\\Blade\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens Segers",
+                    "homepage": "https://jenssegers.com"
+                }
+            ],
+            "description": "The standalone version of Laravel's Blade templating engine for use outside of Laravel.",
+            "keywords": [
+                "blade",
+                "laravel",
+                "render",
+                "template",
+                "view"
+            ],
+            "support": {
+                "issues": "https://github.com/jenssegers/blade/issues",
+                "source": "https://github.com/jenssegers/blade/tree/v1.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jenssegers",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/jenssegers-blade",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2020-09-17T08:25:26+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "48b5345ddc38596c75cb3b5dcce631da45fa3b24"
+                "reference": "0d87f3d34cd9464e6807df1e41aa5a8ce87adee3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/48b5345ddc38596c75cb3b5dcce631da45fa3b24",
-                "reference": "48b5345ddc38596c75cb3b5dcce631da45fa3b24",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/0d87f3d34cd9464e6807df1e41aa5a8ce87adee3",
+                "reference": "0d87f3d34cd9464e6807df1e41aa5a8ce87adee3",
                 "shasum": ""
             },
             "require": {
@@ -780,17 +931,7 @@
                 "datetime",
                 "time"
             ],
-            "funding": [
-                {
-                    "url": "https://opencollective.com/Carbon",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/nesbot/carbon",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-22T10:26:24+00:00"
+            "time": "2021-01-30T13:36:51+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -844,16 +985,6 @@
                 "option",
                 "php",
                 "type"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpoption/phpoption",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-20T17:29:33+00:00"
         },
@@ -960,12 +1091,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "5d9e349571fa1fed2ed89fe1f5ffd58331468e87"
+                "reference": "56d4c04ca6069c93857c7335a626dbe747fa82d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/5d9e349571fa1fed2ed89fe1f5ffd58331468e87",
-                "reference": "5d9e349571fa1fed2ed89fe1f5ffd58331468e87",
+                "url": "https://api.github.com/repos/symfony/console/zipball/56d4c04ca6069c93857c7335a626dbe747fa82d4",
+                "reference": "56d4c04ca6069c93857c7335a626dbe747fa82d4",
                 "shasum": ""
             },
             "require": {
@@ -1032,6 +1163,54 @@
                 "console",
                 "terminal"
             ],
+            "time": "2021-01-28T22:09:26+00:00"
+        },
+        {
+            "name": "symfony/finder",
+            "version": "5.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "0d639a0943822626290d169965804f79400e6a04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/0d639a0943822626290d169965804f79400e6a04",
+                "reference": "0d639a0943822626290d169965804f79400e6a04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Finds files and directories via an intuitive fluent interface",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/finder/tree/v5.2.4"
+            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -1046,7 +1225,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-23T09:52:46+00:00"
+            "time": "2021-02-15T18:55:04+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -1107,20 +1286,6 @@
                 "ctype",
                 "polyfill",
                 "portable"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2021-01-07T16:49:33+00:00"
         },
@@ -1185,20 +1350,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2021-01-07T16:49:33+00:00"
         },
@@ -1267,20 +1418,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-01-07T17:09:11+00:00"
         },
         {
@@ -1344,20 +1481,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-01-07T16:49:33+00:00"
         },
         {
@@ -1419,20 +1542,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2021-01-07T16:49:33+00:00"
         },
@@ -1500,20 +1609,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-01-07T16:49:33+00:00"
         },
         {
@@ -1522,12 +1617,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "cea83947622b432b60b809d14c7b42df9f0f5823"
+                "reference": "bf99754c6182a126968b1c2709d18548489f27eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/cea83947622b432b60b809d14c7b42df9f0f5823",
-                "reference": "cea83947622b432b60b809d14c7b42df9f0f5823",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/bf99754c6182a126968b1c2709d18548489f27eb",
+                "reference": "bf99754c6182a126968b1c2709d18548489f27eb",
                 "shasum": ""
             },
             "require": {
@@ -1539,7 +1634,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-version": "2.3",
                 "branch-alias": {
                     "dev-main": "2.3-dev"
                 },
@@ -1577,21 +1671,7 @@
                 "interoperability",
                 "standards"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-11T09:51:46+00:00"
+            "time": "2021-01-27T16:27:53+00:00"
         },
         {
             "name": "symfony/string",
@@ -1599,12 +1679,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "2f833cf54d5fe9646638c50778016a06b6fe1603"
+                "reference": "13c9099cdb470223b5863f7d11d17554b2dc6404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/2f833cf54d5fe9646638c50778016a06b6fe1603",
-                "reference": "2f833cf54d5fe9646638c50778016a06b6fe1603",
+                "url": "https://api.github.com/repos/symfony/string/zipball/13c9099cdb470223b5863f7d11d17554b2dc6404",
+                "reference": "13c9099cdb470223b5863f7d11d17554b2dc6404",
                 "shasum": ""
             },
             "require": {
@@ -1657,21 +1737,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-12T14:28:55+00:00"
+            "time": "2021-01-26T09:33:05+00:00"
         },
         {
             "name": "symfony/translation",
@@ -1679,12 +1745,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "bb18c958677c54337a0814be514d0f3c1ad18167"
+                "reference": "247e0b8ef7f98f5a45512a6a5e1a5ef21fbff7b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/bb18c958677c54337a0814be514d0f3c1ad18167",
-                "reference": "bb18c958677c54337a0814be514d0f3c1ad18167",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/247e0b8ef7f98f5a45512a6a5e1a5ef21fbff7b6",
+                "reference": "247e0b8ef7f98f5a45512a6a5e1a5ef21fbff7b6",
                 "shasum": ""
             },
             "require": {
@@ -1747,21 +1813,7 @@
             ],
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-21T11:15:15+00:00"
+            "time": "2021-01-27T09:05:46+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -1769,12 +1821,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "c2f26e0c96d7d8b5cdae5989c0a41d736730f271"
+                "reference": "3664aa20bd5f99d7e59e0eb34b7e62cf5b772a00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/c2f26e0c96d7d8b5cdae5989c0a41d736730f271",
-                "reference": "c2f26e0c96d7d8b5cdae5989c0a41d736730f271",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/3664aa20bd5f99d7e59e0eb34b7e62cf5b772a00",
+                "reference": "3664aa20bd5f99d7e59e0eb34b7e62cf5b772a00",
                 "shasum": ""
             },
             "require": {
@@ -1785,7 +1837,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-version": "2.3",
                 "branch-alias": {
                     "dev-main": "2.3-dev"
                 },
@@ -1823,21 +1874,7 @@
                 "interoperability",
                 "standards"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-11T09:52:33+00:00"
+            "time": "2021-01-27T16:29:32+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -1903,16 +1940,6 @@
                 "env",
                 "environment"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/GrahamCampbell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/vlucas/phpdotenv",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2021-01-20T15:23:13+00:00"
         },
         {
@@ -1961,28 +1988,6 @@
                 "clean",
                 "php"
             ],
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/moelleken",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/voku",
-                    "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/portable-ascii",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/voku",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/voku/portable-ascii",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-11-12T00:07:28+00:00"
         }
     ],
@@ -1999,5 +2004,5 @@
         "php": ">=7.3"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

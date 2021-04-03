@@ -259,4 +259,31 @@ class Cli
             echo "(ES) El modelo \e[1;33m" . $name . "\e[0m ya existe.\n";
         }*/
     }
+
+    /*
+     * CreateServer
+     * (EN) This method start a new server.
+     * (ES) Este método inicia un nuevo servidor.
+     * @access public
+     * 
+     */
+
+     /**
+     * CreateServer
+     * (EN) This method start a new server.
+     * (ES) Este método inicia un nuevo servidor.
+     * @access public
+     * @param string $name
+     */
+    public function CreateServer(string $name = '')
+    {
+        $server_script = dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.'server.php';
+        if(file_exists($server_script)){
+           $input = explode(":", $name);
+           $start = function () use($server_script, $name){
+            shell_exec("php -S {$name} {$server_script}");
+           };
+           (count($input)> 1)?$start(): print "\033[31m (ES) Error de comando, intente especificando el servidor y el puerto, ejemplo: servidor:puerto (localhost:8025). \n (EN) Command error, try specifying server and port, example: server:port (localhost:8025). \033[0m\n";
+        }
+    }
 }

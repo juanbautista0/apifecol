@@ -10,6 +10,6 @@ class Biller extends CustomModel
      *
      * @var string
      */
-    protected $table = 'biller';
+    protected $table = 'api_billers';
     protected $primaryKey = 'id';
 }
