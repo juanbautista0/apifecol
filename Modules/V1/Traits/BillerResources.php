@@ -8,5 +8,14 @@ namespace Traits;
  */
 trait BillerResources
 {
-    public $billerRelations = ['Location.Department.Country', 'NitType', 'Regime', 'Organization', 'Liability'];
+    /**
+     * @var array
+     */
+    public $billerRelations = ['Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault'];
+
+
+    /**
+     * @var object
+     */
+    public $customer;
 }

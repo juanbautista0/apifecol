@@ -17,6 +17,7 @@ use App\Interfaces\Http;
 use \App\Traits\APIManager;
 use \Traits\Dv;
 use \Traits\DeployBillerDirectory;
+use \Traits\BillerResources;
 use Models\Biller;
 
 class Company extends Controller implements Http
@@ -24,6 +25,7 @@ class Company extends Controller implements Http
     use APIManager;
     use Dv;
     use DeployBillerDirectory;
+    use BillerResources;
     public $process;
 
 
@@ -62,8 +64,8 @@ class Company extends Controller implements Http
         //(ES) Validar autenticación (Definir si el controlador es privado)
         Session::sessionValidator($this->GetAuthorizationHeader());
         $this->model =  new Biller;
-        $this->relations = ['Location.Department.Country', 'NitType', 'Regime', 'Organization', 'Liability'];
         $this->tmp = $this->ResponseTemplate();
+        $this->relations = $this->billerRelations;
     }
 
     /**
