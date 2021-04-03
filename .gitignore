@@ -8,3 +8,4 @@ Swagger/node_modules/
 .ionide/
 vendor
 .env
+apifecol.sql
