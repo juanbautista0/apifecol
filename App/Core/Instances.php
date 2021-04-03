@@ -6,9 +6,10 @@ namespace App\Core;
  * Instance Class
  * (EN) It is in charge of managing the instance to the holder, with the aim that the client uses only the resources of his instance.
  * (ES) Se encarga de gestionar la instancia al tenedor, con el objetivo que el cliente use solo los recursos de su instancia.
+ * @package App
+ * @subpackage Core
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
- * @author Apifecol
- * @package Apifecol
+ * 
  */
 class Instances
 {

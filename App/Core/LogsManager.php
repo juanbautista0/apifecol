@@ -2,21 +2,16 @@
 
 namespace App\Core;
 
-use Exception;
-
 /**
- * LogsManager class
- * (EN) Logs Manager.
- * (ES) Administrador de logs.
- * @author Juan Bautista <soyjuanbautista0@gmail.com>
- * @author Apifecol
- * @license GNU General Public License v3.0 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * (EN) Class responsible for managing and application logs.
+ * (ES) Clase encargada de gestionar y los log de aplicación.
  * @package App
  * @subpackage Core
+ * @author Juan Bautista <soyjuanbautista0@gmail.com>
  * 
- * Hecho con amor en Colombia 🇨🇴.
  */
 
+use Exception;
 
 class LogsManager
 {
@@ -78,7 +73,7 @@ class LogsManager
     public function writeLog(array $datos = []): void
     {
 
-        (file_exists($this->log_path))?chmod($this->log_path, 777):true;
+        (file_exists($this->log_path)) ? chmod($this->log_path, 777) : true;
 
 
         # Crear carpeta si no existe

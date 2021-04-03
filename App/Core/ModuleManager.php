@@ -1,9 +1,12 @@
 <?php
 
 /**
- * Class Plugin Manager of the Elephant framework
- *
+ * (EN) Class in charge of managing the microkernel architecture and the framework's own format.
+ * (ES) Clase encargada de gestionar y lar arquitectura microkernel y el formato propio del framework.
+ * @package App
+ * @subpackage Core
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
+ * 
  */
 
 namespace App\Core;

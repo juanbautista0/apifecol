@@ -1,9 +1,12 @@
 <?php
 
 /**
- * Auth Class
- * @author Juan Bautista main developer
- * @package Lib
+ * (EN) Class in charge of managing token of type JWT
+ * (ES) Clase encargada de gestionar token de tipo JWT
+ * @package App
+ * @subpackage Core
+ * @author Juan Bautista <soyjuanbautista0@gmail.com>
+ * 
  */
 
 namespace App\Core;
@@ -54,7 +57,7 @@ class Token
             'data' => $data
         );
 
-        return JWT::encode($token, self::$private_key,'HS256');
+        return JWT::encode($token, self::$private_key, 'HS256');
     }
 
     /**

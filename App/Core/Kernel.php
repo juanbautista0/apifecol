@@ -1,13 +1,16 @@
 <?php
+
 namespace App\Core;
+
 /**
  * Core Class
- * (EN) It is responsible for executing the mvc pattern of the genesis framework.
- * (ES) Se encarga de ejecutar el patron mvc del framework genesis.
+ * (EN) It is in charge of executing the framework's mvc pattern and routing drivers from the application directory.
+ * (ES) Se encarga de ejecutar el patron mvc del framework y el enrutamiento de controladores del directorio de aplicación.
  *
  * @author Juan Bautista <soyjuanbautista0@gmail.com>
  */
 
+use Exception;
 
 class Kernel
 {

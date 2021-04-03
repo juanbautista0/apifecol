@@ -7,9 +7,9 @@ use App\Core\Token, DateTime;
 /**
  * (EN) management class of session status
  * (ES) clase para manejar sesiones
- * @package Genesis
- * @author Juan Bautista
- * @author Andrés Felipe Delgado
+ * @package App
+ * @subpackage Core
+ * @author Juan Bautista <soyjuanbautista0@gmail.com>
  * 
  */
 class Session
@@ -106,7 +106,7 @@ class Session
             _json([
                 'code' => 202,
                 'data' => [
-                     'message' => 'Accepted',
+                    'message' => 'Accepted',
                 ]
             ]);
         } else {
