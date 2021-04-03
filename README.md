@@ -6,7 +6,7 @@ API REST de código abierto basado en PHP moderno, permite generar documentos el
 </div>
 
 # Fácil de usar
-Un marco de aplicación web con una sintaxis sencilla escrito con php moderno y el patron de diseño MVC (Modelo Vista Controlador).
+Un marco de aplicación web con una sintaxis sencilla escrito con php moderno y el patrón de arquitectura MVC (Modelo Vista Controlador).
 
 # Enfocarse en lo que importa
 Apifecol le permite concentrarse exclusivamente en la lógica de negocio y así poder crear la solución más adecuada.
