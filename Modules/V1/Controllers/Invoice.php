@@ -28,6 +28,7 @@ use Models\Config\Tax;
 use Models\Config\TypeCurrency;
 use Models\Config\TypeDocument;
 use Models\Config\TypeOperation;
+use Models\Config\TypeUnitMeasure;
 use Traits\BillerResources;
 use Traits\Dv;
 use Traits\InvoiceResource;
@@ -168,6 +169,10 @@ class Invoice extends Controller implements Http
         // Validate quantity invoice lines
         (count($this->request->invoice_lines) > 0) ? true : _json(['code' => 400, 'data' => ['message' => 'Bad Request The invoice has no lines']]);
 
-        print_debug($this->customer->toArray());
+        //Validate invoice line fields 
+        $this->ValidateInvoiceLines($this->request->invoice_lines);
+
+        
+       
     }
 }

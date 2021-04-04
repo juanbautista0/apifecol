@@ -2,6 +2,10 @@
 
 namespace Traits;
 
+use Models\Config\Tax;
+use Models\Config\TypeItemIdentificaction;
+use Models\Config\TypeUnitMeasure;
+
 /**
  * (EN) Invoice resources
  * (ES) Recursos de factura
@@ -158,12 +162,11 @@ trait InvoiceResource
     public function ValidateRelationshipKeys(object $inputs, array $Keys = [], string $entity = ''): void
     {
         // Validation Relationship Keys
-        foreach ($Keys as $key => $value)
-        ($value::where('id', $inputs->{$key})->first() != NULL) ? true : _json(['code' => 404, 'data' => ['message' =>  "$entity" . str_replace("_", " ", ucwords($key)) . ' not found']]);
+        foreach ($Keys as $key => $value) ($value::where('id', $inputs->{$key})->first() != NULL) ? true : _json(['code' => 404, 'data' => ['message' =>  "$entity" . str_replace("_", " ", ucwords($key)) . ' not found']]);
     }
 
     /**
-     *  ValidateInvoiceLines
+     * ValidateInvoiceLines
      * (EN) Validation invoice lines
      * (ES) Valiación de líneas de factura
      * @access public
@@ -171,12 +174,29 @@ trait InvoiceResource
      * @param array $exceptions
      * @return void
      */
-    public function ValidateInvoiceLines(): void
+    public function ValidateInvoiceLines(array $lines, array $exceptions = []): void
     {
-        # code...
+        foreach ($this->LinesFieldsRequireds as $key => $value) {
+            foreach ($lines as $key1 => $value1) {
+                (isset($lines[$key1][$key])) ? true : _json(['code' => 400, 'data' => ['message' => "Bad Request, {$key} is a required field for invoice lines."]]);
+            }
+        }
+
+        foreach ($this->request->invoice_lines as $key => $value) {
+            $this->ValidateRelationshipKeys((object) $value, [
+                "unit_measure_id"             => new TypeUnitMeasure,
+                "type_item_identification_id" => new TypeItemIdentificaction, 
+            ], "Invoice line ");
+
+            foreach ($value['tax_totals'] as $key1 => $value1) {
+                $this->ValidateRelationshipKeys((object) $value1, [
+                    "tax_id"      => new Tax,
+                ], "Invoice line ");
+            }
+        }
     }
 
-    /*
+    /**
      * ValidateInvoiceEntryData
      * (EN) Validación de los campos de entrada de un objeto de factura.
      * (ES) Validación de los campos de entrada de un objeto de factura.
