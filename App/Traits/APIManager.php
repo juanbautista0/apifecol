@@ -144,10 +144,7 @@ trait APIManager
         foreach ($this->headers as $key) {
             header($key);
         }
-        if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
-            _json(['code' => 200, $_SERVER]);
-            //die();
-        }
+
     }
 
     public function GetAuthorizationHeader(): string

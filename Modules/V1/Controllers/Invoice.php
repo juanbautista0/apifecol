@@ -95,6 +95,10 @@ class Invoice extends Controller implements Http
      */
     public $nit_;
 
+    /**
+     * @var string
+     */
+    public $xml;
 
     public function __construct(public $info)
     {
@@ -131,7 +135,7 @@ class Invoice extends Controller implements Http
     public function Create(string | int $nit = '{nit}'): void
     {
         // Get biller
-        $this->biller = $this->biller::where('identification_number', $nit)->first();
+        $this->biller = $this->biller::with($this->billerRelations )->where('identification_number', $nit)->first();
 
         // Validate biller
         ($this->biller != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Biller not found']]);
@@ -169,10 +173,17 @@ class Invoice extends Controller implements Http
         // Validate quantity invoice lines
         (count($this->request->invoice_lines) > 0) ? true : _json(['code' => 400, 'data' => ['message' => 'Bad Request The invoice has no lines']]);
 
-        //Validate invoice line fields 
+        // Validate invoice line fields 
         $this->ValidateInvoiceLines($this->request->invoice_lines);
 
+        // unset customer data from request
+        unset($this->request->customer);
         
-       
+        //Pendiente crear colleción con modelo de factura y las respectivas relaciones
+        $this->xml = $this->view('xml.01', [
+            'company'  => $this->biller,
+            'customer' => $this->customer,
+            'invoice'  => $this->request
+        ], $this->module);
     }
 }

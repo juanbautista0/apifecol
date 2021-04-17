@@ -11,7 +11,7 @@ trait BillerResources
     /**
      * @var array
      */
-    public $billerRelations = ['Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault'];
+    public $billerRelations = ['Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault', 'Environment', 'EnvironmentDefault'];
 
 
     /**

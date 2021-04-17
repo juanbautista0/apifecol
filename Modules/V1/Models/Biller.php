@@ -10,6 +10,7 @@ use Models\Config\NitType;
 use Models\Config\Organization;
 use Models\Config\Regime;
 use Models\Config\Tax;
+use Models\Config\TypeEnvironment;
 
 class Biller extends CustomModel
 {
@@ -18,16 +19,16 @@ class Biller extends CustomModel
      *
      * @var string
      */
-    protected $table = 'api_billers';
+    protected $table      = 'api_billers';
     protected $primaryKey = 'id';
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden     = ['created_at', 'updated_at'];
 
 
     /**
      * @var array
      */
     protected $with = [
-        'Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault'
+        'Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault', 'Environment', 'EnvironmentDefault'
     ];
 
 
@@ -54,8 +55,8 @@ class Biller extends CustomModel
     {
         return $this->belongsTo(Language::class)
             ->withDefault([
-                'id' => 53,
-                'code' => 'es',
+                'id'          => 53,
+                'code'        => 'es',
                 'description' => 'español [Colombia]',
             ]);
     }
@@ -69,7 +70,7 @@ class Biller extends CustomModel
     {
         return $this->belongsTo(NitType::class)
             ->withDefault([
-                'id' => 3,
+                'id'   => 3,
                 'name' => 'Cédula de ciudadanía',
                 'code' => '13',
             ]);
@@ -84,7 +85,7 @@ class Biller extends CustomModel
     {
         return $this->belongsTo(Regime::class)
             ->withDefault([
-                'id' => 2,
+                'id'   => 2,
                 'name' => 'No responsable de IVA',
                 'code' => '49',
             ]);
@@ -99,7 +100,7 @@ class Biller extends CustomModel
     {
         return $this->belongsTo(Organization::class)
             ->withDefault([
-                'id' => 2,
+                'id'   => 2,
                 'name' => 'Persona Natural',
                 'code' => '2',
             ]);
@@ -114,7 +115,7 @@ class Biller extends CustomModel
     {
         return $this->belongsTo(Liability::class)
             ->withDefault([
-                'id' => 28,
+                'id'   => 28,
                 'name' => 'No responsable',
                 'code' => 'R-99-PN',
             ]);
@@ -129,10 +130,28 @@ class Biller extends CustomModel
     {
         return $this->belongsTo(Tax::class)
             ->withDefault([
-                'id' => 1,
-                'name' => 'IVA',
+                'id'          => 1,
+                'name'        => 'IVA',
                 'description' => 'Impuesto de Valor Agregado',
-                'code' => '01',
+                'code'        => '01',
+            ]);
+    }
+
+    public function Environment()
+    {
+        return $this->hasOne(TypeEnvironment::class, 'id', 'type_environment_id');
+    }
+
+    public function EnvironmentDefault()
+    {
+        return $this->belongsTo(TypeEnvironment::class)
+            ->withDefault([
+                'id'     => 2,
+                'name'   => 'Desarrollo',
+                'code'   => '2',
+                'qr_url' => 'https://catalogo-vpfe-hab.dian.gov.co/document/searchqr?documentkey=',
+                'ws_url' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc'
+
             ]);
     }
 }
