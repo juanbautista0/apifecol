@@ -139,6 +139,12 @@ trait InvoiceResource
     ];
 
     /**
+     * @var array
+     */
+    public $invoiceRelations = [
+        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution'
+    ];
+    /**
      * @var array $InvoiceFieldsExceptions
      */
     public $InvoiceFieldsExceptions = ["prepaid_payments" => true, "payment_exchange_rate" => true, "order_reference" => true, "invoice_period" => true, "number" => true];
@@ -152,6 +158,16 @@ trait InvoiceResource
         "type_currency_id",
         "resolution_id"
     ];
+
+    /**
+     * @var object
+     */
+    public $invoice;
+
+    /**
+     * @var object
+     */
+    public $lines;
 
     /**
      * (EN) Validate Relationship Keys that were entered by the customer.
@@ -185,7 +201,7 @@ trait InvoiceResource
         foreach ($this->request->invoice_lines as $key => $value) {
             $this->ValidateRelationshipKeys((object) $value, [
                 "unit_measure_id"             => new TypeUnitMeasure,
-                "type_item_identification_id" => new TypeItemIdentificaction, 
+                "type_item_identification_id" => new TypeItemIdentificaction,
             ], "Invoice line ");
 
             foreach ($value['tax_totals'] as $key1 => $value1) {

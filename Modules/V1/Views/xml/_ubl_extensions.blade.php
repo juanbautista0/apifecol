@@ -2,15 +2,15 @@
     <ext:UBLExtension>
         <ext:ExtensionContent>
             <sts:DianExtensions>
-                @if ($resolution->type_document_id == 1)
-                    @includeWhen($resolution->resolution, 'xml._invoice_control')
+                @if ($invoice->type_document_id == 1)
+                    @includeWhen($invoice->Resolution, 'xml._invoice_control')
                 @endif
                 <sts:InvoiceSource>
                     <cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.1">{{$company->country->code}}</cbc:IdentificationCode>
                 </sts:InvoiceSource>
                 <sts:SoftwareProvider>
-                    <sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" @if ($company->type_document_identification_id == 6) schemeID="{{$company->dv}}" @endif schemeName="{{$company->type_document_identification->code}}">{{$company->identification_number}}</sts:ProviderID>
-                    <sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)">{{$company->software->identifier}}</sts:SoftwareID>
+                    <sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" @if ($company->nit_type_id == 6) schemeID="{{$company->dv}}" @endif schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</sts:ProviderID>
+                    <sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)">{{$company->software_id}}</sts:SoftwareID>
                 </sts:SoftwareProvider>
                 <sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)"/>
                 <sts:AuthorizationProvider>

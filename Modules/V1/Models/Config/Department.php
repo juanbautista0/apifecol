@@ -18,6 +18,6 @@ class Department extends CustomModel
 
     public function Country()
     {
-        return $this->hasOne(Country::class, 'id', 'country_id');
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 }

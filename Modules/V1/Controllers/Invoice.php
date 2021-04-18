@@ -102,7 +102,6 @@ class Invoice extends Controller implements Http
 
     public function __construct(public $info)
     {
-
         $this->SetHeaders();
 
         // (EN) validate authentication (Set private controller)
@@ -111,8 +110,9 @@ class Invoice extends Controller implements Http
 
         // (EN) Get data token
         // (ES) Obtener datos del token
-        $this->payload   = Session::SessionGetData($this->GetAuthorizationHeader());
-        $this->relations = [];
+        $this->payload = Session::SessionGetData($this->GetAuthorizationHeader());
+        // Invoice Relations
+        $this->relations = $this->invoiceRelations;
         $this->tmp       = $this->ResponseTemplate();
 
         $this->model  = new ModelsInvoice;
@@ -135,10 +135,12 @@ class Invoice extends Controller implements Http
     public function Create(string | int $nit = '{nit}'): void
     {
         // Get biller
-        $this->biller = $this->biller::with($this->billerRelations )->where('identification_number', $nit)->first();
+        $this->biller = $this->biller::with($this->billerRelations)->where('identification_number', $nit)->first();
 
         // Validate biller
         ($this->biller != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Biller not found']]);
+
+        $this->biller->dv = $this->GetDv($this->biller->identification_number);
 
         // Validation of the content of the request body
         inputs_validator($this->CustomRequest(), $this->InvoiceFieldsRequireds, $this->InvoiceFieldsExceptions, "Invoice object");
@@ -178,12 +180,26 @@ class Invoice extends Controller implements Http
 
         // unset customer data from request
         unset($this->request->customer);
-        
-        //Pendiente crear colleción con modelo de factura y las respectivas relaciones
+
+        // Set invoice model
+        $this->invoice = new ModelsInvoice(collect($this->request)->toArray());
+
+        // Set invoice line model
+        $this->lines = $this->request->invoice_lines;
+
+        //Pendientes
+        /**
+         * -Completar armado de xml factura
+         * -Crear colección de datos a partir del modelo de líneas de factura
+         * -Incorporar firma
+         */
         $this->xml = $this->view('xml.01', [
             'company'  => $this->biller,
             'customer' => $this->customer,
-            'invoice'  => $this->request
+            'invoice'  => $this->invoice->load($this->relations),
+            'lines'    => $this->lines
         ], $this->module);
+
+        echo $this->xml;
     }
 }

@@ -18,6 +18,6 @@ class Municipality extends CustomModel
 
     public function Department()
     {
-        return $this->hasOne(Department::class, 'id', 'department_id');
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 }

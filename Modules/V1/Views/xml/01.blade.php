@@ -14,18 +14,18 @@
     <cbc:UBLVersionID>UBL 2.1</cbc:UBLVersionID>
     <cbc:CustomizationID>{{$company->type_operation->code}}</cbc:CustomizationID>
     <cbc:ProfileID>DIAN 2.1</cbc:ProfileID>
-    <cbc:ProfileExecutionID>{{($company->Environment != NULL)$company->Environment->code:$company->EnvironmentDefault->code}}</cbc:ProfileExecutionID>
+    <cbc:ProfileExecutionID>{{($company->Environment != NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}</cbc:ProfileExecutionID>
     <cbc:ID>{{$resolution->next_consecutive}}</cbc:ID>
-    <cbc:UUID schemeID="{{$company->type_environment->code}}" schemeName="{{$typeDocument->cufe_algorithm}}"/>
+    <cbc:UUID schemeID="{{($company->Environment!=NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}" schemeName="{{($invoice->TypeDocument!=NULL)?$invoice->TypeDocument->algoritm:$invoice->TypeDocumentDefault->algoritm}}">__CUFE__</cbc:UUID>
     <cbc:IssueDate>{{$date ?? Carbon\Carbon::now()->format('Y-m-d')}}</cbc:IssueDate>
     <cbc:IssueTime>{{$time ?? Carbon\Carbon::now()->format('H:i:s')}}-05:00</cbc:IssueTime>
     <cbc:InvoiceTypeCode>{{$typeDocument->code}}</cbc:InvoiceTypeCode>
-    <cbc:DocumentCurrencyCode>{{$company->type_currency->code}}</cbc:DocumentCurrencyCode>
-    <cbc:LineCountNumeric>{{$invoiceLines->count()}}</cbc:LineCountNumeric>
+    <cbc:DocumentCurrencyCode>{{($company->TypeCurrency!=NULL)?$company->TypeCurrency->code:$company->TypeCurrencyDefault->code}}</cbc:DocumentCurrencyCode>
+    <cbc:LineCountNumeric>{{count($lines)}}</cbc:LineCountNumeric>
     {{-- AccountingSupplierParty --}}
     @include('xml._accounting', ['node' => 'AccountingSupplierParty', 'supplier' => true])
     {{-- AccountingCustomerParty --}}
-    @include('xml._accounting', ['node' => 'AccountingCustomerParty', 'user' => $customer])
+    @include('xml._accounting_customer', ['node' => 'AccountingCustomerParty', 'user' => $customer])
     {{-- PaymentMeans --}}
     @include('xml._payment_means')
     {{-- PaymentTerms --}}

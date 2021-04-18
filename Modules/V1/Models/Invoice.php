@@ -19,6 +19,21 @@ class Invoice extends CustomModel
     protected $primaryKey = 'id';
     protected $hidden     = ['created_at', 'updated_at'];
 
+    /**
+     * @var array
+     */
+    protected $with = [
+        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency','TypeCurrencyDefault','Resolution'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'number', 'type_document_id', 'type_operation_id', 'type_currency_id', 'resolution_id', 'due_date'
+    ];
+
+
     public function Biller()
     {
         return $this->hasOne(Biller::class, 'id', 'biller_id');
@@ -29,14 +44,48 @@ class Invoice extends CustomModel
         return $this->hasOne(TypeDocument::class, 'id', 'type_document_id');
     }
 
+    public function TypeDocumentDefault()
+    {
+        return $this->belongsTo(TypeDocument::class)
+            ->withDefault([
+                'id'       => 1,
+                'name'     => 'Factura de Venta Nacional',
+                'code'     => '01',
+                'algoritm' => 'CUFE-SHA384',
+                'prefix'   => 'fv',
+            ]);
+    }
+
     public function TypeOperation()
     {
         return $this->hasOne(TypeOperation::class, 'id', 'type_operation_id');
     }
 
+    public function TypeOperationDefault()
+    {
+        return $this->belongsTo(TypeOperation::class)
+            ->withDefault([
+                'id'   => 22,
+                'name' => 'Estándar *',
+                'code' => '10'
+            ]);
+    }
+
     public function TypeCurrency()
     {
         return $this->hasOne(TypeCurrency::class, 'id', 'type_currency_id');
+    }
+
+    public function TypeCurrencyDefault()
+    {
+        return $this->belongsTo(TypeCurrency::class)
+            ->withDefault([
+                'id'       => 52,
+                'country'  => 'Colombia',
+                'currency' => 'Colombian peso',
+                'code'     => 'COP',
+                'symbol'   => '$'
+            ]);
     }
 
     public function Resolution()

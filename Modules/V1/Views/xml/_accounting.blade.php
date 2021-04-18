@@ -1,66 +1,72 @@
 <cac:{{$node}}>
-    <cbc:AdditionalAccountID>{{$user->company->type_organization->code}}</cbc:AdditionalAccountID>
+    <cbc:AdditionalAccountID>{{($company->Organization!=NULL)?$company->Organization->code:$company->OrganizationDefault}}</cbc:AdditionalAccountID>
     <cac:Party>
-        @if ($user->company->type_organization->code == 2)
-            <cac:PartyIdentification>
-               <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$user->company->dv}}" schemeName="{{$user->company->type_document_identification->code}}">{{$user->company->identification_number}}</cbc:ID>
-            </cac:PartyIdentification>
+        @if($company->Organization!=NULL)
+        @if ($company->Organization->code == 2)
+        <cac:PartyIdentification>
+            <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</cbc:ID>
+        </cac:PartyIdentification>
+        @endif
+        @else
+        <cac:PartyIdentification>
+            <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</cbc:ID>
+        </cac:PartyIdentification>
         @endif
         <cac:PartyName>
-            <cbc:Name>{{$user->name}}</cbc:Name>
+            <cbc:Name>{{$company->name}}</cbc:Name>
         </cac:PartyName>
         @isset($supplier)
-            <cac:PhysicalLocation>
-                <cac:Address>
-                    <cbc:ID>{{$user->company->municipality->code}}</cbc:ID>
-                    <cbc:CityName>{{$user->company->municipality->name}}</cbc:CityName>
-                    <cbc:CountrySubentity>{{$user->company->municipality->department->name}}</cbc:CountrySubentity>
-                    <cbc:CountrySubentityCode>{{$user->company->municipality->department->code}}</cbc:CountrySubentityCode>
-                    <cac:AddressLine>
-                        <cbc:Line>{{$user->company->address}}</cbc:Line>
-                    </cac:AddressLine>
-                    <cac:Country>
-                        <cbc:IdentificationCode>{{$user->company->country->code}}</cbc:IdentificationCode>
-                        <cbc:Name languageID="{{$user->company->language->code}}">{{$user->company->country->name}}</cbc:Name>
-                    </cac:Country>
-                </cac:Address>
-            </cac:PhysicalLocation>
-        @endisset
-        <cac:PartyTaxScheme>
-            <cbc:RegistrationName>{{$user->name}}</cbc:RegistrationName>
-            <cbc:CompanyID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$user->company->dv}}" schemeName="{{$user->company->type_document_identification->code}}">{{$user->company->identification_number}}</cbc:CompanyID>
-            <cbc:TaxLevelCode listName="{{$user->company->type_regime->code}}">{{$user->company->type_liability->code}}</cbc:TaxLevelCode>
-            <cac:RegistrationAddress>
-                <cbc:ID>{{$user->company->municipality->code}}</cbc:ID>
-                <cbc:CityName>{{$user->company->municipality->name}}</cbc:CityName>
-                <cbc:CountrySubentity>{{$user->company->municipality->department->name}}</cbc:CountrySubentity>
-                <cbc:CountrySubentityCode>{{$user->company->municipality->department->code}}</cbc:CountrySubentityCode>
+        <cac:PhysicalLocation>
+            <cac:Address>
+                <cbc:ID>{{$company->Location->Department->code.$company->Location->code}}</cbc:ID>
+                <cbc:CityName>{{$company->Location->name}}</cbc:CityName>
+                <cbc:CountrySubentity>{{$company->Location->Department->name}}</cbc:CountrySubentity>
+                <cbc:CountrySubentityCode>{{$company->Location->Department->code}}</cbc:CountrySubentityCode>
                 <cac:AddressLine>
-                    <cbc:Line>{{$user->company->address}}</cbc:Line>
+                    <cbc:Line>{{$company->address}}</cbc:Line>
                 </cac:AddressLine>
                 <cac:Country>
-                    <cbc:IdentificationCode>{{$user->company->country->code}}</cbc:IdentificationCode>
-                    <cbc:Name languageID="{{$user->company->language->code}}">{{$user->company->country->name}}</cbc:Name>
+                    <cbc:IdentificationCode>{{$company->Location->Department->Country->code}}</cbc:IdentificationCode>
+                    <cbc:Name languageID="{{($company->Language!=NULL)?$company->Language->code:$company->LanguageDefault->code}}">{{$company->Location->Department->Country->name}}</cbc:Name>
+                </cac:Country>
+            </cac:Address>
+        </cac:PhysicalLocation>
+        @endisset
+        <cac:PartyTaxScheme>
+            <cbc:RegistrationName>{{$company->name}}</cbc:RegistrationName>
+            <cbc:CompanyID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</cbc:CompanyID>
+            <cbc:TaxLevelCode listName="{{($company->Regime!=NULL)?$company->Regime->code:$company->RegimeDefault->code}}">{{($company->Liability!=NULL)?$company->Liability->code:$company->LiabilityDefault->code}}</cbc:TaxLevelCode>
+            <cac:RegistrationAddress>
+                <cbc:ID>{{$company->Location->Department->code.$company->Location->code}}</cbc:ID>
+                <cbc:CityName>{{$company->Location->name}}</cbc:CityName>
+                <cbc:CountrySubentity>{{$company->Location->Department->name}}</cbc:CountrySubentity>
+                <cbc:CountrySubentityCode>{{$company->Location->Department->code}}</cbc:CountrySubentityCode>
+                <cac:AddressLine>
+                    <cbc:Line>{{$company->address}}</cbc:Line>
+                </cac:AddressLine>
+                <cac:Country>
+                    <cbc:IdentificationCode>{{$company->Location->Department->Country->code}}</cbc:IdentificationCode>
+                    <cbc:Name languageID="{{($company->Language!=NULL)?$company->Language->code:$company->LanguageDefault->code}}">{{$company->Location->Department->Country->name}}</cbc:Name>
                 </cac:Country>
             </cac:RegistrationAddress>
             <cac:TaxScheme>
-                <cbc:ID>{{$user->company->tax->code}}</cbc:ID>
-                <cbc:Name>{{$user->company->tax->name}}</cbc:Name>
+                <cbc:ID>{{($company->Tax!=NULL)?$company->Tax->code:$company->TaxDefault->code}}</cbc:ID>
+                <cbc:Name>{{($company->Tax!=NULL)?$company->Tax->name:$company->TaxDefault->name}}</cbc:Name>
             </cac:TaxScheme>
         </cac:PartyTaxScheme>
         <cac:PartyLegalEntity>
-            <cbc:RegistrationName>{{$user->name}}</cbc:RegistrationName>
-            <cbc:CompanyID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$user->company->dv}}" schemeName="{{$user->company->type_document_identification->code}}">{{$user->company->identification_number}}</cbc:CompanyID>
+            <cbc:RegistrationName>{{$company->name}}</cbc:RegistrationName>
+            <cbc:CompanyID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{$company->type_document_identification_id['code']}}">{{$company->identification_number}}</cbc:CompanyID>
             <cac:CorporateRegistrationScheme>
                 @isset($supplier)
-                    <cbc:ID>{{$resolution->prefix}}</cbc:ID>
+                <cbc:ID>{{$invoice->Resolution->prefix}}</cbc:ID>
                 @endisset
-                <cbc:Name>{{$user->company->merchant_registration}}</cbc:Name>
+                <cbc:Name>{{$company->merchant_registration}}</cbc:Name>
             </cac:CorporateRegistrationScheme>
         </cac:PartyLegalEntity>
         <cac:Contact>
-            <cbc:Telephone>{{$user->company->phone}}</cbc:Telephone>
-            <cbc:ElectronicMail>{{$user->email}}</cbc:ElectronicMail>
+            <cbc:Telephone>{{$company->phone}}</cbc:Telephone>
+            <cbc:ElectronicMail>{{$company->email}}</cbc:ElectronicMail>
         </cac:Contact>
     </cac:Party>
 </cac:{{$node}}>
