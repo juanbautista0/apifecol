@@ -71,5 +71,4 @@ spl_autoload_register(function ($className) {
 | (EN) Apifecol starts on a single line
 | (ES) Apifecol se inicia en una sola linea
 */
-
 return new \App\Core\Kernel;

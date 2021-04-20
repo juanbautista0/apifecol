@@ -19,13 +19,13 @@
     <cbc:UUID schemeID="{{($company->Environment!=NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}" schemeName="{{($invoice->TypeDocument!=NULL)?$invoice->TypeDocument->algoritm:$invoice->TypeDocumentDefault->algoritm}}">__CUFE__</cbc:UUID>
     <cbc:IssueDate>{{$date ?? Carbon\Carbon::now()->format('Y-m-d')}}</cbc:IssueDate>
     <cbc:IssueTime>{{$time ?? Carbon\Carbon::now()->format('H:i:s')}}-05:00</cbc:IssueTime>
-    <cbc:InvoiceTypeCode>{{$typeDocument->code}}</cbc:InvoiceTypeCode>
-    <cbc:DocumentCurrencyCode>{{($company->TypeCurrency!=NULL)?$company->TypeCurrency->code:$company->TypeCurrencyDefault->code}}</cbc:DocumentCurrencyCode>
+    <cbc:InvoiceTypeCode>{{($invoice->TypeDocument!=NULL)?$invoice->TypeDocument->code:$invoice->TypeDocumentDefault->code}}</cbc:InvoiceTypeCode>
+    <cbc:DocumentCurrencyCode>{{($invoice->TypeCurrency!=NULL)?$invoice->TypeCurrency->code:$invoice->TypeCurrencyDefault->code}}</cbc:DocumentCurrencyCode>
     <cbc:LineCountNumeric>{{count($lines)}}</cbc:LineCountNumeric>
     {{-- AccountingSupplierParty --}}
     @include('xml._accounting', ['node' => 'AccountingSupplierParty', 'supplier' => true])
     {{-- AccountingCustomerParty --}}
-    @include('xml._accounting_customer', ['node' => 'AccountingCustomerParty', 'user' => $customer])
+    @include('xml._accounting_customer', ['node' => 'AccountingCustomerParty', 'customer' => $customer])
     {{-- PaymentMeans --}}
     @include('xml._payment_means')
     {{-- PaymentTerms --}}

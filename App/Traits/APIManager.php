@@ -15,7 +15,6 @@ trait APIManager
     public $requireds;
 
     public $headers = [
-        "Access-Control-Allow-Origin: *",
         "Access-Control-Allow-Headers: *",
         "Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE",
         "Allow: GET, POST, OPTIONS, PUT, DELETE",
@@ -141,11 +140,55 @@ trait APIManager
      */
     private function SetHeaders(): void
     {
+        $this->EnvironmentValidation();
+
         foreach ($this->headers as $key) {
             header($key);
         }
-
     }
+    /**
+     * EnvironmentValidation
+     * @access public
+     * @return void
+     */
+    public function EnvironmentValidation(): void
+    {
+        if (isset(config()->APP_TYPE_ENVIRONMENT)){
+            $dev = fn () => array_push($this->headers, 'Access-Control-Allow-Origin: *');
+            $production = function () {
+                // get host name or IP address of the client
+                if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                    $origin = $_SERVER['HTTP_CLIENT_IP'];
+                } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                    $origin = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                } else {
+                    $origin = $_SERVER['REMOTE_ADDR'];
+                }
+
+                if (!empty(explode(",", config()->APP_ALLOWED_DOMAINS))) {
+                    if (in_array($origin, explode(",", config()->APP_ALLOWED_DOMAINS))) {
+                        header('Access-Control-Allow-Origin: ' . $origin);
+                    }
+                } else {
+                    header('Access-Control-Allow-Origin: *');
+                }
+            };
+            
+            match (config()->APP_TYPE_ENVIRONMENT) {
+                "DEV"         => $dev(),
+                'dev'         => $dev(),
+                'DEVELOPMENT' => $dev(),
+                'development' => $dev(),
+                'PROD'        => $production(),
+                'prod'        => $production(),
+                'PRODUCTION'  => $production(),
+                'production'  => $production(),
+                default       => $dev()
+            };
+
+        }
+    }
+
 
     public function GetAuthorizationHeader(): string
     {
@@ -213,5 +256,47 @@ trait APIManager
         if ($method == "OPTIONS") {
             die();
         }*/
+    }
+
+    /**
+     * UriValidate
+     * @access public
+     * @param string $uri
+     * @return bool 
+     */
+    public function UriValidate(string $url): bool
+    {
+        $url_format = '/^(https?):\/\/' .                           // protocol
+            '(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+' .     // username
+            '(:([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+)?' .  // password
+            '@)?(?#' .                                              // auth requires @
+            ')((([a-z0-9]\.|[a-z0-9][a-z0-9-]*[a-z0-9]\.)*' .       // domain segments AND
+            '[a-z][a-z0-9-]*[a-z0-9]' .                             // top level domain  OR
+            '|((\d|[1-9]\d|1\d{2}|2[0-4][0-9]|25[0-5])\.){3}' .
+            '(\d|[1-9]\d|1\d{2}|2[0-4][0-9]|25[0-5])' .             // IP address
+            ')(:\d+)?' .                                            // port
+            ')(((\/+([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)*' . // path
+            '(\?([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)' .      // query string
+            '?)?)?' .                                                   // path and query string optional
+            '(#([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)?' .      // fragment
+            '$/i';
+        /**
+         * String starts with something
+         * 
+         * This function will return true only if input string starts with
+         * niddle
+         * 
+         * @param string $string Input string
+         * @param string $niddle Needle string
+         * @return boolean
+         */
+        $str_starts_with = function ($string, $niddle) {
+            return substr($string, 0, strlen($niddle)) == $niddle;
+        };
+
+        if ($str_starts_with(strtolower($url), 'http://localhost')) {
+            return true;
+        }
+        return preg_match($url_format, $url);
     }
 }

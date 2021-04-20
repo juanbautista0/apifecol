@@ -1,5 +1,5 @@
 <sts:InvoiceControl>
-    <sts:InvoiceAuthorization>{{$$invoice->Resolution->resolution}}</sts:InvoiceAuthorization>
+    <sts:InvoiceAuthorization>{{$invoice->Resolution->resolution}}</sts:InvoiceAuthorization>
     <sts:AuthorizationPeriod>
         <cbc:StartDate>{{$invoice->Resolution->date_from}}</cbc:StartDate>
         <cbc:EndDate>{{$invoice->Resolution->date_to}}</cbc:EndDate>

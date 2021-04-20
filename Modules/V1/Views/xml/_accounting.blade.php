@@ -3,10 +3,10 @@
     <cac:Party>
         @if($company->Organization!=NULL)
         @if ($company->Organization->code == 2)
-        <cac:PartyIdentification>
-            <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</cbc:ID>
-        </cac:PartyIdentification>
-        @endif
+            <cac:PartyIdentification>
+                <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</cbc:ID>
+            </cac:PartyIdentification>
+            @endif
         @else
         <cac:PartyIdentification>
             <cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Dirección de Impuestos y Aduanas Nacionales)" schemeID="{{$company->dv}}" schemeName="{{($company->NitType!=NULL)?$company->NitType->code:$company->NitTypeDefault->code}}">{{$company->identification_number}}</cbc:ID>
