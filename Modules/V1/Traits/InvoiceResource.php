@@ -22,6 +22,8 @@ trait InvoiceResource
         'type_currency_id'  => 52,
         'resolution_id'     => 1,
         'due_date'          => '2021-05-26',
+        'payment_method_id' => 47,
+        'payment_form_id'   => 2,
         'customer'          =>
         [
             "identification_number" => 901004305,
@@ -142,7 +144,14 @@ trait InvoiceResource
      * @var array
      */
     public $invoiceRelations = [
-        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution'
+        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault', 'PaymentForm', 'PaymentFormDefault'
+    ];
+
+    /**
+     * @var array
+     */
+    public $invoiceLinesRelations = [
+        'TypeUnitMeasure', 'TypeItemIdentification', 'ReferencePrice',
     ];
     /**
      * @var array $InvoiceFieldsExceptions

@@ -21,6 +21,8 @@ use Models\Config\Liability;
 use Models\Config\Municipality;
 use Models\Config\NitType;
 use Models\Config\Organization;
+use Models\Config\PaymentForm;
+use Models\Config\PaymentMethod;
 use Models\Config\Regime;
 use Models\Invoice as ModelsInvoice;
 use Models\Config\Resolution;
@@ -29,6 +31,7 @@ use Models\Config\TypeCurrency;
 use Models\Config\TypeDocument;
 use Models\Config\TypeOperation;
 use Models\Config\TypeUnitMeasure;
+use Models\InvoiceLine;
 use Traits\BillerResources;
 use Traits\Dv;
 use Traits\InvoiceResource;
@@ -153,7 +156,9 @@ class Invoice extends Controller implements Http
             "type_document_id"  => new TypeDocument,
             "type_operation_id" => new TypeOperation,
             "type_currency_id"  => new TypeCurrency,
-            "resolution_id"     => new Resolution
+            "resolution_id"     => new Resolution,
+            "payment_method_id" => new PaymentMethod,
+            "payment_form_id"   => new PaymentForm,
         ], "Invoice ");
 
         // Validate relation keys customer
@@ -185,12 +190,15 @@ class Invoice extends Controller implements Http
         $this->invoice = new ModelsInvoice(collect($this->request)->toArray());
 
         // Set invoice line model
-        $this->lines = $this->request->invoice_lines;
+        $this->lines = collect();
+        foreach ($this->request->invoice_lines as $line) $this->lines->push(new InvoiceLine($line));
+        //Load relations
+        foreach ($this->lines as $line) $line->load($this->invoiceLinesRelations);
 
         //Pendientes
         /**
-         * -Completar armado de xml factura
-         * -Crear colección de datos a partir del modelo de líneas de factura
+         * - PaymentTerms
+         * - Pintar líneas
          * -Incorporar firma
          */
         $this->xml = $this->view('xml.01', [

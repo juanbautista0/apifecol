@@ -3,6 +3,8 @@
 namespace Models;
 
 use Illuminate\Database\Eloquent\Model as CustomModel;
+use Models\Config\PaymentForm;
+use Models\Config\PaymentMethod;
 use Models\Config\TypeCurrency;
 use Models\Config\TypeDocument;
 use Models\Config\TypeOperation;
@@ -23,7 +25,7 @@ class Invoice extends CustomModel
      * @var array
      */
     protected $with = [
-        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency','TypeCurrencyDefault','Resolution'
+        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault','PaymentForm','PaymentFormDefault'
     ];
 
     /**
@@ -88,6 +90,35 @@ class Invoice extends CustomModel
             ]);
     }
 
+    public function PaymentMethod()
+    {
+        return $this->hasOne(PaymentMethod::class, 'id', 'payment_method_id');
+    }
+
+    public function PaymentMethodDefault()
+    {
+        return $this->belongsTo(PaymentMethod::class)
+            ->withDefault([
+                'id'       => 126,
+                'name'     => 'Transferencia Débito Bancaria',
+                'code'     => '47',
+            ]);
+    }
+
+    public function PaymentForm()
+    {
+        return $this->hasOne(PaymentForm::class, 'id', 'payment_form_id');
+    }
+
+    public function PaymentFormDefault()
+    {
+        return $this->belongsTo(PaymentForm::class)
+            ->withDefault([
+                'id'       => 2,
+                'name'     => 'Crédito',
+                'code'     => '2',
+            ]);
+    }
     public function Resolution()
     {
         return $this->hasOne(Resolution::class, 'id', 'resolution_id');
