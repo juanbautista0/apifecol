@@ -9,6 +9,7 @@ use Models\Config\TypeCurrency;
 use Models\Config\TypeDocument;
 use Models\Config\TypeOperation;
 use Models\Config\Resolution;
+use Models\Config\TypeUnitMeasure;
 
 class Invoice extends CustomModel
 {
@@ -25,7 +26,7 @@ class Invoice extends CustomModel
      * @var array
      */
     protected $with = [
-        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault','PaymentForm','PaymentFormDefault'
+        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault','PaymentForm','PaymentFormDefault','PaymentDuration','PaymentDurationDefault'
     ];
 
     /**
@@ -118,6 +119,20 @@ class Invoice extends CustomModel
                 'name'     => 'Crédito',
                 'code'     => '2',
             ]);
+    }
+
+    public function PaymentDuration()
+    {
+        return $this->hasOne(TypeUnitMeasure::class, 'id', 'payment_duration_unit_measure_id');
+    }
+    public function PaymentDurationDefault()
+    {
+        return $this->belongsTo(TypeUnitMeasure::class)
+        ->withDefault([
+            'id'       => 606,
+            'name'     => 'día',
+            'code'     => 'DAY',
+        ]);
     }
     public function Resolution()
     {

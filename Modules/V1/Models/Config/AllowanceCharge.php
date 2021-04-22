@@ -39,7 +39,7 @@ class AllowanceCharge extends CustomModel
      */
     public function discount()
     {
-        return $this->belongsTo(Discount::class);
+        return $this->belongsTo(Discount::class, 'discount_id', 'id');
     }
 
     /**

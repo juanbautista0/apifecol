@@ -24,6 +24,7 @@ trait InvoiceResource
         'due_date'          => '2021-05-26',
         'payment_method_id' => 47,
         'payment_form_id'   => 2,
+        'payment_duration_unit_measure_id' => 606,
         'customer'          =>
         [
             "identification_number" => 901004305,
@@ -71,6 +72,23 @@ trait InvoiceResource
             'received_date'  => '2021-05-19',
             'paid_date'      => '2021-05-19',
             'instruction_id' => '',
+        ],
+        'tax_totals' => [
+            0 => [
+                'tax_id' => 1,
+                'tax_amount' => '0.00',
+                'percent' => '0.00',
+                'taxable_amount' => '0.00'
+            ]
+        ],
+        'allowance_charges' => [
+            0 =>
+            [
+                'charge_indicator'        => false,
+                'allowance_charge_reason' => 'Discount',
+                'amount'                  => '0.00',
+                'base_amount'             => '0.00',
+            ],
         ],
         'invoice_lines' =>
         [
@@ -144,7 +162,7 @@ trait InvoiceResource
      * @var array
      */
     public $invoiceRelations = [
-        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault', 'PaymentForm', 'PaymentFormDefault'
+        'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault', 'PaymentForm', 'PaymentFormDefault', 'PaymentDuration', 'PaymentDurationDefault'
     ];
 
     /**
@@ -153,6 +171,14 @@ trait InvoiceResource
     public $invoiceLinesRelations = [
         'TypeUnitMeasure', 'TypeItemIdentification', 'ReferencePrice',
     ];
+
+    /**
+     * @var array
+     */
+    public $taxTotalsRelations =[
+        'tax', 'unit_measure',
+    ];
+
     /**
      * @var array $InvoiceFieldsExceptions
      */
@@ -177,6 +203,11 @@ trait InvoiceResource
      * @var object
      */
     public $lines;
+
+    /**
+     * @var object
+     */
+    public $taxTotals;
 
     /**
      * (EN) Validate Relationship Keys that were entered by the customer.

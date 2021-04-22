@@ -16,6 +16,7 @@ use \App\Core\Session;
 use \App\Interfaces\Http;
 use \App\Traits\APIManager;
 use Models\Biller;
+use Models\Config\Discount;
 use Models\Config\Language;
 use Models\Config\Liability;
 use Models\Config\Municipality;
@@ -27,6 +28,7 @@ use Models\Config\Regime;
 use Models\Invoice as ModelsInvoice;
 use Models\Config\Resolution;
 use Models\Config\Tax;
+use Models\Config\TaxTotal;
 use Models\Config\TypeCurrency;
 use Models\Config\TypeDocument;
 use Models\Config\TypeOperation;
@@ -143,6 +145,7 @@ class Invoice extends Controller implements Http
         // Validate biller
         ($this->biller != NULL) ? true : _json(['code' => 404, 'data' => ['message' => 'Biller not found']]);
 
+        // Set check digit
         $this->biller->dv = $this->GetDv($this->biller->identification_number);
 
         // Validation of the content of the request body
@@ -153,12 +156,13 @@ class Invoice extends Controller implements Http
 
         // Validate relations keys invoice
         $this->ValidateRelationshipKeys($this->request, [
-            "type_document_id"  => new TypeDocument,
-            "type_operation_id" => new TypeOperation,
-            "type_currency_id"  => new TypeCurrency,
-            "resolution_id"     => new Resolution,
-            "payment_method_id" => new PaymentMethod,
-            "payment_form_id"   => new PaymentForm,
+            "type_document_id"                 => new TypeDocument,
+            "type_operation_id"                => new TypeOperation,
+            "type_currency_id"                 => new TypeCurrency,
+            "resolution_id"                    => new Resolution,
+            "payment_method_id"                => new PaymentMethod,
+            "payment_form_id"                  => new PaymentForm,
+            "payment_duration_unit_measure_id" => new TypeUnitMeasure
         ], "Invoice ");
 
         // Validate relation keys customer
@@ -172,13 +176,24 @@ class Invoice extends Controller implements Http
             "tax_id"               => new Tax,
         ], "Customer ");
 
+        // Validate relation keys tax totals
+        foreach ($this->request->tax_totals as $key => $value)  $this->ValidateRelationshipKeys((object)$value, [
+            "tax_id" => new Tax,
+        ], "TaxTotal ");
+
+        // Validate relation keys tax totals
+        foreach ($this->request->allowance_charges as $key => $value)  $this->ValidateRelationshipKeys((object)$value, [
+            "discount_id" => new Discount,
+        ], "AllowanceCharges ");
+
+
         // Create customer object from a collection, also inheriting the relationships from the biller model. 
         $this->customer = new Biller(collect($this->request->customer)->toArray());
         $this->customer->load($this->billerRelations);
         $this->customer->dv = $this->GetDv($this->customer->identification_number);
 
         // Validate quantity invoice lines
-        (count($this->request->invoice_lines) > 0) ? true : _json(['code' => 400, 'data' => ['message' => 'Bad Request The invoice has no lines']]);
+        (count($this->request->invoice_lines) > 0) ? true : _json(['code' => 400, 'data' => ['message' => 'Bad Request The invoice has not lines']]);
 
         // Validate invoice line fields 
         $this->ValidateInvoiceLines($this->request->invoice_lines);
@@ -189,24 +204,34 @@ class Invoice extends Controller implements Http
         // Set invoice model
         $this->invoice = new ModelsInvoice(collect($this->request)->toArray());
 
-        // Set invoice line model
+        // Set invoice line model & load relations invoce lines
         $this->lines = collect();
-        foreach ($this->request->invoice_lines as $line) $this->lines->push(new InvoiceLine($line));
-        //Load relations
-        foreach ($this->lines as $line) $line->load($this->invoiceLinesRelations);
+        foreach ($this->request->invoice_lines as $key => $line) [$this->lines->push(new InvoiceLine($line)), fn()=> $this->lines[$key]->load($this->invoiceLinesRelations)];
+       
+        // Tax totals & load relations tax totals
+        $this->taxTotals = collect();
+        foreach ($this->request->tax_totals as $taxT) $this->taxTotals->push(new TaxTotal($taxT));
+        foreach ($this->taxTotals as $line) $line->load($this->taxTotalsRelations);
+        
 
         //Pendientes
         /**
-         * - PaymentTerms
+         * - Usar de manera recursiva los tax totals de las líneas y de factura low code.
          * - Pintar líneas
-         * -Incorporar firma
+         * - Incorporar firma
          */
-        $this->xml = $this->view('xml.01', [
-            'company'  => $this->biller,
-            'customer' => $this->customer,
-            'invoice'  => $this->invoice->load($this->relations),
-            'lines'    => $this->lines
-        ], $this->module);
+        $this->xml = $this->view(
+            'xml.01',
+            [
+                'company'  => $this->biller,
+                'customer' => $this->customer,
+                'invoice'  => $this->invoice->load($this->relations),
+                'lines'    => $this->lines,
+                'taxTotal' => $this->taxTotals
+            ],
+            // Module name
+            $this->module
+        );
 
         echo $this->xml;
     }
