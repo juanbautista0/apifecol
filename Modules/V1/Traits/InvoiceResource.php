@@ -175,7 +175,7 @@ trait InvoiceResource
     /**
      * @var array
      */
-    public $taxTotalsRelations =[
+    public $taxTotalsRelations = [
         'tax', 'unit_measure',
     ];
 
@@ -208,6 +208,11 @@ trait InvoiceResource
      * @var object
      */
     public $taxTotals;
+
+    /**
+     * @var object
+     */
+    public $AllowanceCharges;
 
     /**
      * (EN) Validate Relationship Keys that were entered by the customer.

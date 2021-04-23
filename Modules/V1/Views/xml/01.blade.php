@@ -17,8 +17,8 @@
     <cbc:ProfileExecutionID>{{($company->Environment != NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}</cbc:ProfileExecutionID>
     <cbc:ID>{{$resolution->next_consecutive}}</cbc:ID>
     <cbc:UUID schemeID="{{($company->Environment!=NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}" schemeName="{{($invoice->TypeDocument!=NULL)?$invoice->TypeDocument->algoritm:$invoice->TypeDocumentDefault->algoritm}}">__CUFE__</cbc:UUID>
-    <cbc:IssueDate>{{$date ?? Carbon\Carbon::now()->format('Y-m-d')}}</cbc:IssueDate>
-    <cbc:IssueTime>{{$time ?? Carbon\Carbon::now()->format('H:i:s')}}-05:00</cbc:IssueTime>
+    <cbc:IssueDate>{{$IssueDate ?? Carbon\Carbon::now()->format('Y-m-d')}}</cbc:IssueDate>
+    <cbc:IssueTime>{{$IssueTime ?? Carbon\Carbon::now()->format('H:i:s')}}-05:00</cbc:IssueTime>
     <cbc:InvoiceTypeCode>{{($invoice->TypeDocument!=NULL)?$invoice->TypeDocument->code:$invoice->TypeDocumentDefault->code}}</cbc:InvoiceTypeCode>
     <cbc:DocumentCurrencyCode>{{($invoice->TypeCurrency!=NULL)?$invoice->TypeCurrency->code:$invoice->TypeCurrencyDefault->code}}</cbc:DocumentCurrencyCode>
     <cbc:LineCountNumeric>{{count($lines)}}</cbc:LineCountNumeric>

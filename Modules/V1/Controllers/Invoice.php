@@ -16,6 +16,7 @@ use \App\Core\Session;
 use \App\Interfaces\Http;
 use \App\Traits\APIManager;
 use Models\Biller;
+use Models\Config\AllowanceCharge;
 use Models\Config\Discount;
 use Models\Config\Language;
 use Models\Config\Liability;
@@ -198,6 +199,14 @@ class Invoice extends Controller implements Http
         // Validate invoice line fields 
         $this->ValidateInvoiceLines($this->request->invoice_lines);
 
+        // Resolution validity
+        /*(
+            $this->invoice->Resolution->status != 1 && 
+            $this->invoice->Resolution->date_to < Carbon\Carbon::now()->format('Y-m-d') &&
+            $this->invoice->Resolution->to   < $this->invoice->number && 
+            $this->invoice->Resolution->from < $this->invoice->number 
+        )? */
+
         // unset customer data from request
         unset($this->request->customer);
 
@@ -206,28 +215,50 @@ class Invoice extends Controller implements Http
 
         // Set invoice line model & load relations invoce lines
         $this->lines = collect();
-        foreach ($this->request->invoice_lines as $key => $line) [$this->lines->push(new InvoiceLine($line)), fn()=> $this->lines[$key]->load($this->invoiceLinesRelations)];
-       
+        foreach ($this->request->invoice_lines as $key => $line) $this->lines->push(new InvoiceLine($line));
+        foreach ($this->lines as $key => $line) $line->load($this->invoiceLinesRelations);
+
         // Tax totals & load relations tax totals
         $this->taxTotals = collect();
-        foreach ($this->request->tax_totals as $taxT) $this->taxTotals->push(new TaxTotal($taxT));
+        foreach ($this->request->tax_totals ?? [] as $taxT) $this->taxTotals->push(new TaxTotal($taxT));
         foreach ($this->taxTotals as $line) $line->load($this->taxTotalsRelations);
-        
 
-        //Pendientes
-        /**
-         * - Usar de manera recursiva los tax totals de las líneas y de factura low code.
-         * - Pintar líneas
-         * - Incorporar firma
-         */
+        // Allowance Charges invoice
+        $this->AllowanceCharges = collect();
+        foreach ($this->request->allowance_charges ?? [] as $line)  $this->AllowanceCharges->push(new AllowanceCharge($line));
+
+
+        // set tax totals and allowance charges invoice line
+        foreach ($this->lines as $line) [
+            fn () => $line->setAllowanceChargesAttribute((array)$line->allowance_charges ?? []),
+            fn () => $line->setTaxTotalsAttribute((array)$line->tax_totals ?? []),
+        ];
+
+        //Fecha y hora
+        $IssueDate = Carbon\Carbon::now()->format('Y-m-d');
+        $IssueTime = Carbon\Carbon::now()->format('H:i:s');
+        print_debug($this->invoice->Resolution);
+        //print_debug($this->lines->sum('line_extension_amount'));
+        //Valor del cufe
+        //$cufevalue = $invoice['invoice']->prefix . $invoice['number_fe'] . $IssueDate . $IssueTime . '-05:00' . number_format($invoice['invoice']->total_neto, 2, '.', '') . '01' . number_format($invoice['taxes1'], 2, '.', '') . '04' . number_format($invoice['taxes2'], 2, '.', '') . '03' . number_format($invoice['taxes3'], 2, '.', '') . number_format($invoice['invoice']->total_neto + ($invoice['invoice']->Lines->sum('taxes_value') ?? 0) - ($invoice['invoice']->AdvancePayment->sum("total") < $invoice['invoice']->total ? $invoice['invoice']->AdvancePayment->sum("total") : 0), 2, '.', '') . $invoice['company']->identification_number . $invoice['invoice']->customer['cifnif'] . $invoice['invoice']->resolution_id->technical_key . $invoice['company']->type_environment_id['code'];
+        //Cufe encriptado a 384
+        //$cufe = hash('sha384', $cufevalue);
+        //UUID encriptado a 256
+        //$UUIDsha256 = hash("sha256", $cufevalue);
+
+        // xml file creation
         $this->xml = $this->view(
-            'xml.01',
+            'xml.01', //View file name
             [
-                'company'  => $this->biller,
-                'customer' => $this->customer,
-                'invoice'  => $this->invoice->load($this->relations),
-                'lines'    => $this->lines,
-                'taxTotal' => $this->taxTotals
+                'company'             => $this->biller,                            // Biller data
+                'customer'            => $this->customer,                          // Customer data
+                'invoice'             => $this->invoice->load($this->relations),   // Invoice data
+                'IssueDate'           => $IssueDate,
+                'IssueTime'           => $IssueTime,
+                'lines'               => $this->lines,                             // invoice lines data
+                'allowanceCharges'    => $this->AllowanceCharges,                  // Allowance charges
+                'taxTotals'           => $this->taxTotals,                         // Tax total
+                'legalMonetaryTotals' => $this->request->legal_monetary_totals     // Legal monetary totals
             ],
             // Module name
             $this->module
