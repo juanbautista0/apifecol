@@ -20,10 +20,5 @@ Este proyecto es software libre y todos los desarrolladores son bienvenidos.
 
 ¿Desea colaborar? Únase a nuestro espacio en <a href="https://discord.gg/8ZepPezEa3">Discord Apifecol</a>.
 
-[![Watch chanel]](https://discord.com/widget?id=835327865742557205&theme=dark)
-
-
-<iframe src="https://discord.com/widget?id=835327865742557205&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-
 # Swagger 
 La documentación de uso de la API está hecha con la elgante herramienta Swagger.
