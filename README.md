@@ -14,7 +14,7 @@ Apifecol le permite concentrarse exclusivamente en la lógica de negocio y así 
 # Open Source (Código abierto)
 Licencia GPL-3.0
 
-Nos hemos inspirado en algunas herramientas existentes,pero que sea software libre no significa que renunciemos a la autoría.
+Nos hemos inspirado en algunas herramientas existentes, pero que sea software libre no significa que renunciemos a la autoría.
 
 # Swagger 
 La documentación de uso de la API está hecha con la elgante herramienta Swagger.
