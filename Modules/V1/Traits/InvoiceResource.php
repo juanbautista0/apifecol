@@ -2,6 +2,8 @@
 
 namespace Traits;
 
+use Exception;
+use Lib\Signatory;
 use Models\Config\Tax;
 use Models\Config\TypeItemIdentificaction;
 use Models\Config\TypeUnitMeasure;
@@ -215,6 +217,41 @@ trait InvoiceResource
     public $AllowanceCharges;
 
     /**
+     * @var object
+     */
+    public $Document;
+
+    /**
+     * @var object
+     */
+    public $DomXPath;
+
+    /**
+     * @var string
+     */
+    public $technicalKey;
+
+    /**
+     * @var string
+     */
+    public $groupOfTotals = 'LegalMonetaryTotal';
+
+    /**
+     * @var string
+     */
+    public $cufe;
+
+    /**
+     * @var string
+     */
+    public $UUIDsha256;
+
+    /**
+     * @var object
+     */
+    public $Signatory;
+
+    /**
      * (EN) Validate Relationship Keys that were entered by the customer.
      * (ES) Validar Llaves de relación que fueron ingresadas por el cliente.
      * @param object $input
@@ -257,6 +294,66 @@ trait InvoiceResource
         }
     }
 
+    /**
+     * GetTag
+     * (EN) Get tag from xml document.
+     * (ES) Obtener etiqueta desde el documento xml
+     * @param string $tag
+     * @param int    $item
+     * @return mixed
+     */
+    protected function GetTag($tag, $item = 0): mixed
+    {
+        $tag = $this->Document->documentElement->getElementsByTagName($tag);
+
+        if (is_null($tag->item(0))) {
+            throw new Exception('Class ' . get_class($this) . ": The tag name {$tag} does not exist.");
+        }
+
+        return $tag->item($item);
+    }
+
+    /**
+     * Cufe.
+     * (EN) Unique electronic invoice code
+     * (ES) Código único de factura electrónica
+     * @param object $dompath
+     * @param object $documentXml
+     * @param string $tk
+     * @param bool    $ctx
+     * 
+     * @return string
+     */
+    private function Cufe(object $dompath, object $documentXml, string $tk, bool $ctx = false): string
+    {
+        $this->DomXPath     = $dompath;
+        $this->Document     = $documentXml;
+        $this->technicalKey = $tk;
+        $cufevalue          = "{$this->GetTag('ID', 0)->nodeValue}{$this->GetTag('IssueDate', 0)->nodeValue}{$this->GetTag('IssueTime', 0)->nodeValue}{$this->DOMquery("cac:{$this->groupOfTotals}/cbc:LineExtensionAmount")->nodeValue}01" . ($this->DOMquery('cac:TaxTotal[cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID=01]/cbc:TaxAmount', false)->nodeValue ?? '0.00') . '04' . ($this->DOMquery('cac:TaxTotal[cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID=04]/cbc:TaxAmount', false)->nodeValue ?? '0.00') . '03' . ($this->DOMquery('cac:TaxTotal[cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID=03]/cbc:TaxAmount', false)->nodeValue ?? '0.00') . "{$this->DOMquery("cac:{$this->groupOfTotals}/cbc:PayableAmount")->nodeValue}{$this->DOMquery('cac:AccountingSupplierParty/cac:Party/cac:PartyTaxScheme/cbc:CompanyID')->nodeValue}{$this->DOMquery('cac:AccountingCustomerParty/cac:Party/cac:PartyTaxScheme/cbc:CompanyID')->nodeValue}{$this->technicalKey}{$this->GetTag('ProfileExecutionID', 0)->nodeValue}";
+        //$this->GetTag('UUID', 0)->nodeValue = hash('sha384', "{$this->GetTag('ID', 0)->nodeValue}{$this->GetTag('IssueDate', 0)->nodeValue}{$this->GetTag('IssueTime', 0)->nodeValue}{$this->DOMquery("cac:{$this->groupOfTotals}/cbc:LineExtensionAmount")->nodeValue}01" . ($this->DOMquery('cac:TaxTotal[cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID=01]/cbc:TaxAmount', false)->nodeValue ?? '0.00') . '04' . ($this->DOMquery('cac:TaxTotal[cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID=04]/cbc:TaxAmount', false)->nodeValue ?? '0.00') . '03' . ($this->DOMquery('cac:TaxTotal[cac:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID=03]/cbc:TaxAmount', false)->nodeValue ?? '0.00') . "{$this->DOMquery("cac:{$this->groupOfTotals}/cbc:PayableAmount")->nodeValue}{$this->DOMquery('cac:AccountingSupplierParty/cac:Party/cac:PartyTaxScheme/cbc:CompanyID')->nodeValue}{$this->DOMquery('cac:AccountingCustomerParty/cac:Party/cac:PartyTaxScheme/cbc:CompanyID')->nodeValue}{$this->technicalKey}{$this->GetTag('ProfileExecutionID', 0)->nodeValue}");
+        return ($ctx) ? hash('sha384', $cufevalue) : $cufevalue;
+    }
+
+    /**
+     * DOM query
+     *
+     * @param string $query
+     * @param bool   $validate
+     * @param int    $item
+     * @return mixed
+     */
+    protected function DOMquery($query, $validate = true, $item = 0): mixed
+    {
+        $tag = $this->DomXPath->query($query);
+        if (($validate) && (null == $tag->item(0))) {
+            throw new Exception('Class ' . get_class($this) . ": The query {$query} does not exist.");
+        }
+        if (is_null($item)) {
+            return $tag;
+        }
+
+        return $tag->item($item);
+    }
     /**
      * ValidateInvoiceEntryData
      * (EN) Validación de los campos de entrada de un objeto de factura.
