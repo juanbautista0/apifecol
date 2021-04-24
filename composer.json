@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.0",
         "vlucas/phpdotenv": "^5.2@dev",
         "firebase/php-jwt": "dev-master",
         "illuminate/database": "^7.9",
