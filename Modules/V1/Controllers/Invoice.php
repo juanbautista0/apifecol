@@ -277,7 +277,7 @@ class Invoice extends Controller implements Http
         $this->Signatory = new Signatory;
         // Signed document
         $this->xmlSigned = $this->Signatory->Sign(
-            $this->CerticatePath(config()->APP_INSTANCES_PATH  . $nit) . $this->biller->certificate,
+            $this->CerticatePath(config()->APP_INSTANCES_PATH  . $this->biller->identification_number) . $this->biller->certificate,
             $this->biller->certificate_password,
             $this->xml,
             $this->UUIDsha256,
