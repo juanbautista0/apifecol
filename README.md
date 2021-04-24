@@ -18,7 +18,7 @@ Nos hemos inspirado en algunas herramientas existentes, pero que sea software li
 
 Este proyecto es software libre y todos los desarrolladores son bienvenidos.
 
-¿Desea colaborar? Únase a nuestro espacio en <a href="https://discord.gg/8ZepPezEa3">Discord Apifecol</a>.
+¿Desea colaborar? Únase a nuestro espacio en <a href="https://discord.gg/8ZepPezEa3">Discord Apifecol</a>, tambien tenemos tablero en <a href="https://trello.com/invite/b/Edr2MASh/b994504815d69b0b289f80a3dc8a4c6a/apifecol">Trello</a>.
 
 # Swagger 
 La documentación de uso de la API está hecha con la elgante herramienta Swagger.

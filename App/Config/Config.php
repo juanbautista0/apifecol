@@ -9,6 +9,8 @@
  * 
  */
 
+(explode('.', phpversion())[0] < '8' )?die("You need PHP 8.0 or later \n You have PHP " . phpversion()):true;
+
 /*
 |-------------------------------------------------------------------
 | (EN) Load environment variables
