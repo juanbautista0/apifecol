@@ -16,5 +16,11 @@ Licencia GPL-3.0
 
 Nos hemos inspirado en algunas herramientas existentes, pero que sea software libre no significa que renunciemos a la autoría.
 
+Este proyecto es software libre y todos los desarrolladores son bienvenidos.
+
+Únase a nuestro espacio en <a href="https://discord.gg/8ZepPezEa3">Discord Apifecol</a>.
+
+<iframe src="https://discord.com/widget?id=835327865742557205&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+
 # Swagger 
 La documentación de uso de la API está hecha con la elgante herramienta Swagger.
