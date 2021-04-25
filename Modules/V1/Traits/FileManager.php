@@ -129,7 +129,6 @@ trait FileManager
     }
 
     /**
-     * nombreArchivo()
      * (EN) It is responsible for defining the name of the electronic document.
      * (ES) Se encarga de definir el nombre del documento electrónico.
      *
@@ -169,12 +168,12 @@ trait FileManager
         $zip = new ZipArchive;
         $zip->open($zip_path . $file_name, ZipArchive::CREATE);
         // agregar el xml filmado 
-        $zip->addFromString($zip_path . $xml_name, $xml_signed);
+        $zip->addFromString($xml_name, $xml_signed);
         $zip->close();
 
         // get the contents 
         $document = file_get_contents($zip_path . $file_name);
-
+        unlink($zip_path . $file_name);
         // codificar
         return base64_encode($document);
     }

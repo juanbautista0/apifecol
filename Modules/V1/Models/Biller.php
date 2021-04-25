@@ -9,6 +9,7 @@ use Models\Config\Municipality;
 use Models\Config\NitType;
 use Models\Config\Organization;
 use Models\Config\Regime;
+use Models\Config\SendMethod;
 use Models\Config\Tax;
 use Models\Config\TypeEnvironment;
 
@@ -28,7 +29,7 @@ class Biller extends CustomModel
      * @var array
      */
     protected $with = [
-        'Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault', 'Environment', 'EnvironmentDefault'
+        'Location.Department.Country', 'Language', 'LanguageDefault', 'NitType', 'NitTypeDefault', 'Regime', 'RegimeDefault', 'Organization', 'OrganizationDefault', 'Liability', 'LiabilityDefault', 'Tax', 'TaxDefault', 'Environment', 'EnvironmentDefault','SendMethod','SendMethodDefault'
     ];
 
 
@@ -152,6 +153,21 @@ class Biller extends CustomModel
                 'qr_url' => 'https://catalogo-vpfe-hab.dian.gov.co/document/searchqr?documentkey=',
                 'ws_url' => 'https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc'
 
+            ]);
+    }
+
+    public function SendMethod()
+    {
+        return $this->hasOne(SendMethod::class, 'id', 'send_method');
+    }
+
+    public function SendMethodDefault()
+    {
+        return $this->belongsTo(SendMethod::class)
+            ->withDefault([
+                'id'          => 1,
+                'name'        => 'SendBillSync',
+                'description' => 'Recibir un ZIP con un UBL  de forma Sincróna',
             ]);
     }
 }

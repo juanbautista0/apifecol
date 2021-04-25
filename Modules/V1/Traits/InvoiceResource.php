@@ -7,6 +7,7 @@ use Lib\Signatory;
 use Models\Config\Tax;
 use Models\Config\TypeItemIdentificaction;
 use Models\Config\TypeUnitMeasure;
+use Traits\BillerResources;
 
 /**
  * (EN) Invoice resources
@@ -14,20 +15,21 @@ use Models\Config\TypeUnitMeasure;
  */
 trait InvoiceResource
 {
+    use BillerResources;
     /**
      * @var array $InvoiceFieldsRequireds
      */
     public $InvoiceFieldsRequireds = [
-        'number'            => "",
-        'type_document_id'  => 1,
-        'type_operation_id' => 22,
-        'type_currency_id'  => 52,
-        'resolution_id'     => 1,
-        'due_date'          => '2021-05-26',
-        'payment_method_id' => 47,
-        'payment_form_id'   => 2,
+        'number'                           => "",
+        'type_document_id'                 => 1,
+        'type_operation_id'                => 22,
+        'type_currency_id'                 => 52,
+        'resolution_id'                    => 1,
+        'due_date'                         => '2021-05-26',
+        'payment_method_id'                => 47,
+        'payment_form_id'                  => 2,
         'payment_duration_unit_measure_id' => 606,
-        'customer'          =>
+        'customer'                         =>
         [
             "identification_number" => 901004305,
             "name"                  => "Customer Test",
@@ -77,9 +79,9 @@ trait InvoiceResource
         ],
         'tax_totals' => [
             0 => [
-                'tax_id' => 1,
-                'tax_amount' => '0.00',
-                'percent' => '0.00',
+                'tax_id'         => 1,
+                'tax_amount'     => '0.00',
+                'percent'        => '0.00',
                 'taxable_amount' => '0.00'
             ]
         ],
@@ -165,6 +167,17 @@ trait InvoiceResource
      */
     public $invoiceRelations = [
         'TypeDocument', 'TypeDocumentDefault', 'TypeOperation', 'TypeOperationDefault', 'TypeCurrency', 'TypeCurrencyDefault', 'Resolution', 'PaymentMethod', 'PaymentMethodDefault', 'PaymentForm', 'PaymentFormDefault', 'PaymentDuration', 'PaymentDurationDefault'
+    ];
+    /**
+     * @var array
+     */
+    public $defaulRelationsUnset = [
+        'TypeDocumentDefault',
+        'TypeOperationDefault',
+        'TypeCurrencyDefault',
+        'PaymentMethodDefault',
+        'PaymentFormDefault',
+        'PaymentDurationDefault'
     ];
 
     /**
@@ -252,6 +265,71 @@ trait InvoiceResource
     public $Signatory;
 
     /**
+     * @var int 
+     */
+    public $zipNumber;
+
+    /**
+     * @var string
+     */
+    public $xmlName;
+
+    /**
+     * @var string
+     */
+    public $fileName;
+
+    /**
+     * @var string
+     */
+    public $zip64;
+
+    /**
+     * @var string
+     */
+    public $_WS_ACTION;
+
+    /**
+     * @var string
+     */
+    public $_BODY;
+
+    /**
+     * @var string
+     */
+    public $SendMethod;
+
+    /**
+     * @var string
+     */
+    public $petitionDIAN;
+
+    /**
+     * @var string
+     */
+    public $environmentType;
+
+    /**
+     * @var string
+     */
+    public $responseDIAN;
+
+    /**
+     * @var string
+     */
+    public $zipKey;
+
+    /**
+     * @var array
+     */
+    public $documentStatus;
+
+    /**
+     * @var object
+     */
+    public $currentZipNumber;
+
+    /**
      * (EN) Validate Relationship Keys that were entered by the customer.
      * (ES) Validar Llaves de relación que fueron ingresadas por el cliente.
      * @param object $input
@@ -264,7 +342,6 @@ trait InvoiceResource
     }
 
     /**
-     * ValidateInvoiceLines
      * (EN) Validation invoice lines
      * (ES) Valiación de líneas de factura
      * @access public
@@ -288,14 +365,13 @@ trait InvoiceResource
 
             foreach ($value['tax_totals'] as $key1 => $value1) {
                 $this->ValidateRelationshipKeys((object) $value1, [
-                    "tax_id"      => new Tax,
+                    "tax_id" => new Tax,
                 ], "Invoice line ");
             }
         }
     }
 
     /**
-     * GetTag
      * (EN) Get tag from xml document.
      * (ES) Obtener etiqueta desde el documento xml
      * @param string $tag
@@ -314,7 +390,6 @@ trait InvoiceResource
     }
 
     /**
-     * Cufe.
      * (EN) Unique electronic invoice code
      * (ES) Código único de factura electrónica
      * @param object $dompath
@@ -335,8 +410,8 @@ trait InvoiceResource
     }
 
     /**
-     * DOM query
-     *
+     * (EN) DOM query
+     * (ES) Consulta al DOM
      * @param string $query
      * @param bool   $validate
      * @param int    $item
@@ -355,7 +430,6 @@ trait InvoiceResource
         return $tag->item($item);
     }
     /**
-     * ValidateInvoiceEntryData
      * (EN) Validación de los campos de entrada de un objeto de factura.
      * (ES) Validación de los campos de entrada de un objeto de factura.
      * @access public
@@ -363,5 +437,74 @@ trait InvoiceResource
      */
     public function ValidateInvoiceEntryData(): void
     {
+    }
+
+    /**
+     * (EN) Method in charge of managing the process after the DIAN has approved the electronic invoice.
+     * (ES) Método encargado de gestionar proceso después de que la DIAN haya aprobado la factura electrónica.
+     * @access public
+     * @param  array  $callbacks
+     * @param  object $invoice
+     * @param  object $invoiceLines
+     * @param  object $allowanceCharges
+     * @param  object $taxTotals
+     * @param  array  $legalMonetaryTotals
+     * @param  object $biller
+     * @param  object $customer
+     * @param  array  $documentStatus
+     * @param  string $xmlName
+     * @param  string $zipKey
+     * @param  string $cufe
+     * @param  string $dateTimeDian
+     * @return void
+     */
+    public function CorrectlyProcessedInvoice(array $callbacks = [], object $invoice, object $invoiceLines, object $allowanceCharges, object $taxTotals, array $legalMonetaryTotals, object $biller, object $customer, array $documentStatus, string $xmlName, string $zipKey, string $cufe, string $dateTimeDian): void
+    {
+
+        (!empty($callbacks)) ? $this->CallsbacksAfter($callbacks) : true;
+
+        foreach ($this->billerRelations as $key) unset($customer->{$key});
+
+
+        $data = [
+            'date_time_dian'        => strval($dateTimeDian),
+            'status_dian1'          => $documentStatus['StatusDescription'],
+            'xml_name'              => $xmlName,
+            'cufe'                  => $cufe,
+            'zipkey'                => $zipKey,
+            'biller_id'             => $biller->id,
+            'customer'              => json_encode($customer->toArray()),
+            'invoice_lines'         => json_encode($invoiceLines->toArray()),
+            'allowance_charges'     => json_encode($allowanceCharges->toArray() ?? []),
+            'tax_totals'            => json_encode($taxTotals->toArray() ?? []),
+            'legal_monetary_totals' => json_encode($legalMonetaryTotals ?? []),
+        ];
+
+        foreach ($this->invoiceRelations as $key) unset($invoice->{$key});
+
+        foreach ($data as $key => $value) $invoice->{$key} = $value;
+
+        $invoice->save();
+    }
+
+    /**
+     * (EN) Method to manage the process after the failure of the electronic invoice issuance.
+     * (ES) Método encarga de gestionar el proceso una vez falle la la emisión de factura electrónica.
+     * @access public
+     * @param array $callbacks
+     * @param string $file
+     */
+    public function InvoiceProcessingError(string $file = ''): void
+    {
+    }
+
+
+    /**
+     * (EN) Actions for later.
+     * (ES) Acciones para despues.
+     */
+    public function CallsbacksAfter(array $calls): void
+    {
+        foreach ($calls as $action) (is_callable($action)) ? $action() : true;
     }
 }

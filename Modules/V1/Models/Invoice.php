@@ -33,7 +33,7 @@ class Invoice extends CustomModel
      * @var array
      */
     protected $fillable = [
-        'number', 'type_document_id', 'type_operation_id', 'type_currency_id', 'resolution_id', 'due_date'
+        'number', 'type_document_id', 'type_operation_id', 'type_currency_id', 'resolution_id', 'due_date', 'payment_method_id', 'payment_form_id', 'payment_duration_unit_measure_id', 'delivery_comments','delivery_company_id','delivery_terms_id','xml_name','cufe','zipkey','acknowledgement_receipt','date_time_dian','status_dian1','status_dian2'
     ];
 
 

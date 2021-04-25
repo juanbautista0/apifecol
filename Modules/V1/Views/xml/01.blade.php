@@ -15,7 +15,7 @@
     <cbc:CustomizationID>{{$company->type_operation->code}}</cbc:CustomizationID>
     <cbc:ProfileID>DIAN 2.1</cbc:ProfileID>
     <cbc:ProfileExecutionID>{{($company->Environment != NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}</cbc:ProfileExecutionID>
-    <cbc:ID>{{$resolution->next_consecutive}}</cbc:ID>
+    <cbc:ID>{{$invoice->Resolution->prefix.$invoice->number}}</cbc:ID>
     <cbc:UUID schemeID="{{($company->Environment!=NULL)?$company->Environment->code:$company->EnvironmentDefault->code}}" schemeName="{{($invoice->TypeDocument!=NULL)?$invoice->TypeDocument->algoritm:$invoice->TypeDocumentDefault->algoritm}}">__CUFE__</cbc:UUID>
     <cbc:IssueDate>{{$IssueDate ?? Carbon\Carbon::now()->format('Y-m-d')}}</cbc:IssueDate>
     <cbc:IssueTime>{{$IssueTime ?? Carbon\Carbon::now()->format('H:i:s')}}-05:00</cbc:IssueTime>
